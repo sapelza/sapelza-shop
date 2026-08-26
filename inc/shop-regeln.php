@@ -70,20 +70,55 @@ add_filter('woocommerce_get_availability_text', function ($text, $product) {
 }, 10, 2);
 
 /**
- * Der Bereich des Betriebs — Handwerk oder Gastronomie.
+ * Die gültigen Bereiche — die Oberkategorien des Katalogs.
+ *
+ * Früher standen hier fest 'handwerk' und 'gastro'. Beide entsprachen
+ * keiner Kategorie, weshalb sz_bereich() immer leer zurückkam. Jetzt gilt,
+ * was der Katalog tatsächlich führt: kommt ein Handwerk-Sortiment als
+ * Oberkategorie dazu, ist es ohne Codeänderung wählbar.
+ *
+ * Bewusst eine eigene kleine Abfrage statt eines Aufrufs ins Theme: das
+ * Plugin darf nicht vom Theme abhängen.
+ *
+ * @return string[] Slugs, größter Bereich zuerst.
+ */
+function sz_bereich_slugs(): array
+{
+    if (!taxonomy_exists('product_cat')) return [];
+
+    $begriffe = get_terms([
+        'taxonomy'   => 'product_cat',
+        'parent'     => 0,
+        'hide_empty' => true,
+        'orderby'    => 'count',
+        'order'      => 'DESC',
+        'fields'     => 'slugs',
+    ]);
+
+    return is_wp_error($begriffe) ? [] : $begriffe;
+}
+
+/**
+ * Der Bereich des Betriebs.
  *
  * Der Handwerker braucht keinen Teller, der Hotelier nicht wöchentlich
  * einen Bohrer. Die Wahl wird am Benutzer gemerkt; die Sortimentsseite
- * liest sie aus. Ohne Wahl wird nichts gefiltert.
+ * liest sie aus.
+ *
+ * Ohne getroffene Wahl gilt der größte Bereich — nicht leer, denn eine
+ * Sortimentsseite ohne ausgewählten Bereich hätte nichts zu zeigen.
  */
 function sz_bereich(): string
 {
-    $erlaubt = ['handwerk', 'gastro'];
+    $erlaubt = sz_bereich_slugs();
+    if (!$erlaubt) return '';
 
-    if (isset($_GET['bereich']) && in_array($_GET['bereich'], $erlaubt, true)) {
-        $wahl = sanitize_key($_GET['bereich']);
-        if (is_user_logged_in()) update_user_meta(get_current_user_id(), 'sz_bereich', $wahl);
-        return $wahl;
+    if (isset($_GET['bereich'])) {
+        $wahl = sanitize_key(wp_unslash($_GET['bereich']));
+        if (in_array($wahl, $erlaubt, true)) {
+            if (is_user_logged_in()) update_user_meta(get_current_user_id(), 'sz_bereich', $wahl);
+            return $wahl;
+        }
     }
 
     if (is_user_logged_in()) {
@@ -91,5 +126,5 @@ function sz_bereich(): string
         if (in_array($wahl, $erlaubt, true)) return $wahl;
     }
 
-    return '';
+    return $erlaubt[0];
 }
