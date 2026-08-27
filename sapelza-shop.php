@@ -4,7 +4,7 @@
  * Plugin URI:        https://sapelzashop.com
  * GitHub Plugin URI: https://github.com/sapelza/sapelza-shop
  * Description:       Die Regeln des Betriebs, „Meine Artikel“ und der Wunschtermin. Bewusst kein Theme-Bestandteil: das hier muss einen Theme-Wechsel überleben.
- * Version:           1.3.1
+ * Version:           1.3.2
  * Requires PHP:      8.0
  * Author:            SAPELZA
  * Text Domain:       sapelza-shop

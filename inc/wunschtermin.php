@@ -312,20 +312,27 @@ add_action('wp_footer', function () {
  * Ohne Liefertag geht es gar nicht erst zur Kasse, sondern zurueck in den
  * Warenkorb — dorthin, wo die Auswahl steht.
  *
- * Warum hier und nicht in der Kasse selbst: der Hinweis unten haengt an
- * woocommerce_review_order_before_payment, und das ist ein Haken der
- * KLASSISCHEN Kasse. Auf der Block-Fassung laeuft er nie. template_redirect
- * greift bei beiden.
+ * Warum template_redirect und kein Kassen-Haken: die gaengigen Haken der
+ * Kasse gehoeren zur KLASSISCHEN Fassung und laufen auf der Block-Kasse
+ * nie. template_redirect greift bei beiden.
  */
 add_action('template_redirect', function () {
     if (!function_exists('is_checkout') || !is_checkout()) return;
     if (function_exists('is_order_received_page') && is_order_received_page()) return;
     if (function_exists('is_wc_endpoint_url') && is_wc_endpoint_url('order-pay')) return;
     if (!WC()->cart || WC()->cart->is_empty()) return;
-    if (sz_termin_gewaehlt() !== '') return;
+    if (sz_termin_gewaehlt() !== '' && sz_fenster_gewaehlt() !== '') return;
 
+    /*
+     * Beides wird verlangt, und nichts wird vorausgewaehlt. Ein
+     * Lieferfenster, das jemand anderes bestimmt hat, ist genau das, was
+     * beim Liefer-Countdown verworfen wurde: es nimmt dem Betrieb die
+     * Wahl und sieht nur so aus, als waere sie getroffen worden.
+     */
     wc_add_notice(
-        __('Bitte waehlen Sie zuerst einen Liefertag — wir richten die Tour danach ein.', 'sapelza-shop'),
+        sz_termin_gewaehlt() === ''
+            ? __('Bitte waehlen Sie zuerst einen Liefertag — wir richten die Tour danach ein.', 'sapelza-shop')
+            : __('Bitte waehlen Sie noch ein Zeitfenster.', 'sapelza-shop'),
         'notice'
     );
 
@@ -333,21 +340,36 @@ add_action('template_redirect', function () {
     exit;
 }, 20);
 
-add_action('woocommerce_review_order_before_payment', function () {
+/**
+ * Der Liefertermin in der Kasse.
+ *
+ * Ueber den Seiteninhalt, nicht ueber einen WooCommerce-Haken: die
+ * gaengigen Haken der Kasse (woocommerce_review_order_before_payment und
+ * Verwandte) gehoeren zur KLASSISCHEN Fassung und laufen auf der
+ * Block-Kasse nie. Genau daran ist die erste Fassung gescheitert.
+ *
+ * Vorangestellt statt angehaengt: der Termin soll oben stehen, bevor
+ * jemand Adresse und Zahlung ausfuellt — nicht darunter, wo er erst nach
+ * dem Absenden auffiele.
+ */
+add_filter('the_content', function ($inhalt) {
+    if (!function_exists('is_checkout') || !is_checkout()) return $inhalt;
+    if (function_exists('is_order_received_page') && is_order_received_page()) return $inhalt;
+    if (!in_the_loop() || !is_main_query()) return $inhalt;
+
     $text = sz_termin_text();
+    if ($text === '') return $inhalt;
+
+    ob_start();
     ?>
     <div class="sz-termin__kasse">
         <span class="sz-termin__label mono"><?php echo esc_html__('Liefertermin', 'sapelza-shop'); ?></span>
-        <?php if ($text !== '') : ?>
-            <strong><?php echo esc_html($text); ?></strong>
-            <a href="<?php echo esc_url(wc_get_cart_url()); ?>"><?php echo esc_html__('ändern', 'sapelza-shop'); ?></a>
-        <?php else : ?>
-            <strong class="ist-fehlend"><?php echo esc_html__('Noch kein Liefertag gewählt', 'sapelza-shop'); ?></strong>
-            <a href="<?php echo esc_url(wc_get_cart_url()); ?>"><?php echo esc_html__('jetzt wählen', 'sapelza-shop'); ?></a>
-        <?php endif; ?>
+        <strong><?php echo esc_html($text); ?></strong>
+        <a href="<?php echo esc_url(wc_get_cart_url() . '#sz-termin'); ?>"><?php echo esc_html__('ändern', 'sapelza-shop'); ?></a>
     </div>
     <?php
-});
+    return (string) ob_get_clean() . $inhalt;
+}, 20);
 
 /* ===================================================================
    An die Bestellung heften
@@ -363,9 +385,9 @@ add_action('woocommerce_review_order_before_payment', function () {
  */
 function sz_termin_pruefen(): void
 {
-    if (sz_termin_gewaehlt() !== '') return;
+    if (sz_termin_gewaehlt() !== '' && sz_fenster_gewaehlt() !== '') return;
 
-    $meldung = __('Bitte wählen Sie im Warenkorb einen Liefertag.', 'sapelza-shop');
+    $meldung = __('Bitte waehlen Sie im Warenkorb Liefertag und Zeitfenster.', 'sapelza-shop');
 
     $klasse = '\\Automattic\\WooCommerce\\StoreApi\\Exceptions\\RouteException';
     if (class_exists($klasse)) {
@@ -383,8 +405,8 @@ add_action('woocommerce_store_api_checkout_update_order_from_request', function 
 
 /* Klassische Kasse */
 add_action('woocommerce_checkout_process', function () {
-    if (sz_termin_gewaehlt() !== '') return;
-    wc_add_notice(__('Bitte wählen Sie im Warenkorb einen Liefertag.', 'sapelza-shop'), 'error');
+    if (sz_termin_gewaehlt() !== '' && sz_fenster_gewaehlt() !== '') return;
+    wc_add_notice(__('Bitte waehlen Sie im Warenkorb Liefertag und Zeitfenster.', 'sapelza-shop'), 'error');
 });
 
 add_action('woocommerce_checkout_create_order', function ($bestellung) {
