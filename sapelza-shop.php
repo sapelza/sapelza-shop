@@ -1,10 +1,10 @@
 <?php
 /**
- * Plugin Name:       SAPELZA Shop
+ * Plugin Name:       SAPELZA Shop-Logik
  * Plugin URI:        https://sapelzashop.com
  * GitHub Plugin URI: https://github.com/sapelza/sapelza-shop
  * Description:       Die Regeln des Betriebs, „Meine Artikel“ und der Wunschtermin. Bewusst kein Theme-Bestandteil: das hier muss einen Theme-Wechsel überleben.
- * Version:           1.1.0
+ * Version:           1.2.0
  * Requires PHP:      8.0
  * Author:            SAPELZA
  * Text Domain:       sapelza-shop
@@ -30,6 +30,40 @@ add_action('plugins_loaded', function () {
         add_action('admin_notices', function () {
             echo '<div class="notice notice-error"><p>'
                . esc_html__('SAPELZA Shop braucht WooCommerce. Das Plugin bleibt sonst wirkungslos.', 'sapelza-shop')
+               . '</p></div>';
+        });
+        return;
+    }
+
+    /*
+     * Erst pruefen, ob das Theme dieselben Bausteine noch mitbringt.
+     *
+     * Bis Fassung 1.4.0 lagen shop-regeln, meine-artikel und wunschtermin
+     * im Child-Theme. Wer dieses Plugin neben einem alten Theme aktiviert,
+     * deklariert jede Funktion zweimal — PHP bricht dann hart ab und die
+     * Seite ist weg. Genau das ist am 27.08.2026 auf der Live-Seite
+     * passiert.
+     *
+     * Ein Plugin darf eine Seite nicht lahmlegen. Also lieber untaetig
+     * bleiben und deutlich sagen, was zu tun ist.
+     */
+    $doppelt = array_filter(
+        ['sz_bereich', 'sz_liefertage', 'sz_termin_gewaehlt', 'sz_bezogene_artikel'],
+        'function_exists'
+    );
+
+    if ($doppelt) {
+        add_action('admin_notices', function () use ($doppelt) {
+            echo '<div class="notice notice-error"><p><strong>'
+               . esc_html__('SAPELZA Shop-Logik wurde nicht geladen.', 'sapelza-shop')
+               . '</strong><br>'
+               . esc_html(
+                   sprintf(
+                       /* translators: %s ist eine Liste von PHP-Funktionsnamen. */
+                       __('Das aktive Theme bringt dieselben Bausteine noch selbst mit (%s). Bitte zuerst das Child-Theme auf Fassung 1.5.0 oder neuer aktualisieren, dann laedt sich dieses Plugin von allein.', 'sapelza-shop'),
+                       implode(', ', $doppelt)
+                   )
+               )
                . '</p></div>';
         });
         return;
