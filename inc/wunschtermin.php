@@ -180,7 +180,7 @@ function sz_termin_abschnitt(): string
 
     ob_start();
     ?>
-    <section class="sz-termin" data-sz-termin
+    <section class="sz-termin" id="sz-termin" data-sz-termin
              data-nonce="<?php echo esc_attr(wp_create_nonce('sz_termin')); ?>"
              data-ziel="<?php echo esc_url(admin_url('admin-ajax.php')); ?>">
 
@@ -305,6 +305,33 @@ add_action('wp_footer', function () {
 /* ===================================================================
    Kasse: nur noch zeigen, was gewählt wurde
    =================================================================== */
+
+/**
+ * Das Gatter vor der Kasse.
+ *
+ * Ohne Liefertag geht es gar nicht erst zur Kasse, sondern zurueck in den
+ * Warenkorb — dorthin, wo die Auswahl steht.
+ *
+ * Warum hier und nicht in der Kasse selbst: der Hinweis unten haengt an
+ * woocommerce_review_order_before_payment, und das ist ein Haken der
+ * KLASSISCHEN Kasse. Auf der Block-Fassung laeuft er nie. template_redirect
+ * greift bei beiden.
+ */
+add_action('template_redirect', function () {
+    if (!function_exists('is_checkout') || !is_checkout()) return;
+    if (function_exists('is_order_received_page') && is_order_received_page()) return;
+    if (function_exists('is_wc_endpoint_url') && is_wc_endpoint_url('order-pay')) return;
+    if (!WC()->cart || WC()->cart->is_empty()) return;
+    if (sz_termin_gewaehlt() !== '') return;
+
+    wc_add_notice(
+        __('Bitte waehlen Sie zuerst einen Liefertag — wir richten die Tour danach ein.', 'sapelza-shop'),
+        'notice'
+    );
+
+    wp_safe_redirect(wc_get_cart_url() . '#sz-termin');
+    exit;
+}, 20);
 
 add_action('woocommerce_review_order_before_payment', function () {
     $text = sz_termin_text();
