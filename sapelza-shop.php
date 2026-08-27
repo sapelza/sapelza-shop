@@ -4,7 +4,7 @@
  * Plugin URI:        https://sapelzashop.com
  * GitHub Plugin URI: https://github.com/sapelza/sapelza-shop
  * Description:       Die Regeln des Betriebs, „Meine Artikel“ und der Wunschtermin. Bewusst kein Theme-Bestandteil: das hier muss einen Theme-Wechsel überleben.
- * Version:           1.2.0
+ * Version:           1.2.1
  * Requires PHP:      8.0
  * Author:            SAPELZA
  * Text Domain:       sapelza-shop
@@ -15,7 +15,16 @@ if (!defined('ABSPATH')) exit;
 define('SZ_SHOP_PFAD', plugin_dir_path(__FILE__));
 
 /*
- * Warum plugins_loaded und nicht sofort:
+ * Warum after_setup_theme und nicht plugins_loaded:
+ *
+ * WordPress laedt Plugins VOR Themes. Auf plugins_loaded hat die
+ * functions.php des Themes noch nicht gelaufen — eine Pruefung mit
+ * function_exists() liefe dort ins Leere, das Plugin wuerde laden und
+ * danach kaeme der Fatal aus dem Theme. Auf after_setup_theme ist die
+ * functions.php durch, und die Pruefung unten greift wirklich.
+ *
+ * Frueh genug ist es allemal: init hat noch nicht gefeuert.
+ *
  *
  * Die Bausteine hängen durchweg an WooCommerce-Haken. Ist Woo nicht da,
  * greifen sie ins Leere — und der Betreiber sucht den Fehler an der
@@ -25,7 +34,7 @@ define('SZ_SHOP_PFAD', plugin_dir_path(__FILE__));
  * Priorität 5, damit die Haken stehen, bevor WooCommerce bei der
  * Standardpriorität 10 seine eigenen Dinge aufbaut.
  */
-add_action('plugins_loaded', function () {
+add_action('after_setup_theme', function () {
     if (!class_exists('WooCommerce')) {
         add_action('admin_notices', function () {
             echo '<div class="notice notice-error"><p>'
