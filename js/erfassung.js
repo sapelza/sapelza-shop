@@ -211,9 +211,19 @@
                       !! ( navigator.mediaDevices && navigator.mediaDevices.getUserMedia );
 
     if ( ! kannScannen ) {
-        scanStatus.textContent = 'Dieser Browser kann keine Barcodes lesen. ' +
-            'Auf einem Android-Gerät mit Chrome funktioniert es; sonst tippen Sie die Nummer ein.';
-        scanKnopf.disabled = true;
+        /*
+         * Safari und iOS bringen BarcodeDetector nicht mit. Hier aber
+         * nicht bloss "geht nicht" sagen: der Weg, der auf JEDEM Telefon
+         * funktioniert, ist das Regaletikett mit der Kamera-App. Im QR
+         * steht eine Adresse, und die oeffnet iOS von selbst.
+         */
+        scanStatus.innerHTML =
+            "<strong>Auf diesem Gerät scannen Sie mit der Kamera-App.</strong><br>" +
+            "Halten Sie sie auf das QR-Etikett am Regal — es erscheint ein Banner, " +
+            "antippen, und der Artikel steht hier in der Zeile. " +
+            "Den Strichcode auf der Packung kann dieser Browser nicht lesen; " +
+            "dafür tippen Sie die Nummer ein.";
+        scanKnopf.hidden = true;
     }
 
     if ( scanKnopf ) {
@@ -258,6 +268,31 @@
         } );
     }
 
-    neueZeile( false );
+    /* ------------------------------------------------------------------
+       Vom Regaletikett hereinspaziert: ?nr=SP-K-10
+
+       Das ist der Weg, der auf JEDEM Telefon funktioniert. Im QR steht
+       eine Adresse, keine nackte Nummer — die Kamera-App von iOS und
+       Android oeffnet sie einfach. Deshalb braucht es hier keinen
+       Scanner im Browser und keine Berechtigung.
+
+       Der Cursor landet in der MENGE, nicht in der Nummer: am Regal
+       steht die Frage "wie viele", nicht "welcher".
+       ------------------------------------------------------------------ */
+    function vomEtikett() {
+        var nr = new URLSearchParams( window.location.search ).get( "nr" );
+        if ( ! nr ) return false;
+
+        var tr = neueZeile( false );
+        tr.querySelector( "[data-sz-nummer]" ).value = nr;
+
+        var mengeFeld = tr.querySelector( "[data-sz-menge]" );
+        suchen( tr );
+        mengeFeld.focus();
+        mengeFeld.select();
+        return true;
+    }
+
+    if ( ! vomEtikett() ) neueZeile( false );
     summeRechnen();
 } )();
