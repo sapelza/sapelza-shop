@@ -1,110 +1,209 @@
 /*
- * Etiketten fuer das Regal.
+ * Meine Artikel — bestellen, filtern, Etiketten.
  *
- * Auswahl in der Liste, Vorschau eines A4-Bogens, drucken. Auf dem
- * Etikett steht der eigene Name gross, die Artikelnummer klein, der QR
- * daneben.
- *
- * Im QR steht NUR die Artikelnummer — als Adresse verpackt, nie der Name.
+ * Im QR steht NUR die Artikelnummer, als Adresse verpackt, nie der Name.
  * Das ist die wichtigste Entscheidung an der ganzen Sache: Sie koennen
  * jederzeit umbenennen, ohne dass ein gedrucktes Etikett ungueltig wird.
- * Der Aufkleber zeigt dann zwar noch den alten Namen, funktioniert aber
- * weiter. Stuende der Name im Code, muesste nach jeder Umbenennung neu
- * gedruckt werden.
+ * Stuende der Name im Code, muesste nach jeder Umbenennung neu gedruckt
+ * werden.
  */
 ( function () {
     'use strict';
 
-    var liste = document.querySelector( '[data-sz-namen]' );
-    var leiste = document.querySelector( '.sz-etiketten-leiste' );
-    if ( ! liste || ! leiste || ! window.SZQR ) return;
+    var bereich = document.querySelector( '[data-sz-namen]' );
+    if ( ! bereich ) return;
 
-    var basis    = liste.dataset.basis || '';
-    var alle     = leiste.querySelector( '[data-sz-alle]' );
-    var zaehler  = leiste.querySelector( '[data-sz-gewaehlt]' );
-    var groesse  = leiste.querySelector( '[data-sz-groesse]' );
-    var drucken  = leiste.querySelector( '[data-sz-drucken]' );
+    var ziel  = bereich.dataset.ziel;
+    var basis = bereich.dataset.basis || ( location.origin + '/schnellerfassung/' );
 
-    /* Die beiden Bogenmasse. */
-    var MASSE = {
-        '70x37': { b: 70, h: 37, spalten: 3, zeilen: 8, qr: 26, name: '11pt' },
-        '48x25': { b: 48, h: 25, spalten: 4, zeilen: 11, qr: 18, name: '8pt' }
-    };
-
-    function gewaehlte() {
-        return Array.prototype.slice.call( liste.querySelectorAll( '[data-sz-wahl]:checked' ) )
-            .map( function ( k ) {
-                var zeile = k.closest( '[data-sz-artikel]' );
-                var eigen = zeile.querySelector( '[data-sz-eigenname]' );
-                var leer  = eigen.classList.contains( 'ist-leer' );
-                return {
-                    nummer: k.value,
-                    name: leer ? zeile.querySelector( '.sz-katalogname' ).firstChild.textContent.trim()
-                               : eigen.textContent.trim()
-                };
-            } )
-            .filter( function ( e ) { return e.nummer; } );
-    }
-
-    function zaehlen() {
-        var n = gewaehlte().length;
-        zaehler.textContent = n + ( n === 1 ? ' gewählt' : ' gewählt' );
-        drucken.disabled = n === 0;
-    }
-
-    liste.addEventListener( 'change', function ( e ) {
-        if ( e.target.matches( '[data-sz-wahl]' ) ) zaehlen();
-    } );
-
-    alle.addEventListener( 'change', function () {
-        liste.querySelectorAll( '[data-sz-wahl]' ).forEach( function ( k ) {
-            k.checked = alle.checked;
-        } );
-        zaehlen();
-    } );
-
-    /* --- Einzelner Code, gross auf dem Schirm ---------------------------- */
-
-    liste.addEventListener( 'click', function ( e ) {
-        var k = e.target.closest( '[data-sz-qr]' );
-        if ( ! k ) return;
-
-        var zeile = k.closest( '[data-sz-artikel]' );
-        var nummer = zeile.querySelector( '[data-sz-wahl]' ).value;
-        if ( ! nummer ) return;
-
-        var eigen = zeile.querySelector( '[data-sz-eigenname]' );
-        var name = eigen.classList.contains( 'ist-leer' )
-            ? zeile.querySelector( '.sz-katalogname' ).firstChild.textContent.trim()
-            : eigen.textContent.trim();
-
-        zeigen( name, nummer );
-    } );
-
-    function zeigen( name, nummer ) {
-        var deckel = document.createElement( 'div' );
-        deckel.className = 'sz-qr-deckel';
-        deckel.innerHTML =
-            '<div class="sz-qr-karte">' +
-                '<p class="sz-qr-name"></p>' +
-                '<div class="sz-qr-bild">' + window.SZQR.svg( adresse( nummer ) ) + '</div>' +
-                '<p class="sz-qr-nummer mono"></p>' +
-                '<button type="button" class="sz-erfassung__knopf">Schließen</button>' +
-            '</div>';
-        deckel.querySelector( '.sz-qr-name' ).textContent = name;
-        deckel.querySelector( '.sz-qr-nummer' ).textContent = nummer;
-
-        deckel.addEventListener( 'click', function ( e ) {
-            if ( e.target === deckel || e.target.tagName === 'BUTTON' ) deckel.remove();
-        } );
-
-        document.body.appendChild( deckel );
+    function zeilen() {
+        return Array.prototype.slice.call( bereich.querySelectorAll( '[data-sz-artikel]' ) );
     }
 
     function adresse( nummer ) {
-        var b = basis || ( location.origin + '/schnellerfassung/' );
-        return b + ( b.indexOf( '?' ) >= 0 ? '&' : '?' ) + 'nr=' + encodeURIComponent( nummer );
+        return basis + ( basis.indexOf( '?' ) >= 0 ? '&' : '?' ) + 'nr=' + encodeURIComponent( nummer );
     }
+
+    function daten( zeile ) {
+        var eigen = zeile.querySelector( '[data-sz-eigenname]' );
+        var leer = eigen.classList.contains( 'ist-leer' );
+        return {
+            nummer: ( zeile.querySelector( '[data-sz-wahl]' ) || {} ).value || '',
+            name: leer ? zeile.querySelector( '.sz-katalogname' ).textContent.trim()
+                       : eigen.textContent.trim()
+        };
+    }
+
+    /* ---------------------------------------------------------------
+       Suchen in den eigenen Artikeln
+       --------------------------------------------------------------- */
+
+    var filter = bereich.querySelector( '[data-sz-filter]' );
+    if ( filter ) {
+        filter.addEventListener( 'input', function () {
+            var was = filter.value.trim().toLowerCase();
+            zeilen().forEach( function ( z ) {
+                var passt = ! was || ( z.dataset.szSuchtext || '' ).indexOf( was ) >= 0;
+                z.hidden = ! passt;
+            } );
+        } );
+    }
+
+    /* ---------------------------------------------------------------
+       Menge und in den Warenkorb
+       --------------------------------------------------------------- */
+
+    bereich.addEventListener( 'click', function ( e ) {
+        var zeile = e.target.closest( '[data-sz-artikel]' );
+        if ( ! zeile ) return;
+
+        var feld = zeile.querySelector( '[data-sz-menge]' );
+
+        if ( e.target.matches( '[data-sz-plus]' ) ) {
+            feld.value = ( parseInt( feld.value, 10 ) || 1 ) + 1;
+            return;
+        }
+        if ( e.target.matches( '[data-sz-minus]' ) ) {
+            feld.value = Math.max( 1, ( parseInt( feld.value, 10 ) || 1 ) - 1 );
+            return;
+        }
+
+        var knopf = e.target.closest( '[data-sz-inkorb]' );
+        if ( ! knopf ) return;
+
+        knopf.disabled = true;
+
+        var post = new URLSearchParams();
+        post.set( 'action', 'sz_erfassung_warenkorb' );
+        post.set( '_wpnonce', bereich.dataset.erfassung );
+        post.set( 'zeilen', JSON.stringify( [ {
+            id: zeile.dataset.szArtikel,
+            menge: feld.value
+        } ] ) );
+
+        fetch( ziel, { method: 'POST', body: post, credentials: 'same-origin' } )
+            .then( function ( a ) { return a.json(); } )
+            .then( function ( a ) {
+                knopf.disabled = false;
+                if ( a && a.success ) {
+                    /* Kurze Bestaetigung an Ort und Stelle statt eines
+                       Sprungs in den Warenkorb — wer nachbestellt, will
+                       meist mehrere Zeilen hintereinander. */
+                    knopf.classList.add( 'ist-drin' );
+                    window.setTimeout( function () { knopf.classList.remove( 'ist-drin' ); }, 1400 );
+                }
+            } )
+            .catch( function () { knopf.disabled = false; } );
+    } );
+
+    /* ---------------------------------------------------------------
+       Etiketten
+       --------------------------------------------------------------- */
+
+    var kapitel = bereich.querySelector( '.sz-etikettenkapitel' );
+    if ( ! kapitel || ! window.SZQR ) return;
+
+    var zaehler   = kapitel.querySelector( '[data-sz-gewaehlt]' );
+    var drucken   = kapitel.querySelector( '[data-sz-drucken]' );
+    var alleKnopf = kapitel.querySelector( '[data-sz-alle]' );
+    var vorschau  = kapitel.querySelector( '[data-sz-vorschau]' );
+    var vTitel    = kapitel.querySelector( '[data-sz-vorschautitel]' );
+
+    var MASSE = {
+        '70x37': { b: 70,   h: 37,   spalten: 3, zeilen: 8,  qr: 26, name: '11pt' },
+        '48x25': { b: 48.5, h: 25.4, spalten: 4, zeilen: 11, qr: 17, name: '8pt' }
+    };
+
+    function aktuellesMass() {
+        var k = kapitel.querySelector( '[data-sz-groesse][aria-pressed="true"]' );
+        return MASSE[ k ? k.dataset.szGroesse : '70x37' ] || MASSE[ '70x37' ];
+    }
+
+    function gewaehlte() {
+        return zeilen()
+            .filter( function ( z ) {
+                var k = z.querySelector( '[data-sz-wahl]' );
+                return k && k.checked;
+            } )
+            .map( daten )
+            .filter( function ( e ) { return e.nummer; } );
+    }
+
+    /* Ohne Auswahl: die fuenf zuletzt bestellten. Die Liste ist bereits
+       nach letzter Lieferung sortiert, die ersten fuenf genuegen. */
+    function anstoss() {
+        return zeilen().slice( 0, 5 ).map( daten ).filter( function ( e ) { return e.nummer; } );
+    }
+
+    function etikett( eintrag, mass ) {
+        var el = document.createElement( 'div' );
+        el.className = 'sz-etikett';
+
+        var text = document.createElement( 'div' );
+        text.className = 'sz-etikett__text';
+
+        var n = document.createElement( 'p' );
+        n.className = 'sz-etikett__name';
+        n.textContent = eintrag.name;
+
+        var nr = document.createElement( 'p' );
+        nr.className = 'sz-etikett__nummer mono';
+        nr.textContent = eintrag.nummer;
+
+        text.appendChild( n );
+        text.appendChild( nr );
+
+        var bild = document.createElement( 'div' );
+        bild.className = 'sz-etikett__qr';
+        try { bild.innerHTML = window.SZQR.svg( adresse( eintrag.nummer ) ); }
+        catch ( x ) { bild.textContent = '—'; }
+
+        el.appendChild( text );
+        el.appendChild( bild );
+        el.style.setProperty( '--etikett-breite', mass.b + 'mm' );
+        el.style.setProperty( '--etikett-hoehe', mass.h + 'mm' );
+        el.style.setProperty( '--etikett-qr', mass.qr + 'mm' );
+        el.style.setProperty( '--etikett-name', mass.name );
+        return el;
+    }
+
+    function vorschauZeichnen() {
+        var wahl = gewaehlte();
+        var zeigen = wahl.length ? wahl.slice( 0, 10 ) : anstoss();
+
+        vTitel.textContent = wahl.length
+            ? ( wahl.length > 10 ? 'Ihre Auswahl · erste 10 von ' + wahl.length : 'Ihre Auswahl' )
+            : 'Zuletzt bestellt';
+
+        var mass = aktuellesMass();
+        vorschau.innerHTML = '';
+        zeigen.forEach( function ( e ) { vorschau.appendChild( etikett( e, mass ) ); } );
+
+        zaehler.textContent = wahl.length + ' ausgewählt';
+        drucken.disabled = wahl.length === 0;
+    }
+
+    bereich.addEventListener( 'change', function ( e ) {
+        if ( e.target.matches( '[data-sz-wahl]' ) ) vorschauZeichnen();
+    } );
+
+    kapitel.addEventListener( 'click', function ( e ) {
+        var g = e.target.closest( '[data-sz-groesse]' );
+        if ( g ) {
+            kapitel.querySelectorAll( '[data-sz-groesse]' ).forEach( function ( k ) {
+                k.setAttribute( 'aria-pressed', String( k === g ) );
+            } );
+            vorschauZeichnen();
+        }
+    } );
+
+    alleKnopf.addEventListener( 'click', function () {
+        var kaesten = bereich.querySelectorAll( '[data-sz-wahl]' );
+        var allesAn = Array.prototype.every.call( kaesten, function ( k ) { return k.checked; } );
+        kaesten.forEach( function ( k ) { k.checked = ! allesAn; } );
+        alleKnopf.textContent = allesAn ? 'Alle auswählen' : 'Auswahl aufheben';
+        vorschauZeichnen();
+    } );
 
     /* --- Der Bogen -------------------------------------------------------- */
 
@@ -112,61 +211,29 @@
         var eintraege = gewaehlte();
         if ( ! eintraege.length ) return;
 
-        var mass = MASSE[ groesse.value ] || MASSE[ '70x37' ];
+        var mass = aktuellesMass();
         var alt = document.querySelector( '.sz-bogen' );
         if ( alt ) alt.remove();
 
         var bogen = document.createElement( 'div' );
         bogen.className = 'sz-bogen';
-        bogen.style.setProperty( '--etikett-breite', mass.b + 'mm' );
-        bogen.style.setProperty( '--etikett-hoehe', mass.h + 'mm' );
         bogen.style.setProperty( '--etikett-spalten', mass.spalten );
-        bogen.style.setProperty( '--etikett-qr', mass.qr + 'mm' );
-        bogen.style.setProperty( '--etikett-name', mass.name );
 
         var kopf = document.createElement( 'div' );
         kopf.className = 'sz-bogen__leiste';
         kopf.innerHTML =
-            '<span>' + eintraege.length + ' Etiketten · ' + mass.b + ' × ' + mass.h + ' mm</span> ' +
+            '<span></span>' +
             '<button type="button" class="sz-erfassung__knopf" data-drucken>Drucken</button> ' +
             '<button type="button" class="sz-bogen__zu" data-zu>Schließen</button>';
+        kopf.firstChild.textContent =
+            eintraege.length + ' Etiketten · ' + mass.b + ' × ' + mass.h + ' mm';
         bogen.appendChild( kopf );
 
         var blatt = document.createElement( 'div' );
         blatt.className = 'sz-bogen__blatt';
-
-        eintraege.forEach( function ( e ) {
-            var etikett = document.createElement( 'div' );
-            etikett.className = 'sz-etikett';
-
-            var text = document.createElement( 'div' );
-            text.className = 'sz-etikett__text';
-
-            var n = document.createElement( 'p' );
-            n.className = 'sz-etikett__name';
-            n.textContent = e.name;
-
-            var nr = document.createElement( 'p' );
-            nr.className = 'sz-etikett__nummer mono';
-            nr.textContent = e.nummer;
-
-            text.appendChild( n );
-            text.appendChild( nr );
-
-            var bild = document.createElement( 'div' );
-            bild.className = 'sz-etikett__qr';
-            try {
-                bild.innerHTML = window.SZQR.svg( adresse( e.nummer ) );
-            } catch ( x ) {
-                bild.textContent = '—';
-            }
-
-            etikett.appendChild( text );
-            etikett.appendChild( bild );
-            blatt.appendChild( etikett );
-        } );
-
+        eintraege.forEach( function ( e ) { blatt.appendChild( etikett( e, mass ) ); } );
         bogen.appendChild( blatt );
+
         document.body.appendChild( bogen );
 
         kopf.querySelector( '[data-drucken]' ).addEventListener( 'click', function () { window.print(); } );
@@ -175,5 +242,5 @@
         bogen.scrollIntoView( { behavior: 'smooth' } );
     } );
 
-    zaehlen();
+    vorschauZeichnen();
 } )();

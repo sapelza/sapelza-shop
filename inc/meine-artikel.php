@@ -57,113 +57,190 @@ add_shortcode('sz_meine_artikel', function () {
              . 'Sobald die erste Bestellung ausgeliefert ist, füllt sich die Liste von selbst.</p>';
     }
 
+    $basis = function_exists('sz_erfassung_url') ? sz_erfassung_url() : home_url('/schnellerfassung/');
+
     ob_start();
     ?>
-    <div class="sz-etiketten-leiste">
-        <label class="sz-etiketten-alle">
-            <input type="checkbox" data-sz-alle>
-            <?php echo esc_html__('Alle wählen', 'sapelza-shop'); ?>
-        </label>
-        <span class="sz-etiketten-zahl mono" data-sz-gewaehlt>0 gewählt</span>
-        <label class="sz-etiketten-groesse">
-            <span class="mono"><?php echo esc_html__('Etikett', 'sapelza-shop'); ?></span>
-            <select data-sz-groesse>
-                <option value="70x37"><?php echo esc_html__('70 × 37 mm · 24 je Bogen · Regalkante', 'sapelza-shop'); ?></option>
-                <option value="48x25"><?php echo esc_html__('48 × 25 mm · 44 je Bogen · Kanister', 'sapelza-shop'); ?></option>
-            </select>
-        </label>
-        <button type="button" class="sz-erfassung__knopf" data-sz-drucken disabled>
-            <?php echo esc_html__('Etiketten drucken', 'sapelza-shop'); ?>
-        </button>
-    </div>
-
-    <div class="sz-meine-artikel" data-sz-namen
-         data-basis="<?php echo esc_url(function_exists('sz_erfassung_url') ? sz_erfassung_url() : home_url('/schnellerfassung/')); ?>"
+    <div class="sz-artikelbereich"
+         data-sz-namen
          data-nonce="<?php echo esc_attr(wp_create_nonce('sz_namen')); ?>"
-         data-ziel="<?php echo esc_url(admin_url('admin-ajax.php')); ?>">
-    <?php
-    foreach ($artikel as $eintrag) {
-        $produkt = wc_get_product($eintrag['id']);
-        if (!$produkt || !$produkt->is_purchasable()) continue;
+         data-erfassung="<?php echo esc_attr(wp_create_nonce('sz_erfassung')); ?>"
+         data-ziel="<?php echo esc_url(admin_url('admin-ajax.php')); ?>"
+         data-basis="<?php echo esc_url($basis); ?>">
 
-        // Die Schleifenvorlage von WooCommerce liest $GLOBALS["product"].
-        $GLOBALS["product"] = $produkt;
+        <label class="sz-artikelsuche">
+            <span class="screen-reader-text"><?php echo esc_html__('In Ihren Artikeln suchen', 'sapelza-shop'); ?></span>
+            <input type="search" data-sz-filter
+                   placeholder="<?php echo esc_attr__('In Ihren Artikeln suchen …', 'sapelza-shop'); ?>">
+        </label>
 
-        $vorrat = $produkt->managing_stock() ? (int) $produkt->get_stock_quantity() : null;
-        $eigen  = function_exists('sz_eigener_name') ? sz_eigener_name($produkt->get_id()) : '';
-        $wer    = ($eigen !== '' && function_exists('sz_name_geaendert_von'))
-                ? sz_name_geaendert_von($produkt->get_id()) : '';
-        ?>
-        <div class="sz-artikelzeile" data-sz-artikel="<?php echo esc_attr((string) $produkt->get_id()); ?>">
-
-            <label class="sz-artikelwahl">
-                <input type="checkbox" data-sz-wahl
-                       value="<?php echo esc_attr((string) $produkt->get_sku()); ?>">
-                <span class="screen-reader-text"><?php echo esc_html__('Für Etiketten wählen', 'sapelza-shop'); ?></span>
-            </label>
-
-            <div class="sz-artikelzeile__namen">
-                <?php
-                /*
-                 * Der eigene Name IST die Schaltflaeche. Klick, Feld oeffnet
-                 * sich an Ort und Stelle, Enter speichert, Escape verwirft.
-                 * Kein Fenster, kein Speichern-Knopf, keine Bearbeiten-Ansicht.
-                 */
-                ?>
-                <button type="button" class="sz-eigenname<?php echo $eigen === '' ? ' ist-leer' : ''; ?>"
-                        data-sz-eigenname
-                        title="<?php echo esc_attr__('Eigenen Namen vergeben oder aendern', 'sapelza-shop'); ?>">
-                    <?php echo $eigen !== ''
-                        ? esc_html($eigen)
-                        : esc_html__('Eigenen Namen vergeben', 'sapelza-shop'); ?>
-                </button>
-
-                <a class="sz-katalogname" href="<?php echo esc_url($produkt->get_permalink()); ?>">
-                    <?php echo esc_html($produkt->get_name()); ?>
-                    <span class="sz-artikelnummer mono"><?php echo esc_html($produkt->get_sku()); ?></span>
-                </a>
-
-                <?php if ($wer !== '') : ?>
-                    <span class="sz-eigenname__wer">
-                        <?php
-                        printf(
-                            /* translators: %s ist der Name der Person, die zuletzt umbenannt hat. */
-                            esc_html__('zuletzt geaendert von %s', 'sapelza-shop'),
-                            esc_html($wer)
-                        );
-                        ?>
-                    </span>
-                <?php endif; ?>
+        <div class="sz-meine-artikel">
+            <div class="sz-artikelkopf mono" aria-hidden="true">
+                <span></span>
+                <span><?php echo esc_html__('Ihre Bezeichnung', 'sapelza-shop'); ?></span>
+                <span><?php echo esc_html__('Artikel', 'sapelza-shop'); ?></span>
+                <span><?php echo esc_html__('Bestand', 'sapelza-shop'); ?></span>
+                <span><?php echo esc_html__('Preis', 'sapelza-shop'); ?></span>
+                <span><?php echo esc_html__('Menge', 'sapelza-shop'); ?></span>
+                <span></span>
             </div>
 
-            <span class="sz-artikelmeta">
-                <?php
-                printf(
-                    /* translators: %s ist ein Datum. */
-                    esc_html__('zuletzt %s', 'sapelza-shop'),
-                    esc_html(date_i18n('j. F Y', $eintrag['zuletzt']))
-                );
+            <?php
+            $lfd = 0;
+            foreach ($artikel as $eintrag) {
+                $produkt = wc_get_product($eintrag['id']);
+                if (!$produkt || !$produkt->is_purchasable()) continue;
+
+                $lfd++;
+                $vorrat = $produkt->managing_stock() ? (int) $produkt->get_stock_quantity() : null;
+                $eigen  = function_exists('sz_eigener_name') ? sz_eigener_name($produkt->get_id()) : '';
+                $wer    = ($eigen !== '' && function_exists('sz_name_geaendert_von'))
+                        ? sz_name_geaendert_von($produkt->get_id()) : '';
+
+                $marke = '';
+                if (function_exists('sz_marken_taxonomie')) {
+                    $tax = sz_marken_taxonomie();
+                    if ($tax !== '') {
+                        $b = get_the_terms($produkt->get_id(), $tax);
+                        if ($b && !is_wp_error($b)) $marke = $b[0]->name;
+                    }
+                }
+
+                $tage = (int) floor((time() - (int) $eintrag['zuletzt']) / DAY_IN_SECONDS);
+                $such = mb_strtolower($eigen . ' ' . $produkt->get_name() . ' ' . $produkt->get_sku());
                 ?>
-            </span>
+                <div class="sz-artikelzeile"
+                     data-sz-artikel="<?php echo esc_attr((string) $produkt->get_id()); ?>"
+                     data-sz-lfd="<?php echo esc_attr((string) $lfd); ?>"
+                     data-sz-suchtext="<?php echo esc_attr($such); ?>">
 
-            <span class="sz-artikelmeta">
-                <?php echo $vorrat === null ? '' : esc_html($vorrat . ' Stueck auf Lager'); ?>
-            </span>
+                    <label class="sz-artikelwahl">
+                        <input type="checkbox" data-sz-wahl
+                               value="<?php echo esc_attr((string) $produkt->get_sku()); ?>">
+                        <span class="screen-reader-text"><?php echo esc_html__('Für Etiketten wählen', 'sapelza-shop'); ?></span>
+                    </label>
 
-            <span class="sz-artikelpreis"><?php echo wp_kses_post($produkt->get_price_html()); ?></span>
+                    <div class="sz-artikelzeile__namen">
+                        <?php
+                        /*
+                         * Der eigene Name IST die Schaltflaeche. Klick, Feld
+                         * oeffnet sich an Ort und Stelle, Enter speichert,
+                         * Escape verwirft, leeres Feld loescht.
+                         */
+                        ?>
+                        <button type="button" class="sz-eigenname<?php echo $eigen === '' ? ' ist-leer' : ''; ?>"
+                                data-sz-eigenname>
+                            <?php echo $eigen !== ''
+                                ? esc_html($eigen)
+                                : esc_html__('Eigenen Namen vergeben', 'sapelza-shop'); ?>
+                        </button>
+                        <?php if ($wer !== '') : ?>
+                            <span class="sz-eigenname__wer">
+                                <?php printf(esc_html__('zuletzt geändert von %s', 'sapelza-shop'), esc_html($wer)); ?>
+                            </span>
+                        <?php endif; ?>
+                    </div>
 
-            <button type="button" class="sz-qr-knopf" data-sz-qr
-                    aria-label="<?php echo esc_attr__('QR-Code zeigen', 'sapelza-shop'); ?>">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M3 3h7v7H3V3zm2 2v3h3V5H5zm9-2h7v7h-7V3zm2 2v3h3V5h-3zM3 14h7v7H3v-7zm2 2v3h3v-3H5zm9-2h3v3h-3v-3zm5 0h2v2h-2v-2zm-5 5h3v2h-3v-2zm5 0h2v2h-2v-2z"/>
-                </svg>
-            </button>
+                    <div class="sz-artikelzeile__katalog">
+                        <?php if ($marke) : ?>
+                            <span class="sz-artikelmarke mono"><?php echo esc_html($marke); ?></span>
+                        <?php endif; ?>
+                        <a class="sz-katalogname" href="<?php echo esc_url($produkt->get_permalink()); ?>">
+                            <?php echo esc_html($produkt->get_name()); ?>
+                        </a>
+                        <span class="sz-artikelrhythmus">
+                            <?php
+                            printf(
+                                /* translators: %d ist die Zahl der Tage seit der letzten Lieferung. */
+                                esc_html(_n('letzte Lieferung vor %d Tag', 'letzte Lieferung vor %d Tagen', $tage, 'sapelza-shop')),
+                                (int) $tage
+                            );
+                            ?>
+                        </span>
+                    </div>
 
-            <?php woocommerce_template_loop_add_to_cart(['quantity' => 1]); ?>
+                    <span class="sz-artikelbestand mono">
+                        <?php if ($vorrat !== null) : ?>
+                            <span class="sz-punkt sz-punkt--da" aria-hidden="true"></span><?php echo esc_html($vorrat . ' Stk.'); ?>
+                        <?php else : ?>
+                            —
+                        <?php endif; ?>
+                    </span>
+
+                    <span class="sz-artikelpreis mono"><?php echo wp_kses_post($produkt->get_price_html()); ?></span>
+
+                    <span class="sz-menge">
+                        <button type="button" data-sz-minus aria-label="<?php echo esc_attr__('weniger', 'sapelza-shop'); ?>">−</button>
+                        <input type="number" min="1" value="1" data-sz-menge
+                               aria-label="<?php echo esc_attr__('Menge', 'sapelza-shop'); ?>">
+                        <button type="button" data-sz-plus aria-label="<?php echo esc_attr__('mehr', 'sapelza-shop'); ?>">+</button>
+                    </span>
+
+                    <button type="button" class="sz-inkorb" data-sz-inkorb
+                            aria-label="<?php echo esc_attr__('In den Warenkorb', 'sapelza-shop'); ?>">+</button>
+                </div>
+                <?php
+            }
+            ?>
         </div>
-        <?php
-    }
-    ?>
+
+        <p class="sz-artikelfuss">
+            <?php
+            printf(
+                /* translators: %d ist die Zahl der gelisteten Artikel. */
+                esc_html__('%d Artikel · auf den Namen klicken, um ihn zu ändern — leer heißt zurück zum Katalognamen', 'sapelza-shop'),
+                (int) $lfd
+            );
+            ?>
+        </p>
+
+        <?php /* --- Kapitel: Etiketten ------------------------------------ */ ?>
+        <section class="sz-kapitel sz-etikettenkapitel">
+            <p class="kicker">
+                <span class="kicker__punkt" aria-hidden="true"></span>
+                <?php echo esc_html__('Am Regal', 'sapelza-shop'); ?>
+            </p>
+
+            <h2 class="sz-etiketten__titel"><?php echo esc_html__('Etiketten zum Aufkleben', 'sapelza-shop'); ?></h2>
+
+            <p class="sz-etiketten__lead">
+                <?php echo esc_html__('Wählen Sie oben aus, was ans Regal soll. Auf dem Etikett steht Ihre Bezeichnung — im Code selbst steht nur die Artikelnummer. Deshalb bleiben gedruckte Etiketten gültig, auch wenn Sie einen Artikel später anders nennen.', 'sapelza-shop'); ?>
+            </p>
+
+            <div class="sz-etiketten__wahl">
+                <span class="sz-etiketten-zahl mono" data-sz-gewaehlt>0 ausgewählt</span>
+
+                <div class="sz-etiketten__groessen" role="group"
+                     aria-label="<?php echo esc_attr__('Etikettengröße', 'sapelza-shop'); ?>">
+                    <button type="button" class="sz-groesse" data-sz-groesse="70x37" aria-pressed="true">
+                        <?php echo esc_html__('70 × 37 mm · 24 Stück', 'sapelza-shop'); ?>
+                    </button>
+                    <button type="button" class="sz-groesse" data-sz-groesse="48x25" aria-pressed="false">
+                        <?php echo esc_html__('48,5 × 25,4 mm · 44 Stück', 'sapelza-shop'); ?>
+                    </button>
+                </div>
+
+                <button type="button" class="sz-erfassung__knopf" data-sz-drucken disabled>
+                    <?php echo esc_html__('Bogen erzeugen', 'sapelza-shop'); ?>
+                </button>
+                <button type="button" class="sz-bogen__zu" data-sz-alle>
+                    <?php echo esc_html__('Alle auswählen', 'sapelza-shop'); ?>
+                </button>
+            </div>
+
+            <?php
+            /*
+             * Die Vorschau steht immer da, auch ohne Auswahl: als erster
+             * Anstoss die fuenf zuletzt bestellten Artikel. Wer auswaehlt,
+             * sieht seine Auswahl, hoechstens zehn — mehr sagt nichts mehr,
+             * es macht die Seite nur lang.
+             */
+            ?>
+            <p class="sz-etiketten__vorschautitel mono" data-sz-vorschautitel>
+                <?php echo esc_html__('Zuletzt bestellt', 'sapelza-shop'); ?>
+            </p>
+            <div class="sz-etiketten__vorschau" data-sz-vorschau></div>
+        </section>
     </div>
     <?php
     return ob_get_clean();
