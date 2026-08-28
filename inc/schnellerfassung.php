@@ -49,6 +49,15 @@ function sz_artikel_finden(string $eingabe): ?WC_Product
         $id = $treffer ? (int) $treffer[0] : 0;
     }
 
+    if (!$id && function_exists('sz_namen_suchen')) {
+        /*
+         * Zuletzt der eigene Name. Ohne das waere er die halbe Miete
+         * wert: wer "Spueli" tippt, muss den Artikel finden.
+         */
+        $eigene = sz_namen_suchen($eingabe);
+        $id = $eigene ? (int) $eigene[0] : 0;
+    }
+
     if (!$id) return null;
 
     $artikel = wc_get_product($id);
@@ -75,7 +84,8 @@ function sz_artikel_daten(WC_Product $artikel): array
 
     return [
         'id'       => $artikel->get_id(),
-        'name'     => $artikel->get_name(),
+        'name'     => function_exists('sz_anzeigename') ? sz_anzeigename($artikel) : $artikel->get_name(),
+        'katalog'  => $artikel->get_name(),
         'marke'    => $marke,
         'nummer'   => $artikel->get_sku(),
         'preis'    => (float) wc_get_price_to_display($artikel),
@@ -250,3 +260,44 @@ add_action('wp_enqueue_scripts', function () {
         true
     );
 }, 30);
+
+/**
+ * Wo die Schnellerfassung liegt.
+ *
+ * Gesucht wird die Seite, die den Baustein tatsächlich trägt — nicht ein
+ * fest angenommener Pfad. Wer die Seite umbenennt oder verschiebt, soll
+ * nicht plötzlich tote Verweise im Kopf und auf der Startseite haben.
+ *
+ * Das Ergebnis wird zwischengespeichert; die Seite wechselt selten.
+ */
+function sz_erfassung_url(): string
+{
+    $merker = get_transient('sz_erfassung_seite');
+    if ($merker !== false) {
+        return $merker ? get_permalink((int) $merker) : '';
+    }
+
+    $seiten = get_posts([
+        'post_type'      => 'page',
+        'post_status'    => 'publish',
+        'posts_per_page' => 1,
+        'fields'         => 'ids',
+        's'              => 'sz_schnellerfassung',
+    ]);
+
+    $id = 0;
+    foreach ($seiten as $kandidat) {
+        $inhalt = get_post_field('post_content', $kandidat);
+        if (is_string($inhalt) && has_shortcode($inhalt, 'sz_schnellerfassung')) {
+            $id = (int) $kandidat;
+            break;
+        }
+    }
+
+    set_transient('sz_erfassung_seite', $id, DAY_IN_SECONDS);
+    return $id ? get_permalink($id) : '';
+}
+
+/* Beim Speichern einer Seite den Merker verwerfen — sonst zeigt der
+   Verweis noch einen Tag lang auf die alte Seite. */
+add_action('save_post_page', fn() => delete_transient('sz_erfassung_seite'));
