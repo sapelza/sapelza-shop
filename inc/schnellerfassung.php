@@ -116,6 +116,25 @@ function sz_erfassung_suchen(): void
     }
 
     if (!$artikel->is_purchasable()) {
+        /*
+         * Ausgelaufen? Dann nicht bloss "nicht verfuegbar" sagen. Ein
+         * Etikett am Regal ueberlebt den Katalog; wer es scannt, soll
+         * erfahren, was an seiner Stelle steht.
+         */
+        $nachfolger = function_exists('sz_nachfolger') ? sz_nachfolger($artikel) : null;
+
+        if ($nachfolger) {
+            wp_send_json_error([
+                'meldung' => sprintf(
+                    /* translators: 1: alter Artikelname, 2: Name des Nachfolgers. */
+                    __('%1$s führen wir nicht mehr. An seiner Stelle steht jetzt %2$s.', 'sapelza-shop'),
+                    $artikel->get_name(),
+                    $nachfolger->get_name()
+                ),
+                'nachfolger' => $nachfolger->get_sku(),
+            ]);
+        }
+
         wp_send_json_error([
             'meldung' => __('Für diesen Artikel sehen Sie den Preis erst nach der Anmeldung.', 'sapelza-shop'),
         ]);

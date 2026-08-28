@@ -59,7 +59,26 @@ add_shortcode('sz_meine_artikel', function () {
 
     ob_start();
     ?>
+    <div class="sz-etiketten-leiste">
+        <label class="sz-etiketten-alle">
+            <input type="checkbox" data-sz-alle>
+            <?php echo esc_html__('Alle wählen', 'sapelza-shop'); ?>
+        </label>
+        <span class="sz-etiketten-zahl mono" data-sz-gewaehlt>0 gewählt</span>
+        <label class="sz-etiketten-groesse">
+            <span class="mono"><?php echo esc_html__('Etikett', 'sapelza-shop'); ?></span>
+            <select data-sz-groesse>
+                <option value="70x37"><?php echo esc_html__('70 × 37 mm · 24 je Bogen · Regalkante', 'sapelza-shop'); ?></option>
+                <option value="48x25"><?php echo esc_html__('48 × 25 mm · 44 je Bogen · Kanister', 'sapelza-shop'); ?></option>
+            </select>
+        </label>
+        <button type="button" class="sz-erfassung__knopf" data-sz-drucken disabled>
+            <?php echo esc_html__('Etiketten drucken', 'sapelza-shop'); ?>
+        </button>
+    </div>
+
     <div class="sz-meine-artikel" data-sz-namen
+         data-basis="<?php echo esc_url(function_exists('sz_erfassung_url') ? sz_erfassung_url() : home_url('/schnellerfassung/')); ?>"
          data-nonce="<?php echo esc_attr(wp_create_nonce('sz_namen')); ?>"
          data-ziel="<?php echo esc_url(admin_url('admin-ajax.php')); ?>">
     <?php
@@ -76,6 +95,12 @@ add_shortcode('sz_meine_artikel', function () {
                 ? sz_name_geaendert_von($produkt->get_id()) : '';
         ?>
         <div class="sz-artikelzeile" data-sz-artikel="<?php echo esc_attr((string) $produkt->get_id()); ?>">
+
+            <label class="sz-artikelwahl">
+                <input type="checkbox" data-sz-wahl
+                       value="<?php echo esc_attr((string) $produkt->get_sku()); ?>">
+                <span class="screen-reader-text"><?php echo esc_html__('Für Etiketten wählen', 'sapelza-shop'); ?></span>
+            </label>
 
             <div class="sz-artikelzeile__namen">
                 <?php
@@ -126,6 +151,13 @@ add_shortcode('sz_meine_artikel', function () {
             </span>
 
             <span class="sz-artikelpreis"><?php echo wp_kses_post($produkt->get_price_html()); ?></span>
+
+            <button type="button" class="sz-qr-knopf" data-sz-qr
+                    aria-label="<?php echo esc_attr__('QR-Code zeigen', 'sapelza-shop'); ?>">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M3 3h7v7H3V3zm2 2v3h3V5H5zm9-2h7v7h-7V3zm2 2v3h3V5h-3zM3 14h7v7H3v-7zm2 2v3h3v-3H5zm9-2h3v3h-3v-3zm5 0h2v2h-2v-2zm-5 5h3v2h-3v-2zm5 0h2v2h-2v-2z"/>
+                </svg>
+            </button>
 
             <?php woocommerce_template_loop_add_to_cart(['quantity' => 1]); ?>
         </div>

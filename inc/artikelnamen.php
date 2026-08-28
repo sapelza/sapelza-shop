@@ -276,11 +276,63 @@ add_action('wp_enqueue_scripts', function () {
     $inhalt = get_post_field('post_content', get_queried_object_id());
     if (!is_string($inhalt) || !has_shortcode($inhalt, 'sz_meine_artikel')) return;
 
-    wp_enqueue_script(
-        'sapelza-namen',
-        plugins_url('js/namen.js', SZ_SHOP_PFAD . 'sapelza-shop.php'),
-        [],
-        '1.6.0',
-        true
-    );
+    $pfad = SZ_SHOP_PFAD . 'sapelza-shop.php';
+    $f = '1.7.0';
+
+    wp_enqueue_script('sapelza-namen', plugins_url('js/namen.js', $pfad), [], $f, true);
+    wp_enqueue_script('sapelza-qr', plugins_url('js/qr.js', $pfad), [], $f, true);
+    wp_enqueue_script('sapelza-etiketten', plugins_url('js/etiketten.js', $pfad), ['sapelza-qr'], $f, true);
 }, 30);
+
+/* ===================================================================
+   Auslaufregel — Schritt 3
+   =================================================================== */
+
+/**
+ * Der Nachfolger eines ausgelaufenen Artikels.
+ *
+ * Gedruckte Etiketten überleben den Katalog. Wenn ein Artikel ausläuft,
+ * klebt der Aufkleber noch zwei Jahre am Regal. Der QR darf dann nicht auf
+ * eine Fehlerseite führen, sondern muss sagen, was an seiner Stelle steht.
+ * Das ist der Unterschied zwischen einem Werkzeug und einem Ärgernis.
+ *
+ * Hinterlegt wird die Artikelnummer des Nachfolgers am alten Produkt.
+ */
+function sz_nachfolger(WC_Product $artikel): ?WC_Product
+{
+    $nummer = trim((string) $artikel->get_meta('_sz_nachfolger'));
+    if ($nummer === '') return null;
+
+    $id = wc_get_product_id_by_sku($nummer);
+    if (!$id) return null;
+
+    $neu = wc_get_product($id);
+    return $neu instanceof WC_Product ? $neu : null;
+}
+
+/**
+ * Das Feld dafür in der Produktverwaltung.
+ *
+ * Bewusst im Reiter „Versand" nicht, sondern bei den allgemeinen Daten —
+ * es gehört zum Artikel, nicht zum Versand.
+ */
+add_action('woocommerce_product_options_inventory_product_data', function () {
+    woocommerce_wp_text_input([
+        'id'          => '_sz_nachfolger',
+        'label'       => __('Nachfolger (Art.-Nr.)', 'sapelza-shop'),
+        'description' => __('Läuft dieser Artikel aus: die Artikelnummer des Nachfolgers. Wer ein altes Regaletikett scannt, wird dann dorthin geführt statt auf eine Fehlerseite.', 'sapelza-shop'),
+        'desc_tip'    => true,
+    ]);
+});
+
+add_action('woocommerce_process_product_meta', function ($post_id) {
+    $wert = isset($_POST['_sz_nachfolger'])
+        ? sanitize_text_field(wp_unslash($_POST['_sz_nachfolger']))
+        : '';
+
+    $artikel = wc_get_product($post_id);
+    if (!$artikel instanceof WC_Product) return;
+
+    $artikel->update_meta_data('_sz_nachfolger', $wert);
+    $artikel->save();
+});
