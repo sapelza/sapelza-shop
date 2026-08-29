@@ -18,8 +18,14 @@
     var nonce = wurzel.dataset.nonce;
     var leerText = 'Eigenen Namen vergeben';
 
+    /* Nur das Wort ersetzen, nicht den ganzen Knopf: darin steckt auch
+       der Stift, und textContent auf dem Knopf wuerde ihn mitloeschen. */
+    function wort( knopf ) {
+        return knopf.querySelector( '.sz-eigenname__wort' ) || knopf;
+    }
+
     function schliessen( feld, knopf, text, leer ) {
-        knopf.textContent = text;
+        wort( knopf ).textContent = text;
         knopf.classList.toggle( 'ist-leer', leer );
         knopf.hidden = false;
         feld.remove();
@@ -45,7 +51,7 @@
         if ( knopf.hidden ) return;
 
         var istLeer = knopf.classList.contains( 'ist-leer' );
-        var alt = istLeer ? '' : knopf.textContent.trim();
+        var alt = istLeer ? '' : wort( knopf ).textContent.trim();
 
         var feld = document.createElement( 'input' );
         feld.type = 'text';

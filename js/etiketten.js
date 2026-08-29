@@ -30,7 +30,7 @@
         return {
             nummer: ( zeile.querySelector( '[data-sz-wahl]' ) || {} ).value || '',
             name: leer ? zeile.querySelector( '.sz-katalogname' ).textContent.trim()
-                       : eigen.textContent.trim()
+                       : ( eigen.querySelector( '.sz-eigenname__wort' ) || eigen ).textContent.trim()
         };
     }
 
