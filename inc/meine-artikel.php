@@ -59,6 +59,26 @@ add_shortcode('sz_meine_artikel', function () {
 
     $basis = function_exists('sz_erfassung_url') ? sz_erfassung_url() : home_url('/schnellerfassung/');
 
+    /*
+     * Erst sammeln, dann zeichnen. Nur so ist vor der Kopfzeile bekannt,
+     * ob ueberhaupt ein Artikel einen Bestand fuehrt — und eine Spalte
+     * voller Striche sieht aus, als fehlte etwas.
+     */
+    $posten       = [];
+    $mit_bestand  = false;
+
+    foreach ($artikel as $eintrag) {
+        $produkt = wc_get_product($eintrag['id']);
+        if (!$produkt || !$produkt->is_purchasable()) continue;
+
+        if ($produkt->managing_stock()) $mit_bestand = true;
+        $posten[] = ['produkt' => $produkt, 'zuletzt' => (int) $eintrag['zuletzt']];
+    }
+
+    if (!$posten) {
+        return '<p class="sz-hinweis">Ihre bisherigen Artikel sind derzeit nicht bestellbar.</p>';
+    }
+
     ob_start();
     ?>
     <div class="sz-artikelbereich"
@@ -74,12 +94,12 @@ add_shortcode('sz_meine_artikel', function () {
                    placeholder="<?php echo esc_attr__('In Ihren Artikeln suchen …', 'sapelza-shop'); ?>">
         </label>
 
-        <div class="sz-meine-artikel">
+        <div class="sz-meine-artikel<?php echo $mit_bestand ? '' : ' ist-ohne-bestand'; ?>">
             <div class="sz-artikelkopf mono" aria-hidden="true">
                 <span></span>
                 <span><?php echo esc_html__('Ihre Bezeichnung', 'sapelza-shop'); ?></span>
                 <span><?php echo esc_html__('Artikel', 'sapelza-shop'); ?></span>
-                <span><?php echo esc_html__('Bestand', 'sapelza-shop'); ?></span>
+                <span class="sz-spalte-bestand"><?php echo esc_html__('Bestand', 'sapelza-shop'); ?></span>
                 <span><?php echo esc_html__('Preis', 'sapelza-shop'); ?></span>
                 <span><?php echo esc_html__('Menge', 'sapelza-shop'); ?></span>
                 <span></span>
@@ -87,9 +107,8 @@ add_shortcode('sz_meine_artikel', function () {
 
             <?php
             $lfd = 0;
-            foreach ($artikel as $eintrag) {
-                $produkt = wc_get_product($eintrag['id']);
-                if (!$produkt || !$produkt->is_purchasable()) continue;
+            foreach ($posten as $eintrag) {
+                $produkt = $eintrag['produkt'];
 
                 $lfd++;
                 $vorrat = $produkt->managing_stock() ? (int) $produkt->get_stock_quantity() : null;
@@ -106,7 +125,7 @@ add_shortcode('sz_meine_artikel', function () {
                     }
                 }
 
-                $tage = (int) floor((time() - (int) $eintrag['zuletzt']) / DAY_IN_SECONDS);
+                $tage = (int) floor((time() - $eintrag['zuletzt']) / DAY_IN_SECONDS);
                 $such = mb_strtolower($eigen . ' ' . $produkt->get_name() . ' ' . $produkt->get_sku());
                 ?>
                 <div class="sz-artikelzeile"
@@ -159,7 +178,7 @@ add_shortcode('sz_meine_artikel', function () {
                         </span>
                     </div>
 
-                    <span class="sz-artikelbestand mono">
+                    <span class="sz-artikelbestand sz-spalte-bestand mono">
                         <?php if ($vorrat !== null) : ?>
                             <span class="sz-punkt sz-punkt--da" aria-hidden="true"></span><?php echo esc_html($vorrat . ' Stk.'); ?>
                         <?php else : ?>
