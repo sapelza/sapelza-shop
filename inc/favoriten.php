@@ -208,3 +208,32 @@ add_action('pre_get_posts', function ($abfrage) {
      */
     $abfrage->set('post__in', $liste ?: [0]);
 });
+
+/* ===================================================================
+   Nach Marke filtern
+   ===================================================================
+
+   ?marke=<slug> auf einer Kategorieseite. So bleibt man in der
+   Kategorie und schraenkt nur ein — ein Sprung ins Markenarchiv
+   verlöre die Kategorie.
+*/
+
+add_action('pre_get_posts', function ($abfrage) {
+    if (is_admin() || !$abfrage->is_main_query()) return;
+    if (empty($_GET['marke'])) return;
+    if (!function_exists('sz_marken_taxonomie')) return;
+
+    $taxonomie = sz_marken_taxonomie();
+    if ($taxonomie === '') return;
+
+    if (!$abfrage->is_post_type_archive('product') && !$abfrage->is_tax('product_cat')
+        && !$abfrage->is_search()) return;
+
+    $slug = sanitize_title(wp_unslash($_GET['marke']));
+    if ($slug === '') return;
+
+    $tax = (array) $abfrage->get('tax_query');
+    $tax[] = ['taxonomy' => $taxonomie, 'field' => 'slug', 'terms' => $slug];
+
+    $abfrage->set('tax_query', $tax);
+});
