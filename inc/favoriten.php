@@ -105,19 +105,28 @@ function sz_favorit_knopf(int $produkt, string $zusatz = '', bool $wort = false)
  * vierundzwanzig Kacheln wurden daraus vierundzwanzig Kreise, die
  * niemand einordnen konnte.
  */
-add_action('woocommerce_after_shop_loop_item_title', function () {
+add_action('woocommerce_after_shop_loop_item', function () {
     global $product;
     if (!$product) return;
 
-    echo wp_kses_post(sz_favorit_knopf($product->get_id(), 'sz-stern--zeile', true));
-}, 20);
+    /*
+     * Kein wp_kses_post: das filtert <svg> und <path> weg, und der Knopf
+     * kaeme ohne Stern heraus. Die Zeichenkette ist an jeder
+     * eingesetzten Stelle bereits mit esc_attr oder esc_html gesichert.
+     *
+     * Und nicht mehr an after_shop_loop_item_title: Astra setzt dort
+     * seine Kategoriezeile davor, der Stern stand dann ueber dem Namen
+     * statt unter dem Preis.
+     */
+    echo sz_favorit_knopf($product->get_id(), 'sz-stern--zeile', true); // phpcs:ignore WordPress.Security.EscapeOutput
+}, 5);
 
 /* Am Artikel neben dem Warenkorbknopf. */
 add_action('woocommerce_after_add_to_cart_button', function () {
     global $product;
     if (!$product) return;
 
-    echo wp_kses_post(sz_favorit_knopf($product->get_id(), 'sz-stern--artikel', true));
+    echo sz_favorit_knopf($product->get_id(), 'sz-stern--artikel', true); // phpcs:ignore WordPress.Security.EscapeOutput
 }, 5);
 
 /* ===================================================================

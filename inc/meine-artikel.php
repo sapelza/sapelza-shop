@@ -187,9 +187,12 @@ add_shortcode('sz_meine_artikel', function () {
                         </td>
 
                         <td class="sz-z-stern">
-                            <?php echo function_exists('sz_favorit_knopf')
-                                ? wp_kses_post(sz_favorit_knopf($produkt->get_id(), 'sz-stern--zelle'))
-                                : ''; ?>
+                            <?php
+                            /* Ohne wp_kses_post — das filtert das SVG weg. */
+                            echo function_exists('sz_favorit_knopf')
+                                ? sz_favorit_knopf($produkt->get_id(), 'sz-stern--zelle')
+                                : ''; // phpcs:ignore WordPress.Security.EscapeOutput
+                            ?>
                         </td>
 
                         <td class="sz-z-name">

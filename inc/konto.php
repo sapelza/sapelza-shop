@@ -213,7 +213,7 @@ add_action('woocommerce_account_favoriten_endpoint', function () {
             esc_url($produkt->get_permalink()),
             esc_html(function_exists('sz_anzeigename') ? sz_anzeigename($produkt->get_id(), $produkt->get_name()) : $produkt->get_name()),
             wp_kses_post($produkt->get_price_html()),
-            wp_kses_post(sz_favorit_knopf($produkt->get_id())),
+            sz_favorit_knopf($produkt->get_id()),
             esc_url($produkt->get_permalink()),
             esc_html__('Ansehen', 'sapelza-shop')
         );
