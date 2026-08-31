@@ -3,7 +3,7 @@
 /**
  * Favoriten.
  *
- * Ein Herz an jeder Kachel und am Artikel. Was der Betrieb sich merkt,
+ * Ein Stern an jeder Kachel und am Artikel. Was der Betrieb sich merkt,
  * steht danach im Konto und in Meine Artikel.
  *
  * Sie gehoeren dem BETRIEB, nicht der Person — genau wie die eigenen
@@ -83,18 +83,18 @@ function sz_favorit_knopf(int $produkt, string $zusatz = '', bool $wort = false)
     $sagt    = $gemerkt ? __('Gemerkt', 'sapelza-shop') : __('Merken', 'sapelza-shop');
 
     return sprintf(
-        '<button type="button" class="sz-herz%1$s%2$s" data-sz-favorit="%3$d"'
+        '<button type="button" class="sz-stern%1$s%2$s" data-sz-favorit="%3$d"'
         . ' aria-pressed="%4$s" aria-label="%5$s" title="%5$s">'
         . '<svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7"'
         . ' stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
-        . '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21.2l7.7-7.7 1.1-1.1a5.5 5.5 0 0 0 0-7.8z"></path>'
+        . '<path d="M12 2.6l2.9 5.88 6.49.94-4.7 4.58 1.11 6.46L12 17.4l-5.8 3.06 1.1-6.46-4.69-4.58 6.49-.94z"></path>'
         . '</svg>%6$s</button>',
         $gemerkt ? ' ist-gemerkt' : '',
         $zusatz !== '' ? ' ' . esc_attr($zusatz) : '',
         $produkt,
         $gemerkt ? 'true' : 'false',
         esc_attr($gemerkt ? __('Aus den Favoriten nehmen', 'sapelza-shop') : __('Zu den Favoriten', 'sapelza-shop')),
-        $wort ? '<span class="sz-herz__wort" data-sz-herzwort>' . esc_html($sagt) . '</span>' : ''
+        $wort ? '<span class="sz-stern__wort" data-sz-sternwort>' . esc_html($sagt) . '</span>' : ''
     );
 }
 
@@ -109,7 +109,7 @@ add_action('woocommerce_after_shop_loop_item_title', function () {
     global $product;
     if (!$product) return;
 
-    echo wp_kses_post(sz_favorit_knopf($product->get_id(), 'sz-herz--zeile', true));
+    echo wp_kses_post(sz_favorit_knopf($product->get_id(), 'sz-stern--zeile', true));
 }, 20);
 
 /* Am Artikel neben dem Warenkorbknopf. */
@@ -117,7 +117,7 @@ add_action('woocommerce_after_add_to_cart_button', function () {
     global $product;
     if (!$product) return;
 
-    echo wp_kses_post(sz_favorit_knopf($product->get_id(), 'sz-herz--artikel', true));
+    echo wp_kses_post(sz_favorit_knopf($product->get_id(), 'sz-stern--artikel', true));
 }, 5);
 
 /* ===================================================================
@@ -154,3 +154,48 @@ add_action('wp_enqueue_scripts', function () {
         'nonce' => wp_create_nonce('sz_favorit'),
     ]);
 }, 30);
+
+/* ===================================================================
+   Nach Favoriten filtern
+   ===================================================================
+
+   Im Sortiment und in der Suche: ?favoriten=1 schraenkt die Abfrage auf
+   die gemerkten Artikel ein.
+
+   Kein Sortieren, sondern Filtern. Eine Sortierung nach Favoriten waere
+   eine Sortierung nach einer Liste in den Benutzerdaten — die Datenbank
+   kann danach nicht ordnen, ohne alle Artikel zu laden. Filtern kann sie,
+   und es beantwortet dieselbe Frage: zeig mir, was wir uns gemerkt haben.
+*/
+
+/** Ist der Filter gerade an? */
+function sz_favoritenfilter(): bool
+{
+    return isset($_GET['favoriten']) && $_GET['favoriten'] === '1';
+}
+
+/** Die Adresse mit oder ohne Filter. */
+function sz_favoriten_adresse(bool $an): string
+{
+    $adresse = remove_query_arg('favoriten');
+
+    return $an ? add_query_arg('favoriten', '1', $adresse) : $adresse;
+}
+
+add_action('pre_get_posts', function ($abfrage) {
+    if (is_admin() || !$abfrage->is_main_query()) return;
+    if (!sz_favoritenfilter()) return;
+    if (!function_exists('is_woocommerce')) return;
+    if (!$abfrage->is_post_type_archive('product') && !$abfrage->is_tax('product_cat')
+        && !$abfrage->is_tax('product_tag') && !$abfrage->is_search()) return;
+
+    $liste = sz_favoriten();
+
+    /*
+     * Ohne Favoriten muss die Abfrage leer bleiben. post__in mit einem
+     * leeren Feld ignoriert WordPress — dann kaeme der ganze Katalog
+     * zurueck, und der Filter zeigte das Gegenteil von dem, was er
+     * verspricht. Darum eine ID, die es nicht gibt.
+     */
+    $abfrage->set('post__in', $liste ?: [0]);
+});

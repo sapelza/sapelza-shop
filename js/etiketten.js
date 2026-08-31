@@ -39,15 +39,36 @@
        --------------------------------------------------------------- */
 
     var filter = bereich.querySelector( '[data-sz-filter]' );
-    if ( filter ) {
-        filter.addEventListener( 'input', function () {
-            var was = filter.value.trim().toLowerCase();
-            zeilen().forEach( function ( z ) {
-                var passt = ! was || ( z.dataset.szSuchtext || '' ).indexOf( was ) >= 0;
-                z.hidden = ! passt;
-            } );
+    var nur = 'alle';
+
+    /* Suchwort und Favoritenfilter greifen gemeinsam — wer nach
+       "Spuel" sucht und Favoriten anhat, will beides. */
+    function sieben() {
+        var was = filter ? filter.value.trim().toLowerCase() : '';
+
+        zeilen().forEach( function ( z ) {
+            var passtWort = ! was || ( z.dataset.szSuchtext || '' ).indexOf( was ) >= 0;
+            var passtStern = nur === 'alle' || z.dataset.szGemerkt === '1';
+            z.hidden = ! ( passtWort && passtStern );
         } );
     }
+
+    if ( filter ) filter.addEventListener( 'input', sieben );
+
+    /* Der Stern kann sich aendern, waehrend gefiltert wird. */
+    document.addEventListener( 'sz:favorit', sieben );
+
+    bereich.querySelectorAll( '[data-sz-nur]' ).forEach( function ( knopf ) {
+        knopf.addEventListener( 'click', function () {
+            nur = knopf.getAttribute( 'data-sz-nur' );
+
+            bereich.querySelectorAll( '[data-sz-nur]' ).forEach( function ( k ) {
+                k.setAttribute( 'aria-pressed', String( k === knopf ) );
+            } );
+
+            sieben();
+        } );
+    } );
 
     /* ---------------------------------------------------------------
        Menge und in den Warenkorb

@@ -27,8 +27,15 @@
         function setzen( ja ) {
             knopf.setAttribute( 'aria-pressed', String( ja ) );
             knopf.classList.toggle( 'ist-gemerkt', ja );
-            var wort = knopf.querySelector( '[data-sz-herzwort]' );
+            var wort = knopf.querySelector( '[data-sz-sternwort]' );
             if ( wort ) wort.textContent = ja ? 'Gemerkt' : 'Merken';
+
+            /* In Meine Artikel haengt der Filter an der Zeile. */
+            var zeile = knopf.closest( '[data-sz-artikel]' );
+            if ( zeile ) {
+                zeile.dataset.szGemerkt = ja ? '1' : '0';
+                document.dispatchEvent( new CustomEvent( 'sz:favorit' ) );
+            }
         }
 
         var daten = new URLSearchParams();

@@ -102,6 +102,28 @@ add_shortcode('sz_meine_artikel', function () {
             <?php echo esc_html__('Ihr eigener Katalog aus allem, was Sie bisher bezogen haben, auf Wunsch mit Ihren internen Bezeichnungen statt unseren. Was regelmäßig gebraucht wird, liegt in zwei Klicks wieder im Warenkorb.', 'sapelza-shop'); ?>
         </p>
 
+        <div class="sz-artikelfilter">
+            <?php
+            /*
+             * Zwei Wege durch dieselbe Liste. Der Filter arbeitet im
+             * Browser — die Zeilen stehen alle schon da, ein Neuladen
+             * waere Verschwendung.
+             */
+            ?>
+            <div class="sz-wahlreihe" role="group"
+                 aria-label="<?php echo esc_attr__('Auswahl', 'sapelza-shop'); ?>">
+                <button type="button" class="sz-wahl" data-sz-nur="alle" aria-pressed="true">
+                    <?php echo esc_html__('Alle', 'sapelza-shop'); ?>
+                </button>
+                <button type="button" class="sz-wahl" data-sz-nur="favoriten" aria-pressed="false">
+                    <?php echo esc_html__('Favoriten', 'sapelza-shop'); ?>
+                    <span class="sz-wahl__zahl mono" data-sz-favoritenzahl><?php
+                        echo esc_html(number_format_i18n(count(function_exists('sz_favoriten') ? sz_favoriten() : [])));
+                    ?></span>
+                </button>
+            </div>
+        </div>
+
         <label class="sz-artikelsuche">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
                  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -117,6 +139,7 @@ add_shortcode('sz_meine_artikel', function () {
                 <thead>
                     <tr>
                         <th></th>
+                        <th class="sz-z-stern"></th>
                         <th class="sz-z-name"><?php echo esc_html__('Ihre Bezeichnung', 'sapelza-shop'); ?></th>
                         <th class="sz-z-artikel"><?php echo esc_html__('Artikel', 'sapelza-shop'); ?></th>
                         <th class="sz-z-bestand sz-spalte-bestand"><?php echo esc_html__('Bestand', 'sapelza-shop'); ?></th>
@@ -150,6 +173,7 @@ add_shortcode('sz_meine_artikel', function () {
                     $such = mb_strtolower($eigen . ' ' . $produkt->get_name() . ' ' . $produkt->get_sku());
                     ?>
                     <tr class="sz-artikelzeile"
+                        data-sz-gemerkt="<?php echo function_exists('sz_ist_favorit') && sz_ist_favorit($produkt->get_id()) ? '1' : '0'; ?>"
                         data-sz-artikel="<?php echo esc_attr((string) $produkt->get_id()); ?>"
                         data-sz-lfd="<?php echo esc_attr((string) $lfd); ?>"
                         data-sz-suchtext="<?php echo esc_attr($such); ?>">
@@ -160,6 +184,12 @@ add_shortcode('sz_meine_artikel', function () {
                                    aria-label="<?php
                                        printf(esc_attr__('%s für den Etikettenbogen auswählen', 'sapelza-shop'),
                                               esc_attr($eigen !== '' ? $eigen : $produkt->get_name())); ?>">
+                        </td>
+
+                        <td class="sz-z-stern">
+                            <?php echo function_exists('sz_favorit_knopf')
+                                ? wp_kses_post(sz_favorit_knopf($produkt->get_id(), 'sz-stern--zelle'))
+                                : ''; ?>
                         </td>
 
                         <td class="sz-z-name">
