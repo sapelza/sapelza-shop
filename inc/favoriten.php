@@ -64,44 +64,60 @@ function sz_ist_favorit(int $produkt): bool
 /**
  * Der Knopf.
  *
- * Ein Umriss, wenn nicht gemerkt; gefuellt, wenn gemerkt. Kein Text —
- * das Herz steht an der Kachel, wo jedes Wort die Zeile sprengen wuerde.
+ * Ein Umriss, wenn nicht gemerkt; gefuellt, wenn gemerkt.
+ *
+ * Mit Wort, nicht ohne. Die erste Fassung sass als runde Blase oben
+ * rechts im Bild und trug nur das Symbol — auf dem Schirm las sich das
+ * als "ein Kreis in jeder Kachel", nicht als Knopf. Ein Herz allein
+ * sagt nicht, was es tut.
+ *
+ * @param int    $produkt Die Produkt-ID.
+ * @param string $zusatz  Zusaetzliche Klasse.
+ * @param bool   $wort    Beschriftung neben dem Herz.
  */
-function sz_favorit_knopf(int $produkt, string $zusatz = ''): string
+function sz_favorit_knopf(int $produkt, string $zusatz = '', bool $wort = false): string
 {
     if (!is_user_logged_in()) return '';
 
     $gemerkt = sz_ist_favorit($produkt);
+    $sagt    = $gemerkt ? __('Gemerkt', 'sapelza-shop') : __('Merken', 'sapelza-shop');
 
     return sprintf(
         '<button type="button" class="sz-herz%1$s%2$s" data-sz-favorit="%3$d"'
         . ' aria-pressed="%4$s" aria-label="%5$s" title="%5$s">'
-        . '<svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6"'
+        . '<svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7"'
         . ' stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
         . '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21.2l7.7-7.7 1.1-1.1a5.5 5.5 0 0 0 0-7.8z"></path>'
-        . '</svg></button>',
+        . '</svg>%6$s</button>',
         $gemerkt ? ' ist-gemerkt' : '',
         $zusatz !== '' ? ' ' . esc_attr($zusatz) : '',
         $produkt,
         $gemerkt ? 'true' : 'false',
-        esc_attr($gemerkt ? __('Aus den Favoriten nehmen', 'sapelza-shop') : __('Zu den Favoriten', 'sapelza-shop'))
+        esc_attr($gemerkt ? __('Aus den Favoriten nehmen', 'sapelza-shop') : __('Zu den Favoriten', 'sapelza-shop')),
+        $wort ? '<span class="sz-herz__wort" data-sz-herzwort>' . esc_html($sagt) . '</span>' : ''
     );
 }
 
-/* An der Kachel oben rechts im Bildkasten. */
-add_action('woocommerce_before_shop_loop_item_title', function () {
+/*
+ * In der Kachel unter dem Preis, mit Wort.
+ *
+ * Vorher schwebte er als Kreis ueber dem Bild. In einem Raster aus
+ * vierundzwanzig Kacheln wurden daraus vierundzwanzig Kreise, die
+ * niemand einordnen konnte.
+ */
+add_action('woocommerce_after_shop_loop_item_title', function () {
     global $product;
     if (!$product) return;
 
-    echo wp_kses_post(sz_favorit_knopf($product->get_id(), 'sz-herz--kachel'));
-}, 25);
+    echo wp_kses_post(sz_favorit_knopf($product->get_id(), 'sz-herz--zeile', true));
+}, 20);
 
 /* Am Artikel neben dem Warenkorbknopf. */
 add_action('woocommerce_after_add_to_cart_button', function () {
     global $product;
     if (!$product) return;
 
-    echo wp_kses_post(sz_favorit_knopf($product->get_id(), 'sz-herz--artikel'));
+    echo wp_kses_post(sz_favorit_knopf($product->get_id(), 'sz-herz--artikel', true));
 }, 5);
 
 /* ===================================================================

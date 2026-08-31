@@ -21,9 +21,15 @@
         var an = knopf.getAttribute( 'aria-pressed' ) !== 'true';
 
         /* Sofort umlegen. */
-        knopf.setAttribute( 'aria-pressed', String( an ) );
-        knopf.classList.toggle( 'ist-gemerkt', an );
+        setzen( an );
         knopf.dataset.laeuft = '1';
+
+        function setzen( ja ) {
+            knopf.setAttribute( 'aria-pressed', String( ja ) );
+            knopf.classList.toggle( 'ist-gemerkt', ja );
+            var wort = knopf.querySelector( '[data-sz-herzwort]' );
+            if ( wort ) wort.textContent = ja ? 'Gemerkt' : 'Merken';
+        }
 
         var daten = new URLSearchParams();
         daten.set( 'action', 'sz_favorit' );
@@ -40,8 +46,7 @@
 
                 /* Der Server hat das letzte Wort — zwei Zugaenge im selben
                    Betrieb koennen sich gegenseitig ueberholen. */
-                knopf.setAttribute( 'aria-pressed', String( a.data.gemerkt ) );
-                knopf.classList.toggle( 'ist-gemerkt', a.data.gemerkt );
+                setzen( a.data.gemerkt );
 
                 var zaehler = document.querySelector( '[data-sz-favoritenzahl]' );
                 if ( zaehler ) zaehler.textContent = a.data.anzahl;
@@ -50,8 +55,7 @@
 
         function zurueck() {
             knopf.dataset.laeuft = '';
-            knopf.setAttribute( 'aria-pressed', String( ! an ) );
-            knopf.classList.toggle( 'ist-gemerkt', ! an );
+            setzen( ! an );
         }
     } );
 } )();
