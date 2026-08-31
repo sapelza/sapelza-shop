@@ -226,7 +226,12 @@ add_action('woocommerce_account_favoriten_endpoint', function () {
    Die Übersicht
    =================================================================== */
 
-remove_action('woocommerce_account_dashboard', 'woocommerce_account_content');
+/*
+ * Die Begruessung von WooCommerce ("Hallo anmo … In deiner
+ * Konto-Uebersicht kannst du …") steht fest in myaccount/dashboard.php
+ * und laesst sich nicht abhaken. Das Theme legt eine eigene Vorlage
+ * daneben, die nur noch diesen Haken aufruft.
+ */
 
 add_action('woocommerce_account_dashboard', function () {
     $ich     = wp_get_current_user();
@@ -296,7 +301,14 @@ add_action('woocommerce_account_dashboard', function () {
                 <?php foreach ($letzte as $b) : ?>
                     <div class="sz-reihe">
                         <span class="sz-reihe__name"><?php echo esc_html('#' . $b->get_order_number()); ?></span>
-                        <span class="sz-reihe__mono mono"><?php echo esc_html(wc_price($b->get_total(), ['decimals' => 2])); ?></span>
+                        <?php
+                        /*
+                         * wc_price() liefert Auszeichnung, keinen reinen Text.
+                         * Mit esc_html stand hier der Quelltext auf der Seite:
+                         * <span class="amount" ... statt "16,40 EUR".
+                         */
+                        ?>
+                        <span class="sz-reihe__preis price"><?php echo wp_kses_post(wc_price($b->get_total())); ?></span>
                         <span class="sz-reihe__mono mono">
                             <?php echo esc_html($b->get_date_created() ? $b->get_date_created()->date_i18n('d.m.') : ''); ?>
                             · <?php echo esc_html(wc_get_order_status_name($b->get_status())); ?>
