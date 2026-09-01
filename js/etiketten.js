@@ -122,7 +122,62 @@
        --------------------------------------------------------------- */
 
     var kapitel = bereich.querySelector( '.sz-etikettenkapitel' );
-    if ( ! kapitel || ! window.SZQR ) return;
+    if ( ! kapitel ) return;
+
+    /* ---------------------------------------------------------------
+       Der QR-Code
+       ---------------------------------------------------------------
+
+       Bis 1.18.0 stand hier ein selbst geschriebener Erzeuger. Er war
+       rechnerisch geprueft — Reed-Solomon, die BCH-Codes, die
+       Formatbits —, aber die Anordnung der Module liess sich ohne
+       Leser nicht pruefen. Ich hatte darauf hingewiesen und geraten,
+       vor dem ersten Bogen ein Etikett vom Bildschirm zu scannen.
+
+       Mit dem Scanner kam der Leser ins Haus, und damit die Antwort:
+       die Codes waren nicht lesbar. Nicht einer, auch "TEST" nicht.
+       ZXings eigener Code wurde im selben Versuch anstandslos gelesen.
+
+       Also zeichnet jetzt ZXing. Weniger eigener Code, und einer, der
+       nachweislich gelesen wird.
+       --------------------------------------------------------------- */
+
+    var zxingWeg = bereich.dataset.szZxing || '';
+    var zxingGeladen = null;
+
+    function zxingLaden() {
+        if ( zxingGeladen ) return zxingGeladen;
+
+        zxingGeladen = new Promise( function ( fertig, schief ) {
+            if ( window.ZXingBrowser ) { fertig(); return; }
+            if ( ! zxingWeg ) { schief(); return; }
+
+            var s = document.createElement( 'script' );
+            s.src = zxingWeg;
+            s.onload = function () { window.ZXingBrowser ? fertig() : schief(); };
+            s.onerror = schief;
+            document.head.appendChild( s );
+        } );
+
+        return zxingGeladen;
+    }
+
+    function qrZeichnen( kasten, text ) {
+        zxingLaden().then( function () {
+            var schreiber = new window.ZXingBrowser.BrowserQRCodeSvgWriter();
+            var svg = schreiber.write( text, 240, 240 );
+
+            /* Die Groesse gibt das Etikett vor, nicht der Schreiber. */
+            svg.removeAttribute( 'width' );
+            svg.removeAttribute( 'height' );
+            svg.setAttribute( 'preserveAspectRatio', 'xMidYMid meet' );
+
+            kasten.innerHTML = '';
+            kasten.appendChild( svg );
+        } ).catch( function () {
+            kasten.textContent = '\u2014';
+        } );
+    }
 
     var zaehler   = kapitel.querySelector( '[data-sz-gewaehlt]' );
     var drucken   = kapitel.querySelector( '[data-sz-drucken]' );
@@ -176,8 +231,7 @@
 
         var bild = document.createElement( 'div' );
         bild.className = 'sz-etikett__qr';
-        try { bild.innerHTML = window.SZQR.svg( adresse( eintrag.nummer ) ); }
-        catch ( x ) { bild.textContent = '—'; }
+        qrZeichnen( bild, adresse( eintrag.nummer ) );
 
         el.appendChild( text );
         el.appendChild( bild );

@@ -88,7 +88,8 @@ add_shortcode('sz_meine_artikel', function () {
          data-nonce="<?php echo esc_attr(wp_create_nonce('sz_namen')); ?>"
          data-erfassung="<?php echo esc_attr(wp_create_nonce('sz_erfassung')); ?>"
          data-ziel="<?php echo esc_url(admin_url('admin-ajax.php')); ?>"
-         data-basis="<?php echo esc_url($basis); ?>">
+         data-basis="<?php echo esc_url($basis); ?>"
+         data-sz-zxing="<?php echo esc_url(plugins_url('js/zxing-browser.min.js', SZ_SHOP_PFAD . 'sapelza-shop.php')); ?>">
 
         <p class="sz-kapitelmarke">
             <span class="sz-kapitelmarke__nr mono">02</span>

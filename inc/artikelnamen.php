@@ -277,11 +277,15 @@ add_action('wp_enqueue_scripts', function () {
     if (!is_string($inhalt) || !has_shortcode($inhalt, 'sz_meine_artikel')) return;
 
     $pfad = SZ_SHOP_PFAD . 'sapelza-shop.php';
-    $f = '1.18.0';
+    $f = '1.19.0';
 
     wp_enqueue_script('sapelza-namen', plugins_url('js/namen.js', $pfad), [], $f, true);
-    wp_enqueue_script('sapelza-qr', plugins_url('js/qr.js', $pfad), [], $f, true);
-    wp_enqueue_script('sapelza-etiketten', plugins_url('js/etiketten.js', $pfad), ['sapelza-qr'], $f, true);
+    /*
+     * qr.js ist raus: der eigene Erzeuger lieferte Codes, die kein Leser
+     * erkannte. Gezeichnet wird jetzt mit ZXing, und das laedt etiketten.js
+     * selbst nach — erst wenn wirklich ein Etikett gezeichnet wird.
+     */
+    wp_enqueue_script('sapelza-etiketten', plugins_url('js/etiketten.js', $pfad), [], $f, true);
 }, 30);
 
 /* ===================================================================

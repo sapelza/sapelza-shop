@@ -197,7 +197,16 @@ function sz_erfassung_warenkorb(): void
 add_shortcode('sz_schnellerfassung', function () {
     ob_start();
     ?>
+    <?php
+    /*
+     * Die Adresse der Strichcode-Bibliothek haengt am Abschnitt. Geladen
+     * wird sie erst, wenn jemand auf Scannen tippt und der Browser den
+     * eingebauten BarcodeDetector nicht mitbringt — also praktisch nur
+     * auf iPhones. 386 kB will man nicht jedem mitschicken.
+     */
+    ?>
     <section class="sz-erfassung" data-sz-erfassung
+             data-sz-zxing="<?php echo esc_url(plugins_url('js/zxing-browser.min.js', SZ_SHOP_PFAD . 'sapelza-shop.php')); ?>"
              data-nonce="<?php echo esc_attr(wp_create_nonce('sz_erfassung')); ?>"
              data-ziel="<?php echo esc_url(admin_url('admin-ajax.php')); ?>">
 
@@ -275,7 +284,7 @@ add_action('wp_enqueue_scripts', function () {
         'sapelza-erfassung',
         plugins_url('js/erfassung.js', SZ_SHOP_PFAD . 'sapelza-shop.php'),
         [],
-        '1.5.0',
+        '1.6.0',
         true
     );
 }, 30);

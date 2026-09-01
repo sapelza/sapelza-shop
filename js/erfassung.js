@@ -208,90 +208,168 @@
         } );
     } );
 
-    /* --- Scannen ------------------------------------------------------- */
+    /* --- Scannen -------------------------------------------------------
+     *
+     * Zwei Wege, ein Ergebnis.
+     *
+     * Bringt der Browser BarcodeDetector mit — Chrome auf Android tut es
+     * —, wird der genommen: eingebaut, schnell, nichts zu laden.
+     *
+     * Safari bringt ihn bis heute nicht mit, und ueber die Haelfte der
+     * Leute steht mit einem iPhone im Lager. Dort wird ZXing nachgeladen,
+     * 386 kB, aber erst beim Antippen und danach aus dem Zwischenspeicher.
+     * Auf jeder Seite mitzuschicken waere nicht zu rechtfertigen.
+     *
+     * Bleibt der dritte Fall: gar keine Kamera, etwa am Schreibtisch oder
+     * ohne HTTPS. Dann sagen wir das und nennen den Weg, der immer geht.
+     * ------------------------------------------------------------------- */
 
     var scanKnopf  = wurzel.querySelector( '[data-sz-scanstart]' );
     var scanStatus = wurzel.querySelector( '[data-sz-scanstatus]' );
     var video      = wurzel.querySelector( '[data-sz-video]' );
+    var buehne     = wurzel.querySelector( '.sz-scan__buehne' );
 
-    /*
-     * Ohne Bibliothek: der Browser bringt BarcodeDetector mit, oder eben
-     * nicht. Safari und iOS koennen es bis heute nicht — dort wird das
-     * ehrlich gesagt, statt eine Kamera zu oeffnen, die nichts erkennt.
-     */
-    var kannScannen = ( 'BarcodeDetector' in window ) &&
-                      !! ( navigator.mediaDevices && navigator.mediaDevices.getUserMedia );
+    var kannKamera = !! ( navigator.mediaDevices && navigator.mediaDevices.getUserMedia );
+    var eingebaut  = ( 'BarcodeDetector' in window );
+    var zxingWeg   = wurzel.dataset.szZxing || '';
 
-    if ( ! kannScannen ) {
-        /*
-         * Safari und iOS bringen BarcodeDetector nicht mit. Hier aber
-         * nicht bloss "geht nicht" sagen: der Weg, der auf JEDEM Telefon
-         * funktioniert, ist das Regaletikett mit der Kamera-App. Im QR
-         * steht eine Adresse, und die oeffnet iOS von selbst.
-         */
-        /*
-         * Die Erklaerung stand unter dem Beschreibungstext — auf dem
-         * Telefon weit unterhalb des Bildschirms. Zu sehen war nur ein
-         * leerer roter Rahmen, der nichts tat. Also die Buehne weg und
-         * die Erklaerung an ihre Stelle: dorthin schaut man zuerst.
-         */
-        var buehne = wurzel.querySelector( ".sz-scan__buehne" );
+    /* Was gerade laeuft, damit es sich auch wieder anhalten laesst. */
+    var laufenderStrom = null;
+    var laufendeSteuerung = null;
+
+    function anhalten() {
+        if ( laufenderStrom ) {
+            laufenderStrom.getTracks().forEach( function ( t ) { t.stop(); } );
+            laufenderStrom = null;
+        }
+        if ( laufendeSteuerung ) {
+            try { laufendeSteuerung.stop(); } catch ( x ) {}
+            laufendeSteuerung = null;
+        }
+        if ( video ) video.srcObject = null;
+    }
+
+    /* Kamera aus, sobald die Seite in den Hintergrund geht — sonst
+       leuchtet sie weiter und frisst den Akku. */
+    document.addEventListener( 'visibilitychange', function () {
+        if ( document.hidden ) anhalten();
+    } );
+
+    /* Beide Wege enden hier. */
+    function erkannt( code ) {
+        anhalten();
+        scanStatus.hidden = false;
+        scanStatus.textContent = 'Erkannt: ' + code;
+
+        wurzel.querySelector( '[data-sz-weg="tippen"]' ).click();
+
+        var letzte = koerper.lastElementChild || neueZeile( false );
+        if ( letzte.dataset.id ) letzte = neueZeile( false );
+
+        letzte.querySelector( '[data-sz-nummer]' ).value = code;
+        suchen( letzte );
+    }
+
+    /* --- Ohne Kamera: den Weg nennen, der immer geht ------------------- */
+    if ( ! kannKamera ) {
         if ( buehne ) buehne.hidden = true;
 
-        var oben = document.createElement( "p" );
-        oben.className = "sz-scan__kasten sz-scan__kasten--oben";
+        var oben = document.createElement( 'p' );
+        oben.className = 'sz-scan__kasten sz-scan__kasten--oben';
         oben.innerHTML =
-            "<strong>Auf diesem Gerät scannen Sie mit der Kamera-App.</strong><br>" +
-            "Halten Sie sie auf das QR-Etikett am Regal — es erscheint ein Banner, " +
-            "antippen, und der Artikel steht hier in der Zeile. " +
-            "Den Strichcode auf der Packung kann dieser Browser nicht lesen; " +
-            "dafür tippen Sie die Nummer ein.";
+            '<strong>Dieses Gerät gibt die Kamera nicht frei.</strong><br>' +
+            'Halten Sie stattdessen die Kamera-App auf das QR-Etikett am Regal — ' +
+            'es erscheint ein Banner, antippen, und der Artikel steht hier in der Zeile. ' +
+            'Oder tippen Sie die Nummer ein.';
 
         if ( buehne && buehne.parentNode ) buehne.parentNode.insertBefore( oben, buehne );
 
         scanStatus.hidden = true;
-        scanKnopf.hidden = true;
+        if ( scanKnopf ) scanKnopf.hidden = true;
+    }
+
+    /* --- Die Bibliothek, einmal und nur bei Bedarf --------------------- */
+    var zxingGeladen = null;
+
+    function zxingLaden() {
+        if ( zxingGeladen ) return zxingGeladen;
+
+        zxingGeladen = new Promise( function ( fertig, schief ) {
+            if ( window.ZXingBrowser ) { fertig(); return; }
+            if ( ! zxingWeg ) { schief(); return; }
+
+            var s = document.createElement( 'script' );
+            s.src = zxingWeg;
+            s.onload = function () { window.ZXingBrowser ? fertig() : schief(); };
+            s.onerror = schief;
+            document.head.appendChild( s );
+        } );
+
+        return zxingGeladen;
+    }
+
+    /* --- Weg eins: der eingebaute Leser -------------------------------- */
+    function mitEingebautem() {
+        return navigator.mediaDevices.getUserMedia( { video: { facingMode: 'environment' } } )
+            .then( function ( strom ) {
+                laufenderStrom = strom;
+                video.srcObject = strom;
+                video.play();
+                scanStatus.hidden = false;
+                scanStatus.textContent = 'Kamera läuft. Barcode ins Feld halten.';
+
+                var leser = new window.BarcodeDetector();
+
+                function lesen() {
+                    if ( ! video.srcObject ) return;
+
+                    leser.detect( video )
+                        .then( function ( treffer ) {
+                            if ( treffer.length ) { erkannt( treffer[ 0 ].rawValue ); return; }
+                            window.requestAnimationFrame( lesen );
+                        } )
+                        .catch( function () { window.requestAnimationFrame( lesen ); } );
+                }
+
+                lesen();
+            } );
+    }
+
+    /* --- Weg zwei: ZXing, fuer Safari ---------------------------------- */
+    function mitZxing() {
+        scanStatus.hidden = false;
+        scanStatus.textContent = 'Strichcode-Erkennung wird geladen …';
+
+        return zxingLaden().then( function () {
+            scanStatus.textContent = 'Kamera läuft. Barcode ins Feld halten.';
+
+            var leser = new window.ZXingBrowser.BrowserMultiFormatReader();
+
+            return leser.decodeFromVideoDevice( undefined, video, function ( ergebnis, fehler, steuerung ) {
+                laufendeSteuerung = steuerung;
+
+                /* Ohne Treffer ruft ZXing dieselbe Funktion einfach wieder
+                   auf — kein Fehler, nur noch nichts gefunden. */
+                if ( ergebnis ) erkannt( ergebnis.getText() );
+            } );
+        } );
     }
 
     if ( scanKnopf ) {
         scanKnopf.addEventListener( 'click', function () {
-            if ( ! kannScannen ) return;
+            if ( ! kannKamera ) return;
 
-            navigator.mediaDevices.getUserMedia( { video: { facingMode: 'environment' } } )
-                .then( function ( strom ) {
-                    video.srcObject = strom;
-                    video.play();
-                    scanStatus.textContent = 'Kamera läuft. Barcode ins Feld halten.';
+            anhalten();
 
-                    var leser = new window.BarcodeDetector();
+            var lauf = eingebaut ? mitEingebautem() : mitZxing();
 
-                    function lesen() {
-                        if ( ! video.srcObject ) return;
-                        leser.detect( video )
-                            .then( function ( treffer ) {
-                                if ( treffer.length ) {
-                                    var code = treffer[ 0 ].rawValue;
-                                    strom.getTracks().forEach( function ( t ) { t.stop(); } );
-                                    video.srcObject = null;
-                                    scanStatus.textContent = 'Erkannt: ' + code;
-
-                                    /* Zurueck ins Tippen-Feld, Zeile fuellen. */
-                                    wurzel.querySelector( '[data-sz-weg="tippen"]' ).click();
-                                    var letzte = koerper.lastElementChild || neueZeile( false );
-                                    letzte.querySelector( '[data-sz-nummer]' ).value = code;
-                                    suchen( letzte );
-                                    return;
-                                }
-                                window.requestAnimationFrame( lesen );
-                            } )
-                            .catch( function () { window.requestAnimationFrame( lesen ); } );
-                    }
-
-                    lesen();
-                } )
-                .catch( function () {
-                    scanStatus.textContent = 'Kein Zugriff auf die Kamera. Bitte im Browser erlauben.';
-                } );
+            lauf.catch( function () {
+                scanStatus.hidden = false;
+                scanStatus.textContent = eingebaut
+                    ? 'Kein Zugriff auf die Kamera. Bitte im Browser erlauben.'
+                    : 'Die Strichcode-Erkennung ließ sich nicht laden oder die Kamera ist gesperrt. '
+                      + 'Nehmen Sie das QR-Etikett mit der Kamera-App, oder tippen Sie die Nummer ein.';
+            } );
         } );
     }
 
