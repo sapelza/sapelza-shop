@@ -44,10 +44,21 @@
 
     function neueZeile( fokus ) {
         var tr = document.createElement( 'tr' );
+
+        /*
+         * Solange nichts erfasst ist, traegt die Zeile ist-leer. Auf dem
+         * Telefon blendet die Gestaltung daran alles aus, was noch nichts
+         * zu sagen hat: Bestand, Menge, Summe, Entfernen. Vorher stand
+         * dort ein Mengenwaehler und ein Kreuz, bevor ueberhaupt etwas
+         * eingegeben war — das las sich wie eine Bestellung, die schon
+         * drinsteht.
+         */
+        tr.className = 'sz-erfassung__zeile ist-leer';
+
         tr.innerHTML =
             '<td><input type="text" class="sz-erfassung__nummer" data-sz-nummer ' +
                 'placeholder="Art.-Nr. oder EAN" autocomplete="off" spellcheck="false"></td>' +
-            '<td class="sz-erfassung__artikel" data-sz-artikel><em>noch nichts erfasst</em></td>' +
+            '<td class="sz-erfassung__artikel sz-erfassung__was" data-sz-artikel><em>noch nichts erfasst</em></td>' +
             '<td class="sz-erfassung__bestand mono" data-sz-bestand>—</td>' +
             '<td><span class="sz-menge">' +
                 '<button type="button" data-sz-minus aria-label="weniger">−</button>' +
@@ -91,6 +102,7 @@
                 var d = a.data;
                 tr.dataset.id = d.id;
                 tr.dataset.preis = d.preis;
+                tr.classList.remove( 'ist-leer' );
 
                 zelle.innerHTML = '';
                 if ( d.marke ) {
@@ -217,12 +229,27 @@
          * funktioniert, ist das Regaletikett mit der Kamera-App. Im QR
          * steht eine Adresse, und die oeffnet iOS von selbst.
          */
-        scanStatus.innerHTML =
+        /*
+         * Die Erklaerung stand unter dem Beschreibungstext — auf dem
+         * Telefon weit unterhalb des Bildschirms. Zu sehen war nur ein
+         * leerer roter Rahmen, der nichts tat. Also die Buehne weg und
+         * die Erklaerung an ihre Stelle: dorthin schaut man zuerst.
+         */
+        var buehne = wurzel.querySelector( ".sz-scan__buehne" );
+        if ( buehne ) buehne.hidden = true;
+
+        var oben = document.createElement( "p" );
+        oben.className = "sz-scan__kasten sz-scan__kasten--oben";
+        oben.innerHTML =
             "<strong>Auf diesem Gerät scannen Sie mit der Kamera-App.</strong><br>" +
             "Halten Sie sie auf das QR-Etikett am Regal — es erscheint ein Banner, " +
             "antippen, und der Artikel steht hier in der Zeile. " +
             "Den Strichcode auf der Packung kann dieser Browser nicht lesen; " +
             "dafür tippen Sie die Nummer ein.";
+
+        if ( buehne && buehne.parentNode ) buehne.parentNode.insertBefore( oben, buehne );
+
+        scanStatus.hidden = true;
         scanKnopf.hidden = true;
     }
 
