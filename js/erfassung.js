@@ -46,27 +46,30 @@
         var tr = document.createElement( 'tr' );
 
         /*
-         * Solange nichts erfasst ist, traegt die Zeile ist-leer. Auf dem
-         * Telefon blendet die Gestaltung daran alles aus, was noch nichts
-         * zu sagen hat: Bestand, Menge, Summe, Entfernen. Vorher stand
-         * dort ein Mengenwaehler und ein Kreuz, bevor ueberhaupt etwas
-         * eingegeben war — das las sich wie eine Bestellung, die schon
-         * drinsteht.
+         * Solange nichts erfasst ist, traegt die Zeile ist-leer. Die
+         * Gestaltung blendet daran alles aus, was noch nichts zu sagen
+         * hat: Bestand, Menge, Summe, Entfernen. Vorher stand dort ein
+         * Mengenwaehler und ein Kreuz, bevor ueberhaupt etwas eingegeben
+         * war — das las sich wie eine Bestellung, die schon drinsteht.
+         *
+         * Jede Zelle traegt einen Namen. Vorher hiess die Regel "alle
+         * ausser der mit der Nummer" — nur sitzt die Klasse am Feld, nicht
+         * an der Zelle, und so verschwand das Eingabefeld gleich mit.
          */
         tr.className = 'sz-erfassung__zeile ist-leer';
 
         tr.innerHTML =
-            '<td><input type="text" class="sz-erfassung__nummer" data-sz-nummer ' +
+            '<td class="sz-erfassung__eingabe"><input type="text" class="sz-erfassung__nummer" data-sz-nummer ' +
                 'placeholder="Art.-Nr. oder EAN" autocomplete="off" spellcheck="false"></td>' +
             '<td class="sz-erfassung__artikel sz-erfassung__was" data-sz-artikel><em>noch nichts erfasst</em></td>' +
             '<td class="sz-erfassung__bestand mono" data-sz-bestand>—</td>' +
-            '<td><span class="sz-menge">' +
+            '<td class="sz-erfassung__mengezelle"><span class="sz-menge">' +
                 '<button type="button" data-sz-minus aria-label="weniger">−</button>' +
                 '<input type="number" min="1" value="1" data-sz-menge>' +
                 '<button type="button" data-sz-plus aria-label="mehr">+</button>' +
             '</span></td>' +
             '<td class="sz-erfassung__zeilensumme mono" data-sz-zeilensumme>—</td>' +
-            '<td><button type="button" class="sz-erfassung__weg-knopf" data-sz-loeschen ' +
+            '<td class="sz-erfassung__loeschzelle"><button type="button" class="sz-erfassung__weg-knopf" data-sz-loeschen ' +
                 'aria-label="Zeile entfernen">×</button></td>';
 
         koerper.appendChild( tr );

@@ -238,9 +238,36 @@ function sz_termin_abschnitt(): string
             ?>
         </p>
 
-        <p class="sz-termin__fein">
-            <?php echo esc_html__('Ihre Schließtage sind ausgegraut.', 'sapelza-shop'); ?>
-        </p>
+        <?php
+        /*
+         * Der Weg nach vorn.
+         *
+         * Vorher endete die Auswahl im Nichts: man tippte Tag und Fenster
+         * an, die Zeile darueber bestaetigte den Termin — und dann stand
+         * man da. Dass oben im Warenkorb ein Knopf zur Kasse wartet, sieht
+         * niemand, der gerade hier unten gewaehlt hat. Die Rueckmeldung
+         * war genau das: man versteht nicht, dass man wieder hochscrollen
+         * muss.
+         *
+         * Der Knopf ist gesperrt, solange Tag oder Fenster fehlen; das
+         * Skript gibt ihn frei, sobald beides steht. Ohne Skript fuehrt er
+         * trotzdem zur Kasse — und das Gatter dort schickt zurueck, wenn
+         * doch etwas fehlt. Kein Weg, der ins Leere laeuft.
+         */
+        $sz_fertig = sz_termin_gewaehlt() !== '' && sz_fenster_gewaehlt() !== '';
+        ?>
+        <div class="sz-termin__abschluss">
+            <a class="sz-termin__weiter" data-sz-weiter
+               href="<?php echo esc_url(wc_get_checkout_url()); ?>"
+               aria-disabled="<?php echo $sz_fertig ? 'false' : 'true'; ?>">
+                <?php echo esc_html__('Termin übernehmen und zur Kasse', 'sapelza-shop'); ?>
+                <span aria-hidden="true">&rarr;</span>
+            </a>
+
+            <p class="sz-termin__fein">
+                <?php echo esc_html__('Ihre Schließtage sind ausgegraut.', 'sapelza-shop'); ?>
+            </p>
+        </div>
     </section>
     <?php
     return (string) ob_get_clean();
@@ -259,11 +286,22 @@ add_action('wp_footer', function () {
         if ( ! wurzel ) return;
 
         var ergebnis = wurzel.querySelector( '[data-sz-ergebnis]' );
+        var weiter   = wurzel.querySelector( '[data-sz-weiter]' );
         var leer = <?php echo wp_json_encode(__('Noch kein Termin gewählt.', 'sapelza-shop')); ?>;
 
         function gewaehlt( auswahl, feld ) {
             var el = wurzel.querySelector( auswahl + '[aria-pressed="true"]' );
             return el ? el.getAttribute( feld ) : '';
+        }
+
+        /* Frei, sobald Tag und Fenster stehen. */
+        function stand() {
+            if ( ! weiter ) return;
+
+            var fertig = gewaehlt( '[data-sz-tag]', 'data-sz-tag' ) !== ''
+                      && gewaehlt( '[data-sz-fenster]', 'data-sz-fenster' ) !== '';
+
+            weiter.setAttribute( 'aria-disabled', fertig ? 'false' : 'true' );
         }
 
         function senden() {
@@ -296,7 +334,30 @@ add_action('wp_footer', function () {
             }
 
             senden();
+            stand();
         } );
+
+        /*
+         * aria-disabled sperrt einen Link nur fuer die Vorlesesoftware,
+         * nicht fuer den Finger. Der Klick wird hier abgefangen — und die
+         * Auswahl bekommt den Blick statt eines Sprungs ins Leere.
+         */
+        if ( weiter ) {
+            weiter.addEventListener( 'click', function ( e ) {
+                if ( weiter.getAttribute( 'aria-disabled' ) !== 'true' ) return;
+
+                e.preventDefault();
+
+                var offen = wurzel.querySelector(
+                    gewaehlt( '[data-sz-tag]', 'data-sz-tag' ) === ''
+                        ? '[data-sz-tag]:not([disabled])'
+                        : '[data-sz-fenster]'
+                );
+                if ( offen ) offen.focus();
+            } );
+        }
+
+        stand();
     } )();
     </script>
     <?php

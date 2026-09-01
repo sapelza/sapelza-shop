@@ -284,7 +284,7 @@ add_action('wp_enqueue_scripts', function () {
         'sapelza-erfassung',
         plugins_url('js/erfassung.js', SZ_SHOP_PFAD . 'sapelza-shop.php'),
         [],
-        '1.6.0',
+        '1.7.0',
         true
     );
 }, 30);
