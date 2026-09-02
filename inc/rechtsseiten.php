@@ -7,6 +7,16 @@
  * gewerblich verkauft, muss Anbieterkennzeichnung und
  * Datenschutzinformation vorhalten, und im Fuß muss man sie finden.
  *
+ * Dazu kommt, dass hier nicht nur Betriebe bestellen: Bauern und
+ * Privathaushalte kaufen ohne MwSt.-Nummer. Damit gilt der Codice del
+ * Consumo — Widerrufsbelehrung und Verbraucher-Gewährleistung sind
+ * dann keine Kür. Wer nicht ordnungsgemäß über den Widerruf belehrt,
+ * dem läuft die Frist nicht vierzehn Tage, sondern zwölf Monate und
+ * vierzehn Tage (Art. 53 Codice del Consumo).
+ *
+ * Die Texte selbst stehen in inc/rechtstexte.php — sie sind länger
+ * geworden als die Werkstatt, die sie einsetzt.
+ *
  * Was diese Datei tut und was nicht
  * ---------------------------------
  *
@@ -33,7 +43,7 @@ if (!defined('ABSPATH')) exit;
  *
  * Die Liste steht hier im Plugin, weil sie zum Verhalten gehört: das
  * Theme fragt sie nur ab, um die Links im Fuß zu setzen, und kommt auch
- * ohne Plugin zurecht (siehe sz_fuss_recht() in footer.php).
+ * ohne Plugin zurecht (siehe sz_theme_rechtsseiten() in functions.php).
  *
  * Mehrere Kennungen je Seite, weil verschiedene Werkzeuge verschiedene
  * Kennungen anlegen: WordPress selbst nennt die Datenschutzseite gern
@@ -58,7 +68,12 @@ function sz_rechtsseiten(): array
         'agb' => [
             'titel'     => __('Allgemeine Geschäftsbedingungen', 'sapelza-shop'),
             'kennungen' => ['agb', 'geschaeftsbedingungen'],
-            'pflicht'   => false,
+            'pflicht'   => true,
+        ],
+        'widerruf' => [
+            'titel'     => __('Widerrufsbelehrung', 'sapelza-shop'),
+            'kennungen' => ['widerruf', 'widerrufsbelehrung', 'widerrufsrecht'],
+            'pflicht'   => true,
         ],
         'versand' => [
             'titel'     => __('Lieferung und Zahlung', 'sapelza-shop'),
@@ -111,191 +126,6 @@ function sz_rechtsseite_adresse(string $schluessel): string
     if (!$seite || $seite->post_status !== 'publish') return '';
 
     return (string) get_permalink($seite);
-}
-
-/* ===================================================================
-   Die Gerüsttexte
-   ===================================================================
-
-   Bewusst mit sichtbaren Lücken in eckigen Klammern. Wer den Entwurf
-   öffnet, sieht sofort, was noch fehlt — und niemand hält ihn für
-   fertig. Der Kasten oben sagt dasselbe noch einmal in Worten.
-   =================================================================== */
-
-/**
- * Der Hinweis, der über jedem Entwurf steht.
- */
-function sz_recht_hinweis(): string
-{
-    return '<!-- wp:paragraph --><p><strong>' . esc_html__('Entwurf — noch nicht veröffentlichen.', 'sapelza-shop')
-         . '</strong> ' . esc_html__('Dieser Text ist ein Gerüst. Die Angaben in eckigen Klammern fehlen und müssen ergänzt werden; ob der Inhalt für Ihren Betrieb vollständig und richtig ist, muss jemand beurteilen, der die Rechtslage kennt — Steuerberater, Wirtschaftsverband oder Anwalt. Diesen Absatz danach löschen.', 'sapelza-shop')
-         . '</p><!-- /wp:paragraph -->';
-}
-
-/**
- * Impressum — Anbieterkennzeichnung nach italienischem Recht.
- *
- * Die Pflichtangaben eines italienischen Unternehmens unterscheiden sich
- * von den deutschen: neben Anschrift und MwSt-Nummer gehören die
- * Eintragung im Registro Imprese und die REA-Nummer der Handelskammer
- * dazu, bei Kapitalgesellschaften außerdem das Gesellschaftskapital.
- *
- * Was ich nicht hineinschreibe: die Zahlen. Eine erfundene REA-Nummer
- * wäre schlimmer als eine offene Lücke.
- */
-function sz_recht_text_impressum(): string
-{
-    $absatz = static fn(string $t): string => '<!-- wp:paragraph --><p>' . $t . '</p><!-- /wp:paragraph -->';
-    $titel  = static fn(string $t): string => '<!-- wp:heading {"level":2} --><h2>' . esc_html($t) . '</h2><!-- /wp:heading -->';
-
-    return sz_recht_hinweis()
-
-        . $titel(__('Anbieter', 'sapelza-shop'))
-        . $absatz(
-            '[' . esc_html__('Firmenbezeichnung laut Handelsregister', 'sapelza-shop') . ']<br>'
-            . '[' . esc_html__('Rechtsform, z. B. Einzelunternehmen / OHG / GmbH', 'sapelza-shop') . ']<br>'
-            . '[' . esc_html__('Straße und Hausnummer', 'sapelza-shop') . ']<br>'
-            . esc_html__('39034 Toblach (BZ), Italien', 'sapelza-shop')
-        )
-
-        . $titel(__('Kontakt', 'sapelza-shop'))
-        . $absatz(
-            esc_html__('Telefon: +39 0474 972205', 'sapelza-shop') . '<br>'
-            . esc_html__('E-Mail: info@sapelza.it', 'sapelza-shop') . '<br>'
-            . '[' . esc_html__('PEC-Adresse, falls vorhanden', 'sapelza-shop') . ']'
-        )
-
-        . $titel(__('Steuer- und Registerangaben', 'sapelza-shop'))
-        . $absatz(
-            esc_html__('MwSt.-Nummer (Partita IVA):', 'sapelza-shop') . ' [IT…]<br>'
-            . esc_html__('Steuernummer (Codice fiscale):', 'sapelza-shop') . ' […]<br>'
-            . esc_html__('Eintragung im Handelsregister Bozen (Registro Imprese):', 'sapelza-shop') . ' […]<br>'
-            . esc_html__('REA-Nummer der Handelskammer Bozen:', 'sapelza-shop') . ' [BZ-…]<br>'
-            . '[' . esc_html__('Gesellschaftskapital — nur bei Kapitalgesellschaften', 'sapelza-shop') . ']'
-        )
-
-        . $titel(__('Vertretungsberechtigt', 'sapelza-shop'))
-        . $absatz('[' . esc_html__('Vor- und Nachname', 'sapelza-shop') . ']')
-
-        . $titel(__('Verantwortlich für den Inhalt', 'sapelza-shop'))
-        . $absatz(
-            '[' . esc_html__('Vor- und Nachname', 'sapelza-shop') . ']<br>'
-            . '[' . esc_html__('Anschrift, falls abweichend', 'sapelza-shop') . ']'
-        )
-
-        . $titel(__('Streitbeilegung', 'sapelza-shop'))
-        . $absatz(
-            '[' . esc_html__('Mit Ihrem Berater klären: Welcher Hinweis gilt für Ihren Betrieb? Wenn Sie ausschließlich an Unternehmen mit MwSt.-Nummer verkaufen, gelten die Verbraucher-Regeln nicht — dann gehört hier ein anderer oder gar kein Text hin.', 'sapelza-shop') . ']'
-        );
-}
-
-/**
- * Datenschutzerklärung — bewusst nur ein Gerüst.
- *
- * WordPress bringt selbst einen ausführlichen Entwurf mit: unter
- * Einstellungen → Datenschutz legt es eine Seite an, in die auch
- * WooCommerce seine Abschnitte einträgt (Konto, Bestellungen, Zahlung).
- * Dieser Text hier nennt deshalb vor allem, was an diesem Shop besonders
- * ist, und verweist auf jenen Entwurf.
- */
-function sz_recht_text_datenschutz(): string
-{
-    $absatz = static fn(string $t): string => '<!-- wp:paragraph --><p>' . $t . '</p><!-- /wp:paragraph -->';
-    $titel  = static fn(string $t): string => '<!-- wp:heading {"level":2} --><h2>' . esc_html($t) . '</h2><!-- /wp:heading -->';
-
-    return sz_recht_hinweis()
-
-        . $absatz(
-            '<em>' . esc_html__('Hinweis für Sie, nicht für Besucher: WordPress hält unter Einstellungen → Datenschutz einen ausführlichen Entwurf bereit, in den auch WooCommerce seine Abschnitte zu Konto, Bestellungen und Zahlung einträgt. Führen Sie beide zusammen und löschen Sie diesen Absatz.', 'sapelza-shop') . '</em>'
-        )
-
-        . $titel(__('Verantwortlicher', 'sapelza-shop'))
-        . $absatz(
-            '[' . esc_html__('Firmenbezeichnung, Anschrift, MwSt.-Nummer — wie im Impressum', 'sapelza-shop') . ']<br>'
-            . esc_html__('E-Mail: info@sapelza.it', 'sapelza-shop')
-        )
-
-        . $titel(__('Hosting', 'sapelza-shop'))
-        . $absatz(
-            '[' . esc_html__('Diese Seite läuft bei Raidboxes. Name, Anschrift und Auftragsverarbeitungsvertrag des Anbieters eintragen — der Vertrag muss vorliegen.', 'sapelza-shop') . ']'
-        )
-
-        . $titel(__('Kundenkonto und Bestellungen', 'sapelza-shop'))
-        . $absatz(
-            esc_html__('Für ein Geschäftskonto werden Firmenname, Anschrift, MwSt.-Nummer, Ansprechpartner und Kontaktdaten gespeichert. Bestellungen werden mit Artikeln, Mengen, Preisen und dem gewählten Liefertag aufbewahrt.', 'sapelza-shop') . ' '
-            . '[' . esc_html__('Aufbewahrungsfristen ergänzen — steuerrechtlich in Italien in der Regel zehn Jahre; bitte bestätigen lassen.', 'sapelza-shop') . ']'
-        )
-
-        . $titel(__('Zahlung und Versand', 'sapelza-shop'))
-        . $absatz('[' . esc_html__('Welche Zahlungsarten gibt es, und welche Daten gehen dabei an wen? Ausliefern tun Sie selbst — das ist ein Vorteil und gehört hierher.', 'sapelza-shop') . ']')
-
-        . $titel(__('Cookies', 'sapelza-shop'))
-        . $absatz(
-            esc_html__('Für Anmeldung und Warenkorb sind Cookies technisch nötig.', 'sapelza-shop') . ' '
-            . '[' . esc_html__('Kommen weitere hinzu — Statistik, Karten, eingebettete Videos —, gehören sie hierher, und dann braucht es eine Einwilligung.', 'sapelza-shop') . ']'
-        )
-
-        . $titel(__('Ihre Rechte', 'sapelza-shop'))
-        . $absatz(
-            esc_html__('Auskunft, Berichtigung, Löschung, Einschränkung, Datenübertragbarkeit und Widerspruch — zu richten an die oben genannte Anschrift.', 'sapelza-shop') . ' '
-            . '[' . esc_html__('Zuständige Aufsichtsbehörde in Italien ist der Garante per la protezione dei dati personali; Anschrift ergänzen.', 'sapelza-shop') . ']'
-        );
-}
-
-/**
- * AGB und Lieferbedingungen — die Fragen, nicht die Antworten.
- *
- * Hier ein Muster einzusetzen wäre der Punkt, an dem ein Gerüst
- * gefährlich wird: die Bedingungen eines Hauses sind das, was es
- * tatsächlich zusagt. Also stehen hier die Fragen, die zu beantworten
- * sind.
- */
-function sz_recht_text_bedingungen(string $was): string
-{
-    $absatz = static fn(string $t): string => '<!-- wp:paragraph --><p>' . $t . '</p><!-- /wp:paragraph -->';
-    $liste  = static function (array $punkte): string {
-        $li = '';
-        foreach ($punkte as $p) $li .= '<li>' . esc_html($p) . '</li>';
-        return '<!-- wp:list --><ul>' . $li . '</ul><!-- /wp:list -->';
-    };
-
-    if ($was === 'versand') {
-        return sz_recht_hinweis()
-            . $absatz(esc_html__('Zu beantworten:', 'sapelza-shop'))
-            . $liste([
-                __('In welchem Gebiet wird geliefert, und was gilt außerhalb?', 'sapelza-shop'),
-                __('Ab welchem Bestellwert ist die Lieferung frei, und was kostet sie darunter?', 'sapelza-shop'),
-                __('Bis wann muss bestellt sein, damit am gewählten Tag geliefert wird?', 'sapelza-shop'),
-                __('Was geschieht, wenn beim Liefern niemand da ist?', 'sapelza-shop'),
-                __('Welche Zahlungsarten gibt es, und mit welchem Zahlungsziel?', 'sapelza-shop'),
-                __('Wie wird bei Transportschäden oder Fehlmengen verfahren?', 'sapelza-shop'),
-            ]);
-    }
-
-    return sz_recht_hinweis()
-        . $absatz(esc_html__('Zu beantworten — und zwar zuerst die Grundfrage, weil alles Weitere daran hängt:', 'sapelza-shop'))
-        . $liste([
-            __('Verkaufen Sie ausschließlich an Unternehmen mit MwSt.-Nummer, oder können auch Privatpersonen bestellen? Bei Privatpersonen gelten Widerrufsrecht und die Informationspflichten für Verbraucher — bei reinem B2B nicht.', 'sapelza-shop'),
-            __('Wann kommt der Vertrag zustande: mit der Bestellung oder mit Ihrer Bestätigung?', 'sapelza-shop'),
-            __('Was gilt, wenn ein Artikel nicht lieferbar ist?', 'sapelza-shop'),
-            __('Sind die Preise netto oder brutto, und wann sind sie fällig?', 'sapelza-shop'),
-            __('Eigentumsvorbehalt bis zur vollständigen Zahlung?', 'sapelza-shop'),
-            __('Wie lange und in welcher Form werden Mängel gerügt?', 'sapelza-shop'),
-            __('Gerichtsstand und anwendbares Recht.', 'sapelza-shop'),
-        ]);
-}
-
-/**
- * Der Gerüsttext zu einer Seite.
- */
-function sz_recht_text(string $schluessel): string
-{
-    switch ($schluessel) {
-        case 'impressum':   return sz_recht_text_impressum();
-        case 'datenschutz': return sz_recht_text_datenschutz();
-        case 'versand':     return sz_recht_text_bedingungen('versand');
-        default:            return sz_recht_text_bedingungen('agb');
-    }
 }
 
 /* ===================================================================
@@ -391,6 +221,10 @@ function sz_rechtsseiten_werkstatt(): void
 
         <p style="max-width:44rem">
             <?php echo esc_html__('Impressum und Datenschutzerklärung sind für einen Shop, der gewerblich verkauft, verpflichtend — und im Fuß der Seite muss man sie finden. Solange sie fehlen, erscheint dort auch kein Link: ein Link, der ins Leere führt, sieht aus, als wäre die Pflicht erfüllt.', 'sapelza-shop'); ?>
+        </p>
+
+        <p style="max-width:44rem">
+            <?php echo esc_html__('Weil hier auch Privatkunden ohne MwSt.-Nummer bestellen — Bauern, Haushalte —, gilt zusätzlich das Verbraucherrecht: Widerrufsbelehrung und Verbraucher-Gewährleistung. Eine unvollständige Widerrufsbelehrung verlängert die Frist von vierzehn Tagen auf zwölf Monate und vierzehn Tage. Diese Seite ist deshalb die, die am gründlichsten geprüft gehört.', 'sapelza-shop'); ?>
         </p>
 
         <p style="max-width:44rem">
