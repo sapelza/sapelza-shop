@@ -112,6 +112,10 @@
                        meist mehrere Zeilen hintereinander. */
                     knopf.classList.add( 'ist-drin' );
                     window.setTimeout( function () { knopf.classList.remove( 'ist-drin' ); }, 1400 );
+
+                    /* Und die Zahl oben am Korb mitziehen. Ohne das blieb
+                       sie stehen, bis jemand die Seite wechselte. */
+                    if ( window.szWarenkorbZahl ) window.szWarenkorbZahl( a.data.korb );
                 }
             } )
             .catch( function () { knopf.disabled = false; } );

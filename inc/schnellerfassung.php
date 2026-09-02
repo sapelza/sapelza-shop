@@ -187,6 +187,14 @@ function sz_erfassung_warenkorb(): void
     wp_send_json_success([
         'zahl' => $zahl,
         'ziel' => wc_get_cart_url(),
+
+        /*
+         * Wie viele Stueck jetzt im Korb liegen — nicht wie viele eben
+         * dazukamen. Die Zahl im Kopf wird beim Seitenaufbau gesetzt;
+         * ohne diese Angabe blieb sie stehen, bis jemand die Seite
+         * wechselte, und der Korb sah leer aus, obwohl er es nicht war.
+         */
+        'korb' => (int) WC()->cart->get_cart_contents_count(),
     ]);
 }
 

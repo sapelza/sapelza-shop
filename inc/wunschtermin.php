@@ -159,16 +159,25 @@ function sz_termin_speichern(): void
    =================================================================== */
 
 /*
- * An den Seiteninhalt angehängt, nicht an einen WooCommerce-Haken: die
+ * Vor den Seiteninhalt gestellt, nicht an einen WooCommerce-Haken: die
  * Block-Fassung des Warenkorbs bietet keinen, und so wirkt es mit beiden
  * Fassungen gleich.
+ *
+ * Vorher stand der Termin dahinter — also unter dem Knopf zur Kasse.
+ * Wer den Knopf drueckte, ohne vorher hinuntergescrollt zu haben, wurde
+ * vom Riegel vor der Kasse zurueckgeworfen, ohne zu verstehen, warum.
+ * Ein Knopf, der einen zurueckschickt, ist kein Knopf.
+ *
+ * Jetzt fuehrt der Weg von oben nach unten durch: erst der Tag, dann
+ * die Ware, dann die Summe, dann die Kasse. Der Riegel bleibt trotzdem
+ * — er faengt den ab, der ueber ein Lesezeichen direkt zur Kasse geht.
  */
 add_filter('the_content', function ($inhalt) {
     if (!function_exists('is_cart') || !is_cart()) return $inhalt;
     if (!in_the_loop() || !is_main_query()) return $inhalt;
     if (function_exists('WC') && WC()->cart && WC()->cart->is_empty()) return $inhalt;
 
-    return $inhalt . sz_termin_abschnitt();
+    return sz_termin_abschnitt() . $inhalt;
 }, 20);
 
 function sz_termin_abschnitt(): string
