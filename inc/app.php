@@ -189,13 +189,35 @@ add_action('template_redirect', static function (): void {
      * Wer nicht angemeldet ist, sieht ohne Preise nichts Brauchbares.
      * Also zuerst die Anmeldung — und danach dorthin, wo er hinwollte.
      * Das erledigt der Filter weiter unten.
+     *
+     * Die Marke heisst sz_von und ist bewusst KEIN angemeldetes
+     * Abfragewort. Mit sz_app=1 griff dieser Riegel auf der Kontoseite
+     * noch einmal, schickte wieder dorthin, und der Browser brach nach
+     * zehn Runden mit "zu viele Weiterleitungen" ab — ausgerechnet im
+     * haeufigsten Fall: Symbol antippen, noch nicht angemeldet.
      */
     if (!is_user_logged_in() && function_exists('wc_get_page_permalink')) {
-        wp_safe_redirect(add_query_arg('sz_app', '1', wc_get_page_permalink('myaccount')));
-        exit;
+        $konto = wc_get_page_permalink('myaccount');
+        if ($konto) {
+            wp_safe_redirect(add_query_arg('sz_von', 'app', $konto));
+            exit;
+        }
     }
 
-    wp_safe_redirect(sz_app_start_url());
+    $ziel = sz_app_start_url();
+
+    /*
+     * Und ein Riegel gegen Schleifen ueberhaupt: zeigt das Ziel auf die
+     * Adresse, auf der wir gerade stehen, wird nicht weitergeleitet,
+     * sondern die Seite gezeigt. Lieber eine Seite, die nicht ganz die
+     * gewuenschte ist, als eine Fehlermeldung des Browsers.
+     */
+    $zielweg = (string) wp_parse_url($ziel, PHP_URL_PATH);
+    $hierweg = (string) wp_parse_url(wp_unslash($_SERVER['REQUEST_URI'] ?? '/'), PHP_URL_PATH);
+
+    if ($zielweg !== '' && untrailingslashit($zielweg) === untrailingslashit($hierweg)) return;
+
+    wp_safe_redirect($ziel);
     exit;
 });
 
@@ -203,7 +225,9 @@ add_action('template_redirect', static function (): void {
  * Nach der Anmeldung aus der App: weiter zum gewählten Start.
  */
 add_filter('woocommerce_login_redirect', static function ($ziel, $benutzer) {
-    if (!isset($_GET['sz_app'])) return $ziel;
+    $von = isset($_GET['sz_von']) ? sanitize_key(wp_unslash($_GET['sz_von'])) : '';
+    if ($von !== 'app') return $ziel;
+
     return sz_app_start_url();
 }, 20, 2);
 
