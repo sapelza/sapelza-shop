@@ -173,5 +173,22 @@
   "Zeile entfernen": "Rimuovi la riga",
   "noch nichts erfasst": "ancora nessuna riga",
   "Nicht gefunden.": "Non trovato.",
-  "Übernahme fehlgeschlagen.": "Aggiunta non riuscita."
+  "Übernahme fehlgeschlagen.": "Aggiunta non riuscita.",
+  "Übersetzungen": "Traduzioni",
+  "Leer heißt: der deutsche Text wird gezeigt. Der deutsche Name und die deutsche Kurzbeschreibung stehen oben wie gewohnt.": "Vuoto significa: viene mostrato il testo tedesco. Nome e descrizione breve in tedesco stanno sopra come sempre.",
+  "Name": "Nome",
+  "Kurzbeschreibung": "Descrizione breve",
+  "Name (%s)": "Nome (%s)",
+  "Leer heißt „%s\" — die eingebaute Übersetzung.": "Vuoto significa „%s\" — la traduzione incorporata.",
+  "Übersetzungen einspielen": "Importare le traduzioni",
+  "%1$d Felder an %2$d Artikeln eingetragen.": "%1$d campi inseriti in %2$d articoli.",
+  "Die Datei daten/uebersetzungen.json im Plugin enthält je Artikelnummer die italienischen und englischen Texte. Dieser Knopf trägt ein, was am Artikel noch fehlt — Felder, die schon etwas enthalten, bleiben unberührt. Er lässt sich also gefahrlos wiederholen, etwa nach einem Plugin-Update mit neuen Texten.": "Il file daten/uebersetzungen.json nel plugin contiene, per codice articolo, i testi italiani e inglesi. Questo pulsante inserisce ciò che manca ancora all'articolo — i campi già compilati restano intatti. Si può quindi ripetere senza rischi, ad esempio dopo un aggiornamento del plugin con nuovi testi.",
+  "Einträge in der Datei": "Voci nel file",
+  "davon als Artikel gefunden": "di cui trovate come articoli",
+  "Felder, die noch fehlen": "Campi ancora mancanti",
+  "Felder, die schon belegt sind": "Campi già compilati",
+  "%1$d Artikelnummern aus der Datei gibt es im Shop nicht (zum Beispiel %2$s).": "%1$d codici articolo del file non esistono nello shop (ad esempio %2$s).",
+  "Fehlende Übersetzungen eintragen": "Inserisci le traduzioni mancanti",
+  "Damit WooCommerce mitspricht": "Perché anche WooCommerce parli la lingua",
+  "Warenkorb, Kasse und Konto übersetzt WooCommerce selbst — sobald die Sprachpakete installiert sind. Das geschieht unter Einstellungen → Allgemein → Sprache der Website: einmal „Italiano\" wählen und speichern, einmal „English (UK)\" wählen und speichern, dann zurück auf Deutsch. WordPress lädt bei jedem Wechsel die Pakete für alle Plugins nach und behält sie.": "Carrello, cassa e account li traduce WooCommerce stesso — appena i pacchetti lingua sono installati. Si fa in Impostazioni → Generali → Lingua del sito: scegliere una volta „Italiano\" e salvare, una volta „English (UK)\" e salvare, poi tornare al tedesco. A ogni cambio WordPress scarica i pacchetti per tutti i plugin e li conserva."
 }

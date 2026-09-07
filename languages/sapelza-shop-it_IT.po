@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: sapelza-shop\n"
-"POT-Creation-Date: 2026-09-07 08:50+0000\n"
-"PO-Revision-Date: 2026-09-07 08:50+0000\n"
+"POT-Creation-Date: 2026-09-07 10:19+0000\n"
+"PO-Revision-Date: 2026-09-07 10:19+0000\n"
 "Language: it_IT\n"
 "Language-Team: Italiano\n"
 "MIME-Version: 1.0\n"
@@ -600,6 +600,79 @@ msgstr "Fotocamera attiva. Inquadri il codice a barre."
 msgid "Strichcode-Erkennung wird geladen …"
 msgstr "Caricamento del lettore di codici …"
 
+#: inc/sprache.php:262
+msgid "Übersetzungen"
+msgstr "Traduzioni"
+
+#: inc/sprache.php:276
+msgid "Leer heißt: der deutsche Text wird gezeigt. Der deutsche Name und die deutsche Kurzbeschreibung stehen oben wie gewohnt."
+msgstr "Vuoto significa: viene mostrato il testo tedesco. Nome e descrizione breve in tedesco stanno sopra come sempre."
+
+#: inc/sprache.php:286
+msgid "Name"
+msgstr "Nome"
+
+#: inc/sprache.php:293
+msgid "Kurzbeschreibung"
+msgstr "Descrizione breve"
+
+#. translators: %s ist der Name der Sprache.
+#: inc/sprache.php:341
+msgid "Name (%s)"
+msgstr "Nome (%s)"
+
+#. translators: %s ist die eingebaute Übersetzung.
+#: inc/sprache.php:354
+msgid "Leer heißt „%s\" — die eingebaute Übersetzung."
+msgstr "Vuoto significa „%s\" — la traduzione incorporata."
+
+#: inc/sprache.php:399 inc/sprache.php:400 inc/sprache.php:467
+msgid "Übersetzungen einspielen"
+msgstr "Importare le traduzioni"
+
+#. translators: 1: geschriebene Felder, 2: Artikel.
+#: inc/sprache.php:473
+msgid "%1$d Felder an %2$d Artikeln eingetragen."
+msgstr "%1$d campi inseriti in %2$d articoli."
+
+#. translators: 1: geschriebene Felder, 2: Artikel.
+#: inc/sprache.php:481
+msgid "Die Datei daten/uebersetzungen.json im Plugin enthält je Artikelnummer die italienischen und englischen Texte. Dieser Knopf trägt ein, was am Artikel noch fehlt — Felder, die schon etwas enthalten, bleiben unberührt. Er lässt sich also gefahrlos wiederholen, etwa nach einem Plugin-Update mit neuen Texten."
+msgstr "Il file daten/uebersetzungen.json nel plugin contiene, per codice articolo, i testi italiani e inglesi. Questo pulsante inserisce ciò che manca ancora all'articolo — i campi già compilati restano intatti. Si può quindi ripetere senza rischi, ad esempio dopo un aggiornamento del plugin con nuovi testi."
+
+#: inc/sprache.php:486
+msgid "Einträge in der Datei"
+msgstr "Voci nel file"
+
+#: inc/sprache.php:487
+msgid "davon als Artikel gefunden"
+msgstr "di cui trovate come articoli"
+
+#: inc/sprache.php:488
+msgid "Felder, die noch fehlen"
+msgstr "Campi ancora mancanti"
+
+#: inc/sprache.php:489
+msgid "Felder, die schon belegt sind"
+msgstr "Campi già compilati"
+
+#. translators: 1: Anzahl, 2: Beispiele.
+#: inc/sprache.php:497
+msgid "%1$d Artikelnummern aus der Datei gibt es im Shop nicht (zum Beispiel %2$s)."
+msgstr "%1$d codici articolo del file non esistono nello shop (ad esempio %2$s)."
+
+#: inc/sprache.php:506
+msgid "Fehlende Übersetzungen eintragen"
+msgstr "Inserisci le traduzioni mancanti"
+
+#: inc/sprache.php:509
+msgid "Damit WooCommerce mitspricht"
+msgstr "Perché anche WooCommerce parli la lingua"
+
+#: inc/sprache.php:511
+msgid "Warenkorb, Kasse und Konto übersetzt WooCommerce selbst — sobald die Sprachpakete installiert sind. Das geschieht unter Einstellungen → Allgemein → Sprache der Website: einmal „Italiano\" wählen und speichern, einmal „English (UK)\" wählen und speichern, dann zurück auf Deutsch. WordPress lädt bei jedem Wechsel die Pakete für alle Plugins nach und behält sie."
+msgstr "Carrello, cassa e account li traduce WooCommerce stesso — appena i pacchetti lingua sono installati. Si fa in Impostazioni → Generali → Lingua del sito: scegliere una volta „Italiano\" e salvare, una volta „English (UK)\" e salvare, poi tornare al tedesco. A ogni cambio WordPress scarica i pacchetti per tutti i plugin e li conserva."
+
 #: inc/wunschtermin.php:32
 msgid "08–10 Uhr"
 msgstr "ore 8–10"
@@ -679,16 +752,16 @@ msgid_plural "%d Fenster frei"
 msgstr[0] "%d fascia libera"
 msgstr[1] "%d fasce libere"
 
-#: sapelza-shop.php:54
+#: sapelza-shop.php:137
 msgid "SAPELZA Shop braucht WooCommerce. Das Plugin bleibt sonst wirkungslos."
 msgstr "SAPELZA Shop richiede WooCommerce. Senza, il plugin resta inattivo."
 
-#: sapelza-shop.php:80
+#: sapelza-shop.php:163
 msgid "SAPELZA Shop-Logik wurde nicht geladen."
 msgstr "La logica SAPELZA Shop non è stata caricata."
 
 #. translators: %s ist eine Liste von PHP-Funktionsnamen.
-#: sapelza-shop.php:85
+#: sapelza-shop.php:168
 msgid "Das aktive Theme bringt dieselben Bausteine noch selbst mit (%s). Bitte zuerst das Child-Theme auf Fassung 1.5.0 oder neuer aktualisieren, dann laedt sich dieses Plugin von allein."
 msgstr "Il tema attivo contiene ancora gli stessi moduli (%s). Aggiorni prima il child theme alla versione 1.5.0 o successiva; poi questo plugin si carica da solo."
 

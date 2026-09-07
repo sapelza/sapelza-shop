@@ -173,5 +173,22 @@
   "Zeile entfernen": "Remove line",
   "noch nichts erfasst": "nothing entered yet",
   "Nicht gefunden.": "Not found.",
-  "Übernahme fehlgeschlagen.": "Adding failed."
+  "Übernahme fehlgeschlagen.": "Adding failed.",
+  "Übersetzungen": "Translations",
+  "Leer heißt: der deutsche Text wird gezeigt. Der deutsche Name und die deutsche Kurzbeschreibung stehen oben wie gewohnt.": "Empty means: the German text is shown. The German name and short description are above as usual.",
+  "Name": "Name",
+  "Kurzbeschreibung": "Short description",
+  "Name (%s)": "Name (%s)",
+  "Leer heißt „%s\" — die eingebaute Übersetzung.": "Empty means \"%s\" — the built-in translation.",
+  "Übersetzungen einspielen": "Import translations",
+  "%1$d Felder an %2$d Artikeln eingetragen.": "%1$d fields written on %2$d items.",
+  "Die Datei daten/uebersetzungen.json im Plugin enthält je Artikelnummer die italienischen und englischen Texte. Dieser Knopf trägt ein, was am Artikel noch fehlt — Felder, die schon etwas enthalten, bleiben unberührt. Er lässt sich also gefahrlos wiederholen, etwa nach einem Plugin-Update mit neuen Texten.": "The file daten/uebersetzungen.json in the plugin holds the Italian and English texts per item number. This button fills in what the item still lacks — fields that already contain something are left alone. It can therefore be repeated safely, for example after a plugin update with new texts.",
+  "Einträge in der Datei": "Entries in the file",
+  "davon als Artikel gefunden": "of which found as items",
+  "Felder, die noch fehlen": "Fields still missing",
+  "Felder, die schon belegt sind": "Fields already filled",
+  "%1$d Artikelnummern aus der Datei gibt es im Shop nicht (zum Beispiel %2$s).": "%1$d item numbers from the file do not exist in the shop (for example %2$s).",
+  "Fehlende Übersetzungen eintragen": "Fill in missing translations",
+  "Damit WooCommerce mitspricht": "So that WooCommerce speaks the language too",
+  "Warenkorb, Kasse und Konto übersetzt WooCommerce selbst — sobald die Sprachpakete installiert sind. Das geschieht unter Einstellungen → Allgemein → Sprache der Website: einmal „Italiano\" wählen und speichern, einmal „English (UK)\" wählen und speichern, dann zurück auf Deutsch. WordPress lädt bei jedem Wechsel die Pakete für alle Plugins nach und behält sie.": "Cart, checkout and account are translated by WooCommerce itself — as soon as the language packs are installed. That happens under Settings → General → Site Language: choose \"Italiano\" once and save, choose \"English (UK)\" once and save, then switch back to German. With every switch WordPress downloads the packs for all plugins and keeps them."
 }
