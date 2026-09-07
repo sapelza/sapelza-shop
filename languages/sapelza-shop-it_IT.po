@@ -1,0 +1,694 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: sapelza-shop\n"
+"POT-Creation-Date: 2026-09-07 08:50+0000\n"
+"PO-Revision-Date: 2026-09-07 08:50+0000\n"
+"Language: it_IT\n"
+"Language-Team: Italiano\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Domain: sapelza-shop\n"
+#: inc/app.php:55 inc/konto.php:172 inc/meine-artikel.php:100
+msgid "Meine Artikel"
+msgstr "I miei articoli"
+
+#: inc/app.php:64
+msgid "Schnellerfassung"
+msgstr "Inserimento rapido"
+
+#: inc/app.php:74
+msgid "Produkte"
+msgstr "Prodotti"
+
+#: inc/app.php:82
+msgid "Mein Konto"
+msgstr "Il mio account"
+
+#: inc/app.php:89
+msgid "Startseite"
+msgstr "Pagina iniziale"
+
+#: inc/app.php:240
+msgid "Bestellen für Handwerk und Gastronomie im Hochpustertal."
+msgstr "Ordini per artigianato e ristorazione in Alta Pusteria."
+
+#: inc/app.php:330
+msgid "Auf dem Telefon"
+msgstr "Sul telefono"
+
+#: inc/app.php:333
+msgid "Den Shop als App ablegen"
+msgstr "Salvare lo shop come app"
+
+#: inc/app.php:336
+msgid "Sie können den Shop auf den Startbildschirm legen — ein Symbol antippen, und die Liste ist da, ohne Browserleisten. Kein App Store, keine Installation."
+msgstr "Può mettere lo shop nella schermata Home — un tocco sull'icona e la lista è lì, senza barre del browser. Nessun App Store, nessuna installazione."
+
+#: inc/app.php:340
+msgid "Gespeichert. Beim nächsten Öffnen der App gilt die neue Wahl."
+msgstr "Salvato. Alla prossima apertura dell'app vale la nuova scelta."
+
+#: inc/app.php:347
+msgid "Womit soll die App starten?"
+msgstr "Con cosa deve aprirsi l'app?"
+
+#: inc/app.php:360 inc/favoriten.php:83
+msgid "Merken"
+msgstr "Salva"
+
+#: inc/app.php:365
+msgid "Die Wahl gilt für Sie, nicht für den ganzen Betrieb — wer im Lager scannt, kann mit der Schnellerfassung starten, während im Büro die Artikelliste aufgeht."
+msgstr "La scelta vale per Lei, non per tutta l'azienda — chi scansiona in magazzino può partire dall'inserimento rapido, mentre in ufficio si apre la lista degli articoli."
+
+#: inc/app.php:371
+msgid "iPhone und iPad"
+msgstr "iPhone e iPad"
+
+#: inc/app.php:373
+msgid "Diese Seite in Safari öffnen."
+msgstr "Apra questa pagina in Safari."
+
+#: inc/app.php:374
+msgid "Unten auf das Teilen-Zeichen tippen — das Quadrat mit dem Pfeil nach oben."
+msgstr "Tocchi in basso il simbolo Condividi — il quadrato con la freccia verso l'alto."
+
+#: inc/app.php:375
+msgid "„Zum Home-Bildschirm\" wählen und bestätigen."
+msgstr "Scelga „Aggiungi alla schermata Home\" e confermi."
+
+#: inc/app.php:380
+msgid "Android"
+msgstr "Android"
+
+#: inc/app.php:382
+msgid "Diese Seite in Chrome öffnen."
+msgstr "Apra questa pagina in Chrome."
+
+#: inc/app.php:383
+msgid "Oben rechts auf die drei Punkte tippen."
+msgstr "Tocchi i tre puntini in alto a destra."
+
+#: inc/app.php:384
+msgid "„App installieren\" oder „Zum Startbildschirm hinzufügen\" wählen."
+msgstr "Scelga „Installa app\" oppure „Aggiungi a schermata Home\"."
+
+#: inc/app.php:390
+msgid "Einmal noch anmelden: Das Fenster vom Startbildschirm hat auf dem iPhone einen eigenen Speicher, getrennt von Safari. Danach bleibt es angemeldet."
+msgstr "Un ultimo accesso: sull'iPhone la finestra della schermata Home ha una memoria propria, separata da Safari. Poi resta collegata."
+
+#: inc/artikelnamen.php:248
+msgid "Bitte melden Sie sich an."
+msgstr "Effettui l'accesso."
+
+#: inc/artikelnamen.php:256
+msgid "Artikel nicht gefunden."
+msgstr "Articolo non trovato."
+
+#. translators: %s ist der Name der Person.
+#: inc/artikelnamen.php:285 inc/meine-artikel.php:212
+msgid "zuletzt geändert von %s"
+msgstr "ultima modifica di %s"
+
+#: inc/artikelnamen.php:330
+msgid "Nachfolger (Art.-Nr.)"
+msgstr "Successore (cod. art.)"
+
+#: inc/artikelnamen.php:331
+msgid "Läuft dieser Artikel aus: die Artikelnummer des Nachfolgers. Wer ein altes Regaletikett scannt, wird dann dorthin geführt statt auf eine Fehlerseite."
+msgstr "Se questo articolo va fuori produzione: il codice dell'articolo che lo sostituisce. Chi scansiona una vecchia etichetta viene portato lì invece che su una pagina di errore."
+
+#: inc/favoriten.php:83
+msgid "Gemerkt"
+msgstr "Salvato"
+
+#: inc/favoriten.php:96
+msgid "Aus den Favoriten nehmen"
+msgstr "Togli dai preferiti"
+
+#: inc/favoriten.php:96
+msgid "Zu den Favoriten"
+msgstr "Aggiungi ai preferiti"
+
+#: inc/konto.php:174 inc/meine-artikel.php:120
+msgid "Favoriten"
+msgstr "Preferiti"
+
+#: inc/konto.php:195
+msgid "Noch nichts gemerkt. Das Herz an einer Artikelkachel legt ihn hier ab — für den ganzen Betrieb, nicht nur für Sie."
+msgstr "Ancora nessun preferito. Il cuore su una scheda articolo lo mette qui — per tutta l'azienda, non solo per Lei."
+
+#: inc/konto.php:218 inc/konto.php:317
+msgid "Ansehen"
+msgstr "Vedi"
+
+#: inc/konto.php:260
+msgid "Guten Tag"
+msgstr "Buongiorno"
+
+#: inc/konto.php:267
+msgid "Preisgruppe %s"
+msgstr "Gruppo di prezzo %s"
+
+#: inc/konto.php:273
+msgid "Offen"
+msgstr "Aperti"
+
+#: inc/konto.php:278
+msgid "Bestellungen %s"
+msgstr "Ordini %s"
+
+#: inc/konto.php:283
+msgid "Gemerkte Artikel"
+msgstr "Articoli preferiti"
+
+#: inc/konto.php:294
+msgid "Letzte Bestellungen"
+msgstr "Ultimi ordini"
+
+#: inc/konto.php:296
+msgid "Alle Bestellungen →"
+msgstr "Tutti gli ordini →"
+
+#: inc/konto.php:337
+msgid "Ihre Ausgaben"
+msgstr "Le Sue spese"
+
+#: inc/konto.php:351
+msgid "Vorjahr %s"
+msgstr "Anno precedente %s"
+
+#: inc/konto.php:367
+msgid "Vorjahr: %s"
+msgstr "Anno precedente: %s"
+
+#: inc/konto.php:381
+msgid "Nach Kategorie"
+msgstr "Per categoria"
+
+#: inc/konto.php:424
+msgid "Fällt vermutlich bald an"
+msgstr "Probabilmente presto necessario"
+
+#: inc/konto.php:433
+msgid "alle %d Tage"
+msgstr "ogni %d giorni"
+
+#: inc/konto.php:442
+msgid "Nachbestellen →"
+msgstr "Riordina →"
+
+#: inc/konto.php:449
+msgid "Steht nur hier im Konto — wir schicken deswegen keine E-Mails."
+msgstr "Si vede solo qui nell'account — non inviamo e-mail per questo."
+
+#: inc/konto.php:459
+msgid "Zugänge im Betrieb"
+msgstr "Accessi dell'azienda"
+
+#: inc/konto.php:462
+msgid "Jede Person im Betrieb hat einen eigenen Zugang mit eigener E-Mail und eigenem Passwort — kein geteiltes Konto. Bestellungen laufen über dasselbe Betriebskonto und bleiben dem Zugang zugeordnet, von dem sie kamen."
+msgstr "Ogni persona in azienda ha un accesso proprio con e-mail e password proprie — nessun account condiviso. Gli ordini passano dallo stesso account aziendale e restano attribuiti all'accesso da cui sono partiti."
+
+#: inc/konto.php:483
+msgid "Ihre Konditionen, Ihr Verlauf, Ihre Belege."
+msgstr "Le Sue condizioni, la Sua cronologia, i Suoi documenti."
+
+#. translators: %d ist die Zahl der Tage seit der letzten Lieferung.
+#: inc/konto.php:437 inc/meine-artikel.php:228
+msgid "letzte Lieferung vor %d Tag"
+msgid_plural "letzte Lieferung vor %d Tagen"
+msgstr[0] "ultima consegna %d giorno fa"
+msgstr[1] "ultima consegna %d giorni fa"
+
+#: inc/marken.php:107 inc/marken.php:108 inc/marken.php:180
+msgid "Marken erkennen"
+msgstr "Riconoscere le marche"
+
+#: inc/marken.php:185
+msgid "%1$d Marken angelegt, %2$d Zuordnungen geschrieben."
+msgstr "%1$d marche create, %2$d assegnazioni scritte."
+
+#: inc/marken.php:193
+msgid "Aus jedem Artikelnamen ist das erste Wort herausgelesen und mit gleichen zusammengefasst. Das ist eine Vermutung, keine Wahrheit — bei „Algae – Algenmittel Pool\" ist das erste Wort der Artikel und nicht die Marke. Streichen Sie, was keine Marke ist, bessern Sie Schreibweisen aus, und weisen Sie den Rest zu."
+msgstr "Da ogni nome di articolo è stata estratta la prima parola e raggruppata con le uguali. È un'ipotesi, non una certezza — in „Algae – Algenmittel Pool\" la prima parola è l'articolo, non la marca. Elimini ciò che non è una marca, corregga le grafie e assegni il resto."
+
+#: inc/marken.php:197
+msgid "Es wird nur hinzugefügt."
+msgstr "Viene solo aggiunto."
+
+#: inc/marken.php:198
+msgid "Artikel, die schon eine Marke tragen, stehen hier gar nicht erst — bestehende Zuordnungen werden nie überschrieben und nie gelöscht."
+msgstr "Gli articoli che hanno già una marca non compaiono qui — le assegnazioni esistenti non vengono mai sovrascritte né cancellate."
+
+#: inc/marken.php:202
+msgid "Nichts vorzuschlagen. Entweder tragen bereits alle Artikel eine Marke, oder aus den Namen lässt sich keine herauslesen."
+msgstr "Niente da proporre. O tutti gli articoli hanno già una marca, oppure dai nomi non se ne ricava nessuna."
+
+#: inc/marken.php:213
+msgid "Marke"
+msgstr "Marca"
+
+#: inc/marken.php:214 inc/meine-artikel.php:145 inc/schnellerfassung.php:234
+msgid "Artikel"
+msgstr "Articoli"
+
+#: inc/marken.php:215
+msgid "Zum Beispiel"
+msgstr "Ad esempio"
+
+#: inc/marken.php:246
+msgid "Angehakte Marken zuweisen"
+msgstr "Assegna le marche selezionate"
+
+#: inc/marken.php:251
+msgid "Vorausgewählt sind alle Vorschläge mit mehr als einem Artikel — ein einzelner Artikel ist meist kein Markenname, sondern ein Produktname."
+msgstr "Sono preselezionate tutte le proposte con più di un articolo — un articolo singolo di solito non è una marca ma un nome di prodotto."
+
+#: inc/meine-artikel.php:97
+msgid "Ihr Katalog"
+msgstr "Il Suo catalogo"
+
+#: inc/meine-artikel.php:103
+msgid "Ihr eigener Katalog aus allem, was Sie bisher bezogen haben, auf Wunsch mit Ihren internen Bezeichnungen statt unseren. Was regelmäßig gebraucht wird, liegt in zwei Klicks wieder im Warenkorb."
+msgstr "Il Suo catalogo personale con tutto ciò che ha acquistato finora, se vuole con le Sue denominazioni interne al posto delle nostre. Ciò che serve regolarmente torna nel carrello in due clic."
+
+#: inc/meine-artikel.php:115
+msgid "Auswahl"
+msgstr "Selezione"
+
+#: inc/meine-artikel.php:117
+msgid "Alle"
+msgstr "Tutti"
+
+#: inc/meine-artikel.php:133
+msgid "In Ihren Artikeln suchen"
+msgstr "Cerca nei Suoi articoli"
+
+#: inc/meine-artikel.php:135
+msgid "In Ihren Artikeln suchen …"
+msgstr "Cerca nei Suoi articoli …"
+
+#: inc/meine-artikel.php:144
+msgid "Ihre Bezeichnung"
+msgstr "La Sua denominazione"
+
+#: inc/meine-artikel.php:146 inc/schnellerfassung.php:235
+msgid "Bestand"
+msgstr "Disponibilità"
+
+#: inc/meine-artikel.php:147
+msgid "Preis"
+msgstr "Prezzo"
+
+#: inc/meine-artikel.php:148 inc/meine-artikel.php:254 inc/schnellerfassung.php:236
+msgid "Menge"
+msgstr "Quantità"
+
+#: inc/meine-artikel.php:186
+msgid "%s für den Etikettenbogen auswählen"
+msgstr "Seleziona %s per il foglio di etichette"
+
+#: inc/meine-artikel.php:204
+msgid "Eigenen Namen vergeben"
+msgstr "Assegna un nome proprio"
+
+#: inc/meine-artikel.php:239
+msgid "%d Stk."
+msgstr "%d pz."
+
+#: inc/meine-artikel.php:252
+msgid "Menge verringern"
+msgstr "Riduci la quantità"
+
+#: inc/meine-artikel.php:255
+msgid "Menge erhöhen"
+msgstr "Aumenta la quantità"
+
+#: inc/meine-artikel.php:261 inc/schnellerfassung.php:252 inc/schnellerfassung.php:314
+msgid "In den Warenkorb"
+msgstr "Nel carrello"
+
+#: inc/meine-artikel.php:278
+msgid "Auf den Namen klicken, um ihn zu ändern — leer heißt zurück zum Katalognamen"
+msgstr "Clicchi sul nome per modificarlo — vuoto significa tornare al nome di catalogo"
+
+#: inc/meine-artikel.php:287
+msgid "Am Regal"
+msgstr "Sullo scaffale"
+
+#: inc/meine-artikel.php:290
+msgid "Etiketten zum Aufkleben"
+msgstr "Etichette da incollare"
+
+#: inc/meine-artikel.php:293
+msgid "Wählen Sie oben aus, was ans Regal soll. Auf dem Etikett steht Ihre Bezeichnung — im Code selbst steht nur die Artikelnummer. Deshalb bleiben gedruckte Etiketten gültig, auch wenn Sie einen Artikel später anders nennen."
+msgstr "Selezioni sopra cosa va sullo scaffale. Sull'etichetta c'è la Sua denominazione — nel codice c'è solo il numero dell'articolo. Per questo le etichette stampate restano valide anche se in seguito chiama un articolo in modo diverso."
+
+#: inc/meine-artikel.php:300
+msgid "Etikettengröße"
+msgstr "Formato etichetta"
+
+#: inc/meine-artikel.php:302
+msgid "70 × 37 mm · 24 Stück"
+msgstr "70 × 37 mm · 24 pezzi"
+
+#: inc/meine-artikel.php:305
+msgid "48,5 × 25,4 mm · 44 Stück"
+msgstr "48,5 × 25,4 mm · 44 pezzi"
+
+#: inc/meine-artikel.php:310
+msgid "Bogen erzeugen"
+msgstr "Genera il foglio"
+
+#: inc/meine-artikel.php:313
+msgid "Alle auswählen"
+msgstr "Seleziona tutti"
+
+#: inc/meine-artikel.php:325
+msgid "Zuletzt bestellt"
+msgstr "Ultimo ordine"
+
+#: inc/meine-artikel.php:333
+msgid "Ihre Bezeichnung, nicht unsere Artikelnummer."
+msgstr "La Sua denominazione, non il nostro codice articolo."
+
+#: inc/meine-artikel.php:277
+msgid "%d Artikel"
+msgid_plural "%d Artikel"
+msgstr[0] "%d articolo"
+msgstr[1] "%d articoli"
+
+#: inc/rechtsseiten.php:59
+msgid "Impressum"
+msgstr "Note legali"
+
+#: inc/rechtsseiten.php:64
+msgid "Datenschutzerklärung"
+msgstr "Informativa sulla privacy"
+
+#: inc/rechtsseiten.php:69
+msgid "Allgemeine Geschäftsbedingungen"
+msgstr "Condizioni generali di vendita"
+
+#: inc/rechtsseiten.php:74
+msgid "Widerrufsbelehrung"
+msgstr "Informativa sul diritto di recesso"
+
+#: inc/rechtsseiten.php:79
+msgid "Lieferung und Zahlung"
+msgstr "Consegna e pagamento"
+
+#: inc/rechtsseiten.php:137 inc/rechtsseiten.php:138 inc/rechtsseiten.php:220
+msgid "Rechtsseiten"
+msgstr "Pagine legali"
+
+#. translators: %s ist der Name der Seite.
+#: inc/rechtsseiten.php:159
+msgid "%s gibt es schon — unberührt gelassen."
+msgstr "%s esiste già — lasciata intatta."
+
+#. translators: 1: Name der Seite, 2: Fehlermeldung.
+#: inc/rechtsseiten.php:176
+msgid "%1$s ließ sich nicht anlegen: %2$s"
+msgstr "Impossibile creare %1$s: %2$s"
+
+#. translators: %s ist der Name der Seite.
+#: inc/rechtsseiten.php:195
+msgid "%s als Entwurf angelegt."
+msgstr "%s creata come bozza."
+
+#: inc/rechtsseiten.php:223
+msgid "Impressum und Datenschutzerklärung sind für einen Shop, der gewerblich verkauft, verpflichtend — und im Fuß der Seite muss man sie finden. Solange sie fehlen, erscheint dort auch kein Link: ein Link, der ins Leere führt, sieht aus, als wäre die Pflicht erfüllt."
+msgstr "Note legali e informativa sulla privacy sono obbligatorie per uno shop che vende professionalmente — e devono trovarsi nel piè di pagina. Finché mancano, lì non compare nessun link: un link che porta nel vuoto fa sembrare l'obbligo assolto."
+
+#: inc/rechtsseiten.php:227
+msgid "Weil hier auch Privatkunden ohne MwSt.-Nummer bestellen — Bauern, Haushalte —, gilt zusätzlich das Verbraucherrecht: Widerrufsbelehrung und Verbraucher-Gewährleistung. Eine unvollständige Widerrufsbelehrung verlängert die Frist von vierzehn Tagen auf zwölf Monate und vierzehn Tage. Diese Seite ist deshalb die, die am gründlichsten geprüft gehört."
+msgstr "Poiché qui ordinano anche privati senza partita IVA — agricoltori, famiglie —, vale in aggiunta il diritto dei consumatori: informativa sul recesso e garanzia legale. Un'informativa sul recesso incompleta allunga il termine da quattordici giorni a dodici mesi e quattordici giorni. Questa è quindi la pagina da controllare con più cura."
+
+#: inc/rechtsseiten.php:231
+msgid "Was dieser Knopf tut:"
+msgstr "Cosa fa questo pulsante:"
+
+#: inc/rechtsseiten.php:232
+msgid "Er legt die fehlenden Seiten als Entwurf an, mit einem Gerüst und ausgewiesenen Lücken. Er veröffentlicht nichts und überschreibt nichts. Der Text ist kein fertiger Rechtstext — die Angaben müssen ergänzt und der Inhalt muss von jemandem geprüft werden, der die Rechtslage kennt."
+msgstr "Crea le pagine mancanti come bozze, con una struttura e lacune evidenziate. Non pubblica nulla e non sovrascrive nulla. Il testo non è un testo legale definitivo — i dati vanno completati e il contenuto va verificato da chi conosce la normativa."
+
+#: inc/rechtsseiten.php:245
+msgid "Seite"
+msgstr "Pagina"
+
+#: inc/rechtsseiten.php:246
+msgid "Stand"
+msgstr "Stato"
+
+#: inc/rechtsseiten.php:261
+msgid "verpflichtend"
+msgstr "obbligatoria"
+
+#: inc/rechtsseiten.php:266
+msgid "fehlt"
+msgstr "manca"
+
+#: inc/rechtsseiten.php:268
+msgid "veröffentlicht"
+msgstr "pubblicata"
+
+#: inc/rechtsseiten.php:269 inc/rechtsseiten.php:272
+msgid "bearbeiten"
+msgstr "modifica"
+
+#: inc/rechtsseiten.php:271
+msgid "Entwurf — noch nicht sichtbar"
+msgstr "Bozza — non ancora visibile"
+
+#: inc/rechtsseiten.php:282
+msgid "Fehlende Seiten als Entwurf anlegen"
+msgstr "Crea le pagine mancanti come bozze"
+
+#: inc/rechtsseiten.php:287
+msgid "Die Vorlage, die schon da ist"
+msgstr "Il modello che c'è già"
+
+#. translators: %s ist ein Link zu den Datenschutz-Einstellungen.
+#: inc/rechtsseiten.php:292
+msgid "Für die Datenschutzerklärung hält WordPress selbst einen ausführlichen Entwurf bereit — unter %s. Dort tragen auch WooCommerce und andere Plugins ihre Abschnitte ein, etwa zu Konto, Bestellungen und Zahlung. Dieser Text ist die bessere Grundlage als jedes Muster von außen, weil er beschreibt, was auf dieser Installation tatsächlich läuft."
+msgstr "Per l'informativa sulla privacy WordPress stesso offre una bozza dettagliata — sotto %s. Lì anche WooCommerce e altri plugin inseriscono le loro sezioni, ad esempio su account, ordini e pagamenti. Questo testo è una base migliore di qualsiasi modello esterno, perché descrive ciò che gira davvero su questa installazione."
+
+#: inc/rechtsseiten.php:293
+msgid "Einstellungen → Datenschutz"
+msgstr "Impostazioni → Privacy"
+
+#: inc/schnellerfassung.php:114
+msgid "Nicht gefunden. Nicht im Sortiment? Fragen Sie uns — wir beschaffen es."
+msgstr "Non trovato. Non è in assortimento? Ce lo chieda — lo procuriamo noi."
+
+#. translators: 1: alter Artikelname, 2: Name des Nachfolgers.
+#: inc/schnellerfassung.php:130
+msgid "%1$s führen wir nicht mehr. An seiner Stelle steht jetzt %2$s."
+msgstr "%1$s non è più in assortimento. Al suo posto c'è ora %2$s."
+
+#: inc/schnellerfassung.php:139
+msgid "Für diesen Artikel sehen Sie den Preis erst nach der Anmeldung."
+msgstr "Il prezzo di questo articolo è visibile solo dopo l'accesso."
+
+#: inc/schnellerfassung.php:154
+msgid "Der Warenkorb steht gerade nicht bereit."
+msgstr "Il carrello al momento non è disponibile."
+
+#: inc/schnellerfassung.php:159
+msgid "Nichts erfasst."
+msgstr "Nessuna riga inserita."
+
+#: inc/schnellerfassung.php:184
+msgid "Keine Position konnte übernommen werden."
+msgstr "Nessuna riga è stata aggiunta."
+
+#: inc/schnellerfassung.php:223
+msgid "Tippen"
+msgstr "Digitare"
+
+#: inc/schnellerfassung.php:225
+msgid "Scannen"
+msgstr "Scansionare"
+
+#: inc/schnellerfassung.php:233
+msgid "Art.-Nr. / EAN"
+msgstr "Cod. art. / EAN"
+
+#: inc/schnellerfassung.php:237 inc/schnellerfassung.php:249
+msgid "Summe"
+msgstr "Totale"
+
+#: inc/schnellerfassung.php:238
+msgid "Entfernen"
+msgstr "Rimuovi"
+
+#: inc/schnellerfassung.php:246
+msgid "Eingeben und mit Tab oder Enter bestätigen — die nächste Zeile öffnet sich von selbst."
+msgstr "Digiti e confermi con Tab o Invio — la riga successiva si apre da sola."
+
+#: inc/schnellerfassung.php:264
+msgid "Barcode ins Feld halten"
+msgstr "Inquadri il codice a barre"
+
+#: inc/schnellerfassung.php:267
+msgid "Scannen statt suchen"
+msgstr "Scansionare invece di cercare"
+
+#: inc/schnellerfassung.php:268
+msgid "Barcode mit der Kamera Ihres Mobilgeräts erfassen, ebenso über die QR-Etiketten an Ihrem Lagerplatz. Sie bestellen dort, wo Ihnen der Mangel auffällt — im Lager, nicht Stunden später am Schreibtisch."
+msgstr "Legga il codice a barre con la fotocamera del Suo dispositivo, oppure le etichette QR sul Suo scaffale. Ordina dove nota la mancanza — in magazzino, non ore dopo alla scrivania."
+
+#: inc/schnellerfassung.php:271
+msgid "Kamera öffnen"
+msgstr "Apri la fotocamera"
+
+#: inc/schnellerfassung.php:305
+msgid "Art.-Nr. oder EAN"
+msgstr "Cod. art. o EAN"
+
+#: inc/schnellerfassung.php:306
+msgid "noch nichts erfasst"
+msgstr "ancora nessuna riga"
+
+#: inc/schnellerfassung.php:307
+msgid "weniger"
+msgstr "meno"
+
+#: inc/schnellerfassung.php:308
+msgid "mehr"
+msgstr "più"
+
+#: inc/schnellerfassung.php:309
+msgid "Zeile entfernen"
+msgstr "Rimuovi la riga"
+
+#: inc/schnellerfassung.php:310
+msgid "wird gesucht …"
+msgstr "ricerca in corso …"
+
+#: inc/schnellerfassung.php:311
+msgid "Nicht gefunden."
+msgstr "Non trovato."
+
+#: inc/schnellerfassung.php:312
+msgid "Verbindung unterbrochen."
+msgstr "Connessione interrotta."
+
+#: inc/schnellerfassung.php:313
+msgid "wird übernommen …"
+msgstr "aggiunta in corso …"
+
+#: inc/schnellerfassung.php:315
+msgid "Übernahme fehlgeschlagen."
+msgstr "Aggiunta non riuscita."
+
+#. translators: %s ist der gelesene Strichcode.
+#: inc/schnellerfassung.php:317
+msgid "Erkannt: %s"
+msgstr "Riconosciuto: %s"
+
+#. translators: %s ist der gelesene Strichcode.
+#: inc/schnellerfassung.php:318
+msgid "Kamera läuft. Barcode ins Feld halten."
+msgstr "Fotocamera attiva. Inquadri il codice a barre."
+
+#. translators: %s ist der gelesene Strichcode.
+#: inc/schnellerfassung.php:319
+msgid "Strichcode-Erkennung wird geladen …"
+msgstr "Caricamento del lettore di codici …"
+
+#: inc/wunschtermin.php:32
+msgid "08–10 Uhr"
+msgstr "ore 8–10"
+
+#: inc/wunschtermin.php:33
+msgid "12–14 Uhr"
+msgstr "ore 12–14"
+
+#: inc/wunschtermin.php:34
+msgid "18–20 Uhr"
+msgstr "ore 18–20"
+
+#: inc/wunschtermin.php:197
+msgid "Wann soll geliefert werden?"
+msgstr "Quando desidera la consegna?"
+
+#: inc/wunschtermin.php:198
+msgid "Sie bestimmen den Tag"
+msgstr "Il giorno lo decide Lei"
+
+#: inc/wunschtermin.php:202
+msgid "Wählen Sie den Tag, an dem es Ihnen passt — wenn der Betrieb offen ist, wenn jemand annehmen kann, wenn am wenigsten los ist. Wir richten uns danach."
+msgstr "Scelga il giorno che Le conviene — quando l'azienda è aperta, quando qualcuno può ricevere la merce, quando c'è meno da fare. Ci organizziamo di conseguenza."
+
+#: inc/wunschtermin.php:205
+msgid "Liefertag"
+msgstr "Giorno di consegna"
+
+#: inc/wunschtermin.php:216
+msgid "geschlossen"
+msgstr "chiuso"
+
+#: inc/wunschtermin.php:230 inc/wunschtermin.php:231
+msgid "Zeitfenster"
+msgstr "Fascia oraria"
+
+#: inc/wunschtermin.php:246 inc/wunschtermin.php:299
+msgid "Noch kein Termin gewählt."
+msgstr "Nessuna data scelta."
+
+#: inc/wunschtermin.php:272
+msgid "Termin übernehmen und zur Kasse"
+msgstr "Conferma la data e vai alla cassa"
+
+#: inc/wunschtermin.php:277
+msgid "Ihre Schließtage sind ausgegraut."
+msgstr "I Suoi giorni di chiusura sono in grigio."
+
+#: inc/wunschtermin.php:404
+msgid "Bitte waehlen Sie zuerst einen Liefertag — wir richten die Tour danach ein."
+msgstr "Scelga prima un giorno di consegna — organizziamo il giro in base a quello."
+
+#: inc/wunschtermin.php:405
+msgid "Bitte waehlen Sie noch ein Zeitfenster."
+msgstr "Scelga ancora una fascia oraria."
+
+#: inc/wunschtermin.php:436
+msgid "Liefertermin"
+msgstr "Data di consegna"
+
+#: inc/wunschtermin.php:438
+msgid "ändern"
+msgstr "modifica"
+
+#: inc/wunschtermin.php:460 inc/wunschtermin.php:479
+msgid "Bitte waehlen Sie im Warenkorb Liefertag und Zeitfenster."
+msgstr "Scelga nel carrello il giorno di consegna e la fascia oraria."
+
+#: inc/wunschtermin.php:521 inc/wunschtermin.php:531
+msgid "Wunschtermin"
+msgstr "Data desiderata"
+
+#. translators: %d ist die Zahl der noch freien Zeitfenster.
+#: inc/wunschtermin.php:220
+msgid "%d Fenster frei"
+msgid_plural "%d Fenster frei"
+msgstr[0] "%d fascia libera"
+msgstr[1] "%d fasce libere"
+
+#: sapelza-shop.php:54
+msgid "SAPELZA Shop braucht WooCommerce. Das Plugin bleibt sonst wirkungslos."
+msgstr "SAPELZA Shop richiede WooCommerce. Senza, il plugin resta inattivo."
+
+#: sapelza-shop.php:80
+msgid "SAPELZA Shop-Logik wurde nicht geladen."
+msgstr "La logica SAPELZA Shop non è stata caricata."
+
+#. translators: %s ist eine Liste von PHP-Funktionsnamen.
+#: sapelza-shop.php:85
+msgid "Das aktive Theme bringt dieselben Bausteine noch selbst mit (%s). Bitte zuerst das Child-Theme auf Fassung 1.5.0 oder neuer aktualisieren, dann laedt sich dieses Plugin von allein."
+msgstr "Il tema attivo contiene ancora gli stessi moduli (%s). Aggiorni prima il child theme alla versione 1.5.0 o successiva; poi questo plugin si carica da solo."
+

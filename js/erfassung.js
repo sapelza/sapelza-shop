@@ -17,6 +17,34 @@
     var ziel      = wurzel.dataset.ziel;
     var nonce     = wurzel.dataset.nonce;
 
+    /*
+     * Die Woerter, die dieses Skript selbst schreibt. PHP reicht sie
+     * uebersetzt herein (szErfassung); fehlt das, bleibt es deutsch.
+     */
+    var T = Object.assign( {
+        platzhalter:    'Art.-Nr. oder EAN',
+        leer:           'noch nichts erfasst',
+        weniger:        'weniger',
+        mehr:           'mehr',
+        entfernen:      'Zeile entfernen',
+        suchen:         'wird gesucht …',
+        nichtGefunden:  'Nicht gefunden.',
+        verbindung:     'Verbindung unterbrochen.',
+        uebernehmen:    'wird übernommen …',
+        inDenKorb:      'In den Warenkorb',
+        fehlgeschlagen: 'Übernahme fehlgeschlagen.',
+        erkannt:        'Erkannt: %s',
+        kamera:         'Kamera läuft. Barcode ins Feld halten.',
+        laden:          'Strichcode-Erkennung wird geladen …'
+    }, window.szErfassung || {} );
+
+    /* Fuer alles, was in innerHTML landet. */
+    function hs( s ) {
+        return String( s ).replace( /[&<>"]/g, function ( c ) {
+            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ c ];
+        } );
+    }
+
     /* Die Waehrungsausgabe von WooCommerce ist serverseitig; hier reicht
        eine schlichte Darstellung mit Komma. */
     function geld( n ) {
@@ -60,17 +88,17 @@
 
         tr.innerHTML =
             '<td class="sz-erfassung__eingabe"><input type="text" class="sz-erfassung__nummer" data-sz-nummer ' +
-                'placeholder="Art.-Nr. oder EAN" autocomplete="off" spellcheck="false"></td>' +
-            '<td class="sz-erfassung__artikel sz-erfassung__was" data-sz-artikel><em>noch nichts erfasst</em></td>' +
+                'placeholder="' + hs( T.platzhalter ) + '" autocomplete="off" spellcheck="false"></td>' +
+            '<td class="sz-erfassung__artikel sz-erfassung__was" data-sz-artikel><em>' + hs( T.leer ) + '</em></td>' +
             '<td class="sz-erfassung__bestand mono" data-sz-bestand>—</td>' +
             '<td class="sz-erfassung__mengezelle"><span class="sz-menge">' +
-                '<button type="button" data-sz-minus aria-label="weniger">−</button>' +
+                '<button type="button" data-sz-minus aria-label="' + hs( T.weniger ) + '">−</button>' +
                 '<input type="number" min="1" value="1" data-sz-menge>' +
-                '<button type="button" data-sz-plus aria-label="mehr">+</button>' +
+                '<button type="button" data-sz-plus aria-label="' + hs( T.mehr ) + '">+</button>' +
             '</span></td>' +
             '<td class="sz-erfassung__zeilensumme mono" data-sz-zeilensumme>—</td>' +
             '<td class="sz-erfassung__loeschzelle"><button type="button" class="sz-erfassung__weg-knopf" data-sz-loeschen ' +
-                'aria-label="Zeile entfernen">×</button></td>';
+                'aria-label="' + hs( T.entfernen ) + '">×</button></td>';
 
         koerper.appendChild( tr );
         if ( fokus ) tr.querySelector( '[data-sz-nummer]' ).focus();
@@ -83,7 +111,7 @@
         if ( ! wert ) return;
 
         var zelle = tr.querySelector( '[data-sz-artikel]' );
-        zelle.innerHTML = '<em>wird gesucht …</em>';
+        zelle.innerHTML = '<em>' + hs( T.suchen ) + '</em>';
 
         var daten = new URLSearchParams();
         daten.set( 'action', 'sz_suchen' );
@@ -95,7 +123,7 @@
             .then( function ( a ) {
                 if ( ! a || ! a.success ) {
                     zelle.innerHTML = '<span class="sz-erfassung__fehler"></span>';
-                    zelle.firstChild.textContent = ( a && a.data && a.data.meldung ) || 'Nicht gefunden.';
+                    zelle.firstChild.textContent = ( a && a.data && a.data.meldung ) || T.nichtGefunden;
                     tr.dataset.id = '';
                     tr.dataset.preis = '0';
                     summeRechnen();
@@ -130,7 +158,7 @@
                 if ( tr === koerper.lastElementChild ) neueZeile( true );
             } )
             .catch( function () {
-                zelle.innerHTML = '<span class="sz-erfassung__fehler">Verbindung unterbrochen.</span>';
+                zelle.innerHTML = '<span class="sz-erfassung__fehler">' + hs( T.verbindung ) + '</span>';
             } );
     }
 
@@ -174,7 +202,7 @@
         if ( ! liste.length ) return;
 
         knopf.disabled = true;
-        knopf.textContent = 'wird übernommen …';
+        knopf.textContent = T.uebernehmen;
 
         var daten = new URLSearchParams();
         daten.set( 'action', 'sz_erfassung_warenkorb' );
@@ -186,12 +214,12 @@
             .then( function ( a ) {
                 if ( a && a.success ) { window.location.href = a.data.ziel; return; }
                 knopf.disabled = false;
-                knopf.textContent = 'In den Warenkorb';
-                window.alert( ( a && a.data && a.data.meldung ) || 'Übernahme fehlgeschlagen.' );
+                knopf.textContent = T.inDenKorb;
+                window.alert( ( a && a.data && a.data.meldung ) || T.fehlgeschlagen );
             } )
             .catch( function () {
                 knopf.disabled = false;
-                knopf.textContent = 'In den Warenkorb';
+                knopf.textContent = T.inDenKorb;
             } );
     } );
 
@@ -262,7 +290,7 @@
     function erkannt( code ) {
         anhalten();
         scanStatus.hidden = false;
-        scanStatus.textContent = 'Erkannt: ' + code;
+        scanStatus.textContent = T.erkannt.replace( '%s', code );
 
         wurzel.querySelector( '[data-sz-weg="tippen"]' ).click();
 
@@ -319,7 +347,7 @@
                 video.srcObject = strom;
                 video.play();
                 scanStatus.hidden = false;
-                scanStatus.textContent = 'Kamera läuft. Barcode ins Feld halten.';
+                scanStatus.textContent = T.kamera;
 
                 var leser = new window.BarcodeDetector();
 
@@ -341,10 +369,10 @@
     /* --- Weg zwei: ZXing, fuer Safari ---------------------------------- */
     function mitZxing() {
         scanStatus.hidden = false;
-        scanStatus.textContent = 'Strichcode-Erkennung wird geladen …';
+        scanStatus.textContent = T.laden;
 
         return zxingLaden().then( function () {
-            scanStatus.textContent = 'Kamera läuft. Barcode ins Feld halten.';
+            scanStatus.textContent = T.kamera;
 
             var leser = new window.ZXingBrowser.BrowserMultiFormatReader();
 

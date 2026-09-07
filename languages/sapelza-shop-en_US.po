@@ -1,0 +1,694 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: sapelza-shop\n"
+"POT-Creation-Date: 2026-09-07 08:50+0000\n"
+"PO-Revision-Date: 2026-09-07 08:50+0000\n"
+"Language: en_US\n"
+"Language-Team: English\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Domain: sapelza-shop\n"
+#: inc/app.php:55 inc/konto.php:172 inc/meine-artikel.php:100
+msgid "Meine Artikel"
+msgstr "My items"
+
+#: inc/app.php:64
+msgid "Schnellerfassung"
+msgstr "Quick entry"
+
+#: inc/app.php:74
+msgid "Produkte"
+msgstr "Products"
+
+#: inc/app.php:82
+msgid "Mein Konto"
+msgstr "My account"
+
+#: inc/app.php:89
+msgid "Startseite"
+msgstr "Home"
+
+#: inc/app.php:240
+msgid "Bestellen für Handwerk und Gastronomie im Hochpustertal."
+msgstr "Ordering for trades and hospitality in Alta Pusteria."
+
+#: inc/app.php:330
+msgid "Auf dem Telefon"
+msgstr "On your phone"
+
+#: inc/app.php:333
+msgid "Den Shop als App ablegen"
+msgstr "Save the shop as an app"
+
+#: inc/app.php:336
+msgid "Sie können den Shop auf den Startbildschirm legen — ein Symbol antippen, und die Liste ist da, ohne Browserleisten. Kein App Store, keine Installation."
+msgstr "You can put the shop on your home screen — tap an icon and the list is there, without browser bars. No app store, no installation."
+
+#: inc/app.php:340
+msgid "Gespeichert. Beim nächsten Öffnen der App gilt die neue Wahl."
+msgstr "Saved. The new choice applies the next time you open the app."
+
+#: inc/app.php:347
+msgid "Womit soll die App starten?"
+msgstr "What should the app open with?"
+
+#: inc/app.php:360 inc/favoriten.php:83
+msgid "Merken"
+msgstr "Save"
+
+#: inc/app.php:365
+msgid "Die Wahl gilt für Sie, nicht für den ganzen Betrieb — wer im Lager scannt, kann mit der Schnellerfassung starten, während im Büro die Artikelliste aufgeht."
+msgstr "The choice applies to you, not the whole business — whoever scans in the stockroom can start with quick entry, while the office opens the item list."
+
+#: inc/app.php:371
+msgid "iPhone und iPad"
+msgstr "iPhone and iPad"
+
+#: inc/app.php:373
+msgid "Diese Seite in Safari öffnen."
+msgstr "Open this page in Safari."
+
+#: inc/app.php:374
+msgid "Unten auf das Teilen-Zeichen tippen — das Quadrat mit dem Pfeil nach oben."
+msgstr "Tap the Share icon at the bottom — the square with the arrow pointing up."
+
+#: inc/app.php:375
+msgid "„Zum Home-Bildschirm\" wählen und bestätigen."
+msgstr "Choose \"Add to Home Screen\" and confirm."
+
+#: inc/app.php:380
+msgid "Android"
+msgstr "Android"
+
+#: inc/app.php:382
+msgid "Diese Seite in Chrome öffnen."
+msgstr "Open this page in Chrome."
+
+#: inc/app.php:383
+msgid "Oben rechts auf die drei Punkte tippen."
+msgstr "Tap the three dots at the top right."
+
+#: inc/app.php:384
+msgid "„App installieren\" oder „Zum Startbildschirm hinzufügen\" wählen."
+msgstr "Choose \"Install app\" or \"Add to Home screen\"."
+
+#: inc/app.php:390
+msgid "Einmal noch anmelden: Das Fenster vom Startbildschirm hat auf dem iPhone einen eigenen Speicher, getrennt von Safari. Danach bleibt es angemeldet."
+msgstr "Sign in once more: on the iPhone, the home-screen window has its own storage, separate from Safari. After that it stays signed in."
+
+#: inc/artikelnamen.php:248
+msgid "Bitte melden Sie sich an."
+msgstr "Please sign in."
+
+#: inc/artikelnamen.php:256
+msgid "Artikel nicht gefunden."
+msgstr "Item not found."
+
+#. translators: %s ist der Name der Person.
+#: inc/artikelnamen.php:285 inc/meine-artikel.php:212
+msgid "zuletzt geändert von %s"
+msgstr "last changed by %s"
+
+#: inc/artikelnamen.php:330
+msgid "Nachfolger (Art.-Nr.)"
+msgstr "Successor (item no.)"
+
+#: inc/artikelnamen.php:331
+msgid "Läuft dieser Artikel aus: die Artikelnummer des Nachfolgers. Wer ein altes Regaletikett scannt, wird dann dorthin geführt statt auf eine Fehlerseite."
+msgstr "If this item is discontinued: the item number of its successor. Anyone scanning an old shelf label is taken there instead of to an error page."
+
+#: inc/favoriten.php:83
+msgid "Gemerkt"
+msgstr "Saved"
+
+#: inc/favoriten.php:96
+msgid "Aus den Favoriten nehmen"
+msgstr "Remove from favourites"
+
+#: inc/favoriten.php:96
+msgid "Zu den Favoriten"
+msgstr "Add to favourites"
+
+#: inc/konto.php:174 inc/meine-artikel.php:120
+msgid "Favoriten"
+msgstr "Favourites"
+
+#: inc/konto.php:195
+msgid "Noch nichts gemerkt. Das Herz an einer Artikelkachel legt ihn hier ab — für den ganzen Betrieb, nicht nur für Sie."
+msgstr "Nothing saved yet. The heart on an item card puts it here — for the whole business, not just for you."
+
+#: inc/konto.php:218 inc/konto.php:317
+msgid "Ansehen"
+msgstr "View"
+
+#: inc/konto.php:260
+msgid "Guten Tag"
+msgstr "Hello"
+
+#: inc/konto.php:267
+msgid "Preisgruppe %s"
+msgstr "Price group %s"
+
+#: inc/konto.php:273
+msgid "Offen"
+msgstr "Open"
+
+#: inc/konto.php:278
+msgid "Bestellungen %s"
+msgstr "Orders %s"
+
+#: inc/konto.php:283
+msgid "Gemerkte Artikel"
+msgstr "Saved items"
+
+#: inc/konto.php:294
+msgid "Letzte Bestellungen"
+msgstr "Recent orders"
+
+#: inc/konto.php:296
+msgid "Alle Bestellungen →"
+msgstr "All orders →"
+
+#: inc/konto.php:337
+msgid "Ihre Ausgaben"
+msgstr "Your spending"
+
+#: inc/konto.php:351
+msgid "Vorjahr %s"
+msgstr "Previous year %s"
+
+#: inc/konto.php:367
+msgid "Vorjahr: %s"
+msgstr "Previous year: %s"
+
+#: inc/konto.php:381
+msgid "Nach Kategorie"
+msgstr "By category"
+
+#: inc/konto.php:424
+msgid "Fällt vermutlich bald an"
+msgstr "Probably due soon"
+
+#: inc/konto.php:433
+msgid "alle %d Tage"
+msgstr "every %d days"
+
+#: inc/konto.php:442
+msgid "Nachbestellen →"
+msgstr "Reorder →"
+
+#: inc/konto.php:449
+msgid "Steht nur hier im Konto — wir schicken deswegen keine E-Mails."
+msgstr "Shown only here in your account — we don't send emails about it."
+
+#: inc/konto.php:459
+msgid "Zugänge im Betrieb"
+msgstr "Logins in your business"
+
+#: inc/konto.php:462
+msgid "Jede Person im Betrieb hat einen eigenen Zugang mit eigener E-Mail und eigenem Passwort — kein geteiltes Konto. Bestellungen laufen über dasselbe Betriebskonto und bleiben dem Zugang zugeordnet, von dem sie kamen."
+msgstr "Each person in the business has their own login with their own email and password — no shared account. Orders go through the same business account and stay attributed to the login they came from."
+
+#: inc/konto.php:483
+msgid "Ihre Konditionen, Ihr Verlauf, Ihre Belege."
+msgstr "Your terms, your history, your documents."
+
+#. translators: %d ist die Zahl der Tage seit der letzten Lieferung.
+#: inc/konto.php:437 inc/meine-artikel.php:228
+msgid "letzte Lieferung vor %d Tag"
+msgid_plural "letzte Lieferung vor %d Tagen"
+msgstr[0] "last delivered %d day ago"
+msgstr[1] "last delivered %d days ago"
+
+#: inc/marken.php:107 inc/marken.php:108 inc/marken.php:180
+msgid "Marken erkennen"
+msgstr "Detect brands"
+
+#: inc/marken.php:185
+msgid "%1$d Marken angelegt, %2$d Zuordnungen geschrieben."
+msgstr "%1$d brands created, %2$d assignments written."
+
+#: inc/marken.php:193
+msgid "Aus jedem Artikelnamen ist das erste Wort herausgelesen und mit gleichen zusammengefasst. Das ist eine Vermutung, keine Wahrheit — bei „Algae – Algenmittel Pool\" ist das erste Wort der Artikel und nicht die Marke. Streichen Sie, was keine Marke ist, bessern Sie Schreibweisen aus, und weisen Sie den Rest zu."
+msgstr "The first word of every item name has been extracted and grouped with identical ones. That is a guess, not a fact — in \"Algae – Algenmittel Pool\" the first word is the item, not the brand. Strike out what isn't a brand, correct spellings, and assign the rest."
+
+#: inc/marken.php:197
+msgid "Es wird nur hinzugefügt."
+msgstr "Only additions are made."
+
+#: inc/marken.php:198
+msgid "Artikel, die schon eine Marke tragen, stehen hier gar nicht erst — bestehende Zuordnungen werden nie überschrieben und nie gelöscht."
+msgstr "Items that already carry a brand don't appear here at all — existing assignments are never overwritten and never deleted."
+
+#: inc/marken.php:202
+msgid "Nichts vorzuschlagen. Entweder tragen bereits alle Artikel eine Marke, oder aus den Namen lässt sich keine herauslesen."
+msgstr "Nothing to suggest. Either all items already carry a brand, or none can be read from the names."
+
+#: inc/marken.php:213
+msgid "Marke"
+msgstr "Brand"
+
+#: inc/marken.php:214 inc/meine-artikel.php:145 inc/schnellerfassung.php:234
+msgid "Artikel"
+msgstr "Items"
+
+#: inc/marken.php:215
+msgid "Zum Beispiel"
+msgstr "For example"
+
+#: inc/marken.php:246
+msgid "Angehakte Marken zuweisen"
+msgstr "Assign ticked brands"
+
+#: inc/marken.php:251
+msgid "Vorausgewählt sind alle Vorschläge mit mehr als einem Artikel — ein einzelner Artikel ist meist kein Markenname, sondern ein Produktname."
+msgstr "Preselected are all suggestions with more than one item — a single item is usually a product name, not a brand."
+
+#: inc/meine-artikel.php:97
+msgid "Ihr Katalog"
+msgstr "Your catalogue"
+
+#: inc/meine-artikel.php:103
+msgid "Ihr eigener Katalog aus allem, was Sie bisher bezogen haben, auf Wunsch mit Ihren internen Bezeichnungen statt unseren. Was regelmäßig gebraucht wird, liegt in zwei Klicks wieder im Warenkorb."
+msgstr "Your own catalogue of everything you've bought so far, with your internal names instead of ours if you like. Whatever you need regularly is back in the cart in two clicks."
+
+#: inc/meine-artikel.php:115
+msgid "Auswahl"
+msgstr "Selection"
+
+#: inc/meine-artikel.php:117
+msgid "Alle"
+msgstr "All"
+
+#: inc/meine-artikel.php:133
+msgid "In Ihren Artikeln suchen"
+msgstr "Search your items"
+
+#: inc/meine-artikel.php:135
+msgid "In Ihren Artikeln suchen …"
+msgstr "Search your items …"
+
+#: inc/meine-artikel.php:144
+msgid "Ihre Bezeichnung"
+msgstr "Your name for it"
+
+#: inc/meine-artikel.php:146 inc/schnellerfassung.php:235
+msgid "Bestand"
+msgstr "Stock"
+
+#: inc/meine-artikel.php:147
+msgid "Preis"
+msgstr "Price"
+
+#: inc/meine-artikel.php:148 inc/meine-artikel.php:254 inc/schnellerfassung.php:236
+msgid "Menge"
+msgstr "Quantity"
+
+#: inc/meine-artikel.php:186
+msgid "%s für den Etikettenbogen auswählen"
+msgstr "Select %s for the label sheet"
+
+#: inc/meine-artikel.php:204
+msgid "Eigenen Namen vergeben"
+msgstr "Give it your own name"
+
+#: inc/meine-artikel.php:239
+msgid "%d Stk."
+msgstr "%d pcs"
+
+#: inc/meine-artikel.php:252
+msgid "Menge verringern"
+msgstr "Decrease quantity"
+
+#: inc/meine-artikel.php:255
+msgid "Menge erhöhen"
+msgstr "Increase quantity"
+
+#: inc/meine-artikel.php:261 inc/schnellerfassung.php:252 inc/schnellerfassung.php:314
+msgid "In den Warenkorb"
+msgstr "Add to cart"
+
+#: inc/meine-artikel.php:278
+msgid "Auf den Namen klicken, um ihn zu ändern — leer heißt zurück zum Katalognamen"
+msgstr "Click the name to change it — empty means back to the catalogue name"
+
+#: inc/meine-artikel.php:287
+msgid "Am Regal"
+msgstr "On the shelf"
+
+#: inc/meine-artikel.php:290
+msgid "Etiketten zum Aufkleben"
+msgstr "Labels to stick on"
+
+#: inc/meine-artikel.php:293
+msgid "Wählen Sie oben aus, was ans Regal soll. Auf dem Etikett steht Ihre Bezeichnung — im Code selbst steht nur die Artikelnummer. Deshalb bleiben gedruckte Etiketten gültig, auch wenn Sie einen Artikel später anders nennen."
+msgstr "Select above what goes on the shelf. The label shows your name for the item — the code itself holds only the item number. That's why printed labels stay valid even if you rename an item later."
+
+#: inc/meine-artikel.php:300
+msgid "Etikettengröße"
+msgstr "Label size"
+
+#: inc/meine-artikel.php:302
+msgid "70 × 37 mm · 24 Stück"
+msgstr "70 × 37 mm · 24 labels"
+
+#: inc/meine-artikel.php:305
+msgid "48,5 × 25,4 mm · 44 Stück"
+msgstr "48.5 × 25.4 mm · 44 labels"
+
+#: inc/meine-artikel.php:310
+msgid "Bogen erzeugen"
+msgstr "Generate sheet"
+
+#: inc/meine-artikel.php:313
+msgid "Alle auswählen"
+msgstr "Select all"
+
+#: inc/meine-artikel.php:325
+msgid "Zuletzt bestellt"
+msgstr "Last ordered"
+
+#: inc/meine-artikel.php:333
+msgid "Ihre Bezeichnung, nicht unsere Artikelnummer."
+msgstr "Your name for it, not our item number."
+
+#: inc/meine-artikel.php:277
+msgid "%d Artikel"
+msgid_plural "%d Artikel"
+msgstr[0] "%d item"
+msgstr[1] "%d items"
+
+#: inc/rechtsseiten.php:59
+msgid "Impressum"
+msgstr "Legal notice"
+
+#: inc/rechtsseiten.php:64
+msgid "Datenschutzerklärung"
+msgstr "Privacy policy"
+
+#: inc/rechtsseiten.php:69
+msgid "Allgemeine Geschäftsbedingungen"
+msgstr "Terms and conditions"
+
+#: inc/rechtsseiten.php:74
+msgid "Widerrufsbelehrung"
+msgstr "Right of withdrawal"
+
+#: inc/rechtsseiten.php:79
+msgid "Lieferung und Zahlung"
+msgstr "Delivery and payment"
+
+#: inc/rechtsseiten.php:137 inc/rechtsseiten.php:138 inc/rechtsseiten.php:220
+msgid "Rechtsseiten"
+msgstr "Legal pages"
+
+#. translators: %s ist der Name der Seite.
+#: inc/rechtsseiten.php:159
+msgid "%s gibt es schon — unberührt gelassen."
+msgstr "%s already exists — left untouched."
+
+#. translators: 1: Name der Seite, 2: Fehlermeldung.
+#: inc/rechtsseiten.php:176
+msgid "%1$s ließ sich nicht anlegen: %2$s"
+msgstr "%1$s could not be created: %2$s"
+
+#. translators: %s ist der Name der Seite.
+#: inc/rechtsseiten.php:195
+msgid "%s als Entwurf angelegt."
+msgstr "%s created as a draft."
+
+#: inc/rechtsseiten.php:223
+msgid "Impressum und Datenschutzerklärung sind für einen Shop, der gewerblich verkauft, verpflichtend — und im Fuß der Seite muss man sie finden. Solange sie fehlen, erscheint dort auch kein Link: ein Link, der ins Leere führt, sieht aus, als wäre die Pflicht erfüllt."
+msgstr "A legal notice and a privacy policy are mandatory for a shop selling commercially — and they must be findable in the footer. As long as they're missing, no link appears there: a link leading nowhere looks as if the duty were fulfilled."
+
+#: inc/rechtsseiten.php:227
+msgid "Weil hier auch Privatkunden ohne MwSt.-Nummer bestellen — Bauern, Haushalte —, gilt zusätzlich das Verbraucherrecht: Widerrufsbelehrung und Verbraucher-Gewährleistung. Eine unvollständige Widerrufsbelehrung verlängert die Frist von vierzehn Tagen auf zwölf Monate und vierzehn Tage. Diese Seite ist deshalb die, die am gründlichsten geprüft gehört."
+msgstr "Because private customers without a VAT number also order here — farmers, households — consumer law applies as well: withdrawal information and consumer warranty. Incomplete withdrawal information extends the period from fourteen days to twelve months and fourteen days. This page is therefore the one that deserves the most thorough review."
+
+#: inc/rechtsseiten.php:231
+msgid "Was dieser Knopf tut:"
+msgstr "What this button does:"
+
+#: inc/rechtsseiten.php:232
+msgid "Er legt die fehlenden Seiten als Entwurf an, mit einem Gerüst und ausgewiesenen Lücken. Er veröffentlicht nichts und überschreibt nichts. Der Text ist kein fertiger Rechtstext — die Angaben müssen ergänzt und der Inhalt muss von jemandem geprüft werden, der die Rechtslage kennt."
+msgstr "It creates the missing pages as drafts, with a scaffold and marked gaps. It publishes nothing and overwrites nothing. The text is not a finished legal text — the details must be filled in and the content reviewed by someone who knows the law."
+
+#: inc/rechtsseiten.php:245
+msgid "Seite"
+msgstr "Page"
+
+#: inc/rechtsseiten.php:246
+msgid "Stand"
+msgstr "Status"
+
+#: inc/rechtsseiten.php:261
+msgid "verpflichtend"
+msgstr "mandatory"
+
+#: inc/rechtsseiten.php:266
+msgid "fehlt"
+msgstr "missing"
+
+#: inc/rechtsseiten.php:268
+msgid "veröffentlicht"
+msgstr "published"
+
+#: inc/rechtsseiten.php:269 inc/rechtsseiten.php:272
+msgid "bearbeiten"
+msgstr "edit"
+
+#: inc/rechtsseiten.php:271
+msgid "Entwurf — noch nicht sichtbar"
+msgstr "Draft — not yet visible"
+
+#: inc/rechtsseiten.php:282
+msgid "Fehlende Seiten als Entwurf anlegen"
+msgstr "Create missing pages as drafts"
+
+#: inc/rechtsseiten.php:287
+msgid "Die Vorlage, die schon da ist"
+msgstr "The template that's already there"
+
+#. translators: %s ist ein Link zu den Datenschutz-Einstellungen.
+#: inc/rechtsseiten.php:292
+msgid "Für die Datenschutzerklärung hält WordPress selbst einen ausführlichen Entwurf bereit — unter %s. Dort tragen auch WooCommerce und andere Plugins ihre Abschnitte ein, etwa zu Konto, Bestellungen und Zahlung. Dieser Text ist die bessere Grundlage als jedes Muster von außen, weil er beschreibt, was auf dieser Installation tatsächlich läuft."
+msgstr "For the privacy policy, WordPress itself provides a detailed draft — under %s. WooCommerce and other plugins add their sections there too, for example on accounts, orders and payment. That text is a better basis than any outside template because it describes what actually runs on this installation."
+
+#: inc/rechtsseiten.php:293
+msgid "Einstellungen → Datenschutz"
+msgstr "Settings → Privacy"
+
+#: inc/schnellerfassung.php:114
+msgid "Nicht gefunden. Nicht im Sortiment? Fragen Sie uns — wir beschaffen es."
+msgstr "Not found. Not in our range? Ask us — we'll source it."
+
+#. translators: 1: alter Artikelname, 2: Name des Nachfolgers.
+#: inc/schnellerfassung.php:130
+msgid "%1$s führen wir nicht mehr. An seiner Stelle steht jetzt %2$s."
+msgstr "We no longer stock %1$s. Its place is now taken by %2$s."
+
+#: inc/schnellerfassung.php:139
+msgid "Für diesen Artikel sehen Sie den Preis erst nach der Anmeldung."
+msgstr "The price of this item is shown only after you sign in."
+
+#: inc/schnellerfassung.php:154
+msgid "Der Warenkorb steht gerade nicht bereit."
+msgstr "The cart is not available right now."
+
+#: inc/schnellerfassung.php:159
+msgid "Nichts erfasst."
+msgstr "Nothing entered."
+
+#: inc/schnellerfassung.php:184
+msgid "Keine Position konnte übernommen werden."
+msgstr "No line could be added."
+
+#: inc/schnellerfassung.php:223
+msgid "Tippen"
+msgstr "Type"
+
+#: inc/schnellerfassung.php:225
+msgid "Scannen"
+msgstr "Scan"
+
+#: inc/schnellerfassung.php:233
+msgid "Art.-Nr. / EAN"
+msgstr "Item no. / EAN"
+
+#: inc/schnellerfassung.php:237 inc/schnellerfassung.php:249
+msgid "Summe"
+msgstr "Total"
+
+#: inc/schnellerfassung.php:238
+msgid "Entfernen"
+msgstr "Remove"
+
+#: inc/schnellerfassung.php:246
+msgid "Eingeben und mit Tab oder Enter bestätigen — die nächste Zeile öffnet sich von selbst."
+msgstr "Type and confirm with Tab or Enter — the next line opens by itself."
+
+#: inc/schnellerfassung.php:264
+msgid "Barcode ins Feld halten"
+msgstr "Hold the barcode in the frame"
+
+#: inc/schnellerfassung.php:267
+msgid "Scannen statt suchen"
+msgstr "Scan instead of search"
+
+#: inc/schnellerfassung.php:268
+msgid "Barcode mit der Kamera Ihres Mobilgeräts erfassen, ebenso über die QR-Etiketten an Ihrem Lagerplatz. Sie bestellen dort, wo Ihnen der Mangel auffällt — im Lager, nicht Stunden später am Schreibtisch."
+msgstr "Capture the barcode with your phone's camera, or the QR labels at your storage location. You order where you notice the shortage — in the stockroom, not hours later at a desk."
+
+#: inc/schnellerfassung.php:271
+msgid "Kamera öffnen"
+msgstr "Open camera"
+
+#: inc/schnellerfassung.php:305
+msgid "Art.-Nr. oder EAN"
+msgstr "Item no. or EAN"
+
+#: inc/schnellerfassung.php:306
+msgid "noch nichts erfasst"
+msgstr "nothing entered yet"
+
+#: inc/schnellerfassung.php:307
+msgid "weniger"
+msgstr "less"
+
+#: inc/schnellerfassung.php:308
+msgid "mehr"
+msgstr "more"
+
+#: inc/schnellerfassung.php:309
+msgid "Zeile entfernen"
+msgstr "Remove line"
+
+#: inc/schnellerfassung.php:310
+msgid "wird gesucht …"
+msgstr "searching …"
+
+#: inc/schnellerfassung.php:311
+msgid "Nicht gefunden."
+msgstr "Not found."
+
+#: inc/schnellerfassung.php:312
+msgid "Verbindung unterbrochen."
+msgstr "Connection lost."
+
+#: inc/schnellerfassung.php:313
+msgid "wird übernommen …"
+msgstr "adding …"
+
+#: inc/schnellerfassung.php:315
+msgid "Übernahme fehlgeschlagen."
+msgstr "Adding failed."
+
+#. translators: %s ist der gelesene Strichcode.
+#: inc/schnellerfassung.php:317
+msgid "Erkannt: %s"
+msgstr "Detected: %s"
+
+#. translators: %s ist der gelesene Strichcode.
+#: inc/schnellerfassung.php:318
+msgid "Kamera läuft. Barcode ins Feld halten."
+msgstr "Camera running. Hold the barcode in the frame."
+
+#. translators: %s ist der gelesene Strichcode.
+#: inc/schnellerfassung.php:319
+msgid "Strichcode-Erkennung wird geladen …"
+msgstr "Loading barcode reader …"
+
+#: inc/wunschtermin.php:32
+msgid "08–10 Uhr"
+msgstr "08:00–10:00"
+
+#: inc/wunschtermin.php:33
+msgid "12–14 Uhr"
+msgstr "12:00–14:00"
+
+#: inc/wunschtermin.php:34
+msgid "18–20 Uhr"
+msgstr "18:00–20:00"
+
+#: inc/wunschtermin.php:197
+msgid "Wann soll geliefert werden?"
+msgstr "When should we deliver?"
+
+#: inc/wunschtermin.php:198
+msgid "Sie bestimmen den Tag"
+msgstr "You choose the day"
+
+#: inc/wunschtermin.php:202
+msgid "Wählen Sie den Tag, an dem es Ihnen passt — wenn der Betrieb offen ist, wenn jemand annehmen kann, wenn am wenigsten los ist. Wir richten uns danach."
+msgstr "Choose the day that suits you — when you're open, when someone can take delivery, when it's quietest. We'll plan around it."
+
+#: inc/wunschtermin.php:205
+msgid "Liefertag"
+msgstr "Delivery day"
+
+#: inc/wunschtermin.php:216
+msgid "geschlossen"
+msgstr "closed"
+
+#: inc/wunschtermin.php:230 inc/wunschtermin.php:231
+msgid "Zeitfenster"
+msgstr "Time window"
+
+#: inc/wunschtermin.php:246 inc/wunschtermin.php:299
+msgid "Noch kein Termin gewählt."
+msgstr "No date chosen yet."
+
+#: inc/wunschtermin.php:272
+msgid "Termin übernehmen und zur Kasse"
+msgstr "Confirm date and go to checkout"
+
+#: inc/wunschtermin.php:277
+msgid "Ihre Schließtage sind ausgegraut."
+msgstr "Your closing days are greyed out."
+
+#: inc/wunschtermin.php:404
+msgid "Bitte waehlen Sie zuerst einen Liefertag — wir richten die Tour danach ein."
+msgstr "Please choose a delivery day first — we plan the round accordingly."
+
+#: inc/wunschtermin.php:405
+msgid "Bitte waehlen Sie noch ein Zeitfenster."
+msgstr "Please also choose a time window."
+
+#: inc/wunschtermin.php:436
+msgid "Liefertermin"
+msgstr "Delivery date"
+
+#: inc/wunschtermin.php:438
+msgid "ändern"
+msgstr "change"
+
+#: inc/wunschtermin.php:460 inc/wunschtermin.php:479
+msgid "Bitte waehlen Sie im Warenkorb Liefertag und Zeitfenster."
+msgstr "Please choose the delivery day and time window in the cart."
+
+#: inc/wunschtermin.php:521 inc/wunschtermin.php:531
+msgid "Wunschtermin"
+msgstr "Preferred date"
+
+#. translators: %d ist die Zahl der noch freien Zeitfenster.
+#: inc/wunschtermin.php:220
+msgid "%d Fenster frei"
+msgid_plural "%d Fenster frei"
+msgstr[0] "%d slot free"
+msgstr[1] "%d slots free"
+
+#: sapelza-shop.php:54
+msgid "SAPELZA Shop braucht WooCommerce. Das Plugin bleibt sonst wirkungslos."
+msgstr "SAPELZA Shop requires WooCommerce. Without it the plugin does nothing."
+
+#: sapelza-shop.php:80
+msgid "SAPELZA Shop-Logik wurde nicht geladen."
+msgstr "SAPELZA Shop logic was not loaded."
+
+#. translators: %s ist eine Liste von PHP-Funktionsnamen.
+#: sapelza-shop.php:85
+msgid "Das aktive Theme bringt dieselben Bausteine noch selbst mit (%s). Bitte zuerst das Child-Theme auf Fassung 1.5.0 oder neuer aktualisieren, dann laedt sich dieses Plugin von allein."
+msgstr "The active theme still ships the same modules itself (%s). Please update the child theme to version 1.5.0 or newer first; this plugin then loads by itself."
+

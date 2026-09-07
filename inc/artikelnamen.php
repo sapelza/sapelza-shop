@@ -277,9 +277,13 @@ add_action('wp_enqueue_scripts', function () {
     if (!is_string($inhalt) || !has_shortcode($inhalt, 'sz_meine_artikel')) return;
 
     $pfad = SZ_SHOP_PFAD . 'sapelza-shop.php';
-    $f = '1.20.0';
+    $f = '1.21.0';
 
     wp_enqueue_script('sapelza-namen', plugins_url('js/namen.js', $pfad), [], $f, true);
+    wp_localize_script('sapelza-namen', 'szNamen', [
+        /* translators: %s ist der Name der Person. */
+        'geaendertVon' => __('zuletzt geändert von %s', 'sapelza-shop'),
+    ]);
     /*
      * qr.js ist raus: der eigene Erzeuger lieferte Codes, die kein Leser
      * erkannte. Gezeichnet wird jetzt mit ZXing, und das laedt etiketten.js

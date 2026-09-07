@@ -93,7 +93,8 @@
                             wer.className = 'sz-eigenname__wer';
                             knopf.parentNode.appendChild( wer );
                         }
-                        wer.textContent = 'zuletzt geändert von ' + a.data.wer;
+                        wer.textContent = ( ( window.szNamen && window.szNamen.geaendertVon ) || 'zuletzt geändert von %s' )
+                            .replace( '%s', a.data.wer );
                     } else if ( wer ) {
                         wer.remove();
                     }

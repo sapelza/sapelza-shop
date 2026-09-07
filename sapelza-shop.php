@@ -4,7 +4,7 @@
  * Plugin URI:        https://sapelzashop.com
  * GitHub Plugin URI: https://github.com/sapelza/sapelza-shop
  * Description:       Die Regeln des Betriebs, „Meine Artikel“ und der Wunschtermin. Bewusst kein Theme-Bestandteil: das hier muss einen Theme-Wechsel überleben.
- * Version:           1.23.1
+ * Version:           1.25.0
  * Requires PHP:      8.0
  * Author:            SAPELZA
  * Text Domain:       sapelza-shop
@@ -13,6 +13,19 @@
 if (!defined('ABSPATH')) exit;
 
 define('SZ_SHOP_PFAD', plugin_dir_path(__FILE__));
+
+/*
+ * Die Sprachdatei des Plugins: languages/sapelza-shop-<locale>.mo, dort,
+ * wo WordPress sie für ein Plugin sucht. Bis 1.24.0 wurde keine geladen —
+ * 153 übersetzbare Texte, aber nie eine Übersetzung.
+ *
+ * Theme und Plugin teilen sich die Domain; WordPress legt beide Dateien
+ * übereinander. Auf init reicht es: die Texte werden beim Ausgeben
+ * übersetzt, nicht beim Einhängen der Bausteine.
+ */
+add_action('init', function () {
+    load_plugin_textdomain('sapelza-shop', false, dirname(plugin_basename(__FILE__)) . '/languages');
+}, 1);
 
 /*
  * Warum after_setup_theme und nicht plugins_loaded:

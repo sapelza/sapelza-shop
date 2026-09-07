@@ -292,9 +292,32 @@ add_action('wp_enqueue_scripts', function () {
         'sapelza-erfassung',
         plugins_url('js/erfassung.js', SZ_SHOP_PFAD . 'sapelza-shop.php'),
         [],
-        '1.7.0',
+        '1.8.0',
         true
     );
+
+    /*
+     * Alles, was das Skript selbst in die Seite schreibt. Vorher stand
+     * es deutsch im Skript — und damit außerhalb jeder Sprachdatei.
+     * Das Skript hält dieselben deutschen Wörter als Rückfall.
+     */
+    wp_localize_script('sapelza-erfassung', 'szErfassung', [
+        'platzhalter'    => __('Art.-Nr. oder EAN', 'sapelza-shop'),
+        'leer'           => __('noch nichts erfasst', 'sapelza-shop'),
+        'weniger'        => __('weniger', 'sapelza-shop'),
+        'mehr'           => __('mehr', 'sapelza-shop'),
+        'entfernen'      => __('Zeile entfernen', 'sapelza-shop'),
+        'suchen'         => __('wird gesucht …', 'sapelza-shop'),
+        'nichtGefunden'  => __('Nicht gefunden.', 'sapelza-shop'),
+        'verbindung'     => __('Verbindung unterbrochen.', 'sapelza-shop'),
+        'uebernehmen'    => __('wird übernommen …', 'sapelza-shop'),
+        'inDenKorb'      => __('In den Warenkorb', 'sapelza-shop'),
+        'fehlgeschlagen' => __('Übernahme fehlgeschlagen.', 'sapelza-shop'),
+        /* translators: %s ist der gelesene Strichcode. */
+        'erkannt'        => __('Erkannt: %s', 'sapelza-shop'),
+        'kamera'         => __('Kamera läuft. Barcode ins Feld halten.', 'sapelza-shop'),
+        'laden'          => __('Strichcode-Erkennung wird geladen …', 'sapelza-shop'),
+    ]);
 }, 30);
 
 /**
